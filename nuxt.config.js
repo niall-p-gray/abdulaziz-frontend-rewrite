@@ -70,5 +70,7 @@ export default {
       solid: true,
       brands: true
     }
-  }
+  },
+
+  devServerHandlers: []
 }
