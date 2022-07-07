@@ -1,0 +1,24 @@
+.title-text {
+  font-family: 'Josefin Sans', sans-serif;
+}
+.container {
+  @apply w-7/12 mx-auto text-center pt-16;
+}
+.card {
+  @apply bg-white rounded-xl px-3 py-3;
+  &__title {
+    @apply text-xl text-left;
+  }
+  &__content {
+    @apply my-2;
+    &__link {
+      @apply flex justify-between border-t-2 border-primary py-1 cursor-pointer;
+      &__text {
+        @apply text-lg;
+      }
+      &__icon {
+        @apply text-secondary pt-2 pr-2;
+      }
+    }
+  }
+}
