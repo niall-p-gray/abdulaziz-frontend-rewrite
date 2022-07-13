@@ -37,7 +37,8 @@ export default {
     '@nuxtjs/eslint-module',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/tailwindcss',
-    '@nuxtjs/fontawesome'
+    '@nuxtjs/fontawesome',
+    '@nuxtjs/moment'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -70,6 +71,10 @@ export default {
       solid: true,
       brands: true
     }
+  },
+
+  moment: {
+    timezone: true
   },
 
   devServerHandlers: []

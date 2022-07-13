@@ -22,55 +22,55 @@ export default {
       coffeeShops: [
         {
           text: 'Muse Coffee Studio',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Groundswell (Madison)',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Aglaia Coffee',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Red June Cafe',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Fuel Space @ lululemon',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Elaine\'s Coffee Call',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Olor Coffee Bar',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Cafe Deko',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Elevate',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Elaine\'s Coffee Call',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Olor Coffee Bar',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Cafe Deko',
-          link: ''
+          link: '/coffee-shop/order'
         },
         {
           text: 'Elevate',
-          link: ''
+          link: '/coffee-shop/order'
         }
       ]
     }

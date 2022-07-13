@@ -36,11 +36,11 @@
         <tr v-for="(item, index) in items" :key="index" class="bg-white border-b">
           <td scope="row" class="px-4 py-2 border-x-2 border-gray-200 whitespace-nowrap">
             <p class="font-semibold text-black">
-              {{ item.name }}
+              {{ item.fields.Name }}
             </p>
             <div class="font-light">
-              <span v-for="(ingredient, inIndex) in item.ingredients" :key="`ing-${inIndex}`">
-                {{ ingredient }},
+              <span>
+                {{ item.fields.Description }},
               </span>
             </div>
           </td>

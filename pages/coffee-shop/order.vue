@@ -1,6 +1,6 @@
 <template>
   <div class="bg-primary min-h-screen title-text">
-    <div class="container !pt-36 !w-9/12">
+    <div class="container !pt-36 !w-10/12">
       <h1 class="text-3xl title-text">
         Niall - FOR TESTING <span class="text-4xl">NPG</span>
       </h1>
@@ -42,7 +42,7 @@
         </div>
       </div>
       <div class="mt-10">
-        <order-table :items="items" />
+        <order-table :items="products" />
       </div>
       <div class="mt-10 w-1/2 mx-auto">
         <div class="grid-grid-cols-2 gap-5">
@@ -80,6 +80,8 @@
 </template>
 
 <script>
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'CoffeeShopOrder',
   components: {
@@ -87,18 +89,71 @@ export default {
   },
   data () {
     return {
-      items: [
-        {
-          name: 'Coloradough',
-          ingredients: [
-            'Sausage',
-            'egg',
-            'cheddar',
-            'onions',
-            'peppers'
-          ]
+      dateRanges: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      products: 'order/getProducts'
+    })
+  },
+  async mounted () {
+    try {
+      await this.getProducts()
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  methods: {
+    ...mapActions('order', ['getProducts']),
+    getDateRanges () {
+      let d = new Date()
+      d = this.$moment.tz(d, 'America/Chicago').format('yyyy-MM-dd')
+      const date = this.$moment(d)
+
+      const today = this.$moment.tz(date, 'America/Chicago').format('yyyy-MM-dd')
+
+      const day = date.day()
+      console.log('date', day)
+
+      let dayMinus
+      let dateToUseDayMinus
+
+      if (day === 0) {
+        dayMinus = -6
+        dateToUseDayMinus = 1
+      } else if (day > 4) {
+        dayMinus = 1 - day
+        dateToUseDayMinus = 8 - day
+      } else {
+        dayMinus = 1 - day
+        dateToUseDayMinus = 1 - day
+      }
+
+      const pastCutOff = date.add(dayMinus - 22, 'days')
+      console.log('pastCutOff', date)
+      const prevMonday = date.add(dayMinus, 'days')
+      const futureCutOff = date.add(dayMinus + 22, 'days')
+      const dateToUse = date.add(dateToUseDayMinus, 'days')
+      const dateToUseDisplay = this.$moment.tz(dateToUse, 'America/Chicago').format('yyyy-MM-dd')
+
+      const datesToOutputToSite = []
+      for (let thisDate = -3; thisDate < 4; thisDate++) {
+        const tempDate = date.add(dayMinus + (7 * thisDate), 'days')
+        const tempDateISO = this.$moment.tz(tempDate, 'America/Chicago').format('yyyy-MM-dd')
+        const tempDateDisplay = this.$moment.tz(tempDate, 'America/Chicago').format('M/d')
+
+        let type
+        if (thisDate > -1) {
+          type = 'future'
+        } else {
+          type = 'past'
         }
-      ]
+
+        datesToOutputToSite.push({ iso: tempDateISO, display: tempDateDisplay, weekNo: thisDate, type })
+      }
+
+      return { today, pastCutOff, prevMonday, futureCutOff, dateToUse: dateToUseDisplay, datesToUseOnSite: datesToOutputToSite }
     }
   }
 }
