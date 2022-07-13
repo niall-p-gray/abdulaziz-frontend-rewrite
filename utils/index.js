@@ -1,7 +1,7 @@
 import axios from 'axios'
 
-const baseId = 'appl59VVNYe2k9Wim'
-const apiKey = 'keykVYU9awpaRACXN'
+const baseId = process.env.AIRTABLE_BASE_ID
+const apiKey = process.env.AIRTABLE_API_KEY
 
 export const getParamBuilder = (params) => {
   let paramUrlBuild = ''
