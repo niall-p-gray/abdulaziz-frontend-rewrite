@@ -10,14 +10,8 @@
             <span class="text-red-500 text-lg title-text">Past Orders</span>
           </div>
           <div class="grid grid-cols-3 gap-2 text-center mx-auto justify-center mt-2 w-5/6">
-            <div class="chip">
-              <span>6/13</span>
-            </div>
-            <div class="chip">
-              <span>6/20</span>
-            </div>
-            <div class="chip">
-              <span>6/27</span>
+            <div v-for="(date, index) in pastDates" :key="`pd-${index}`" class="chip">
+              <span>{{ date }}</span>
             </div>
           </div>
         </div>
@@ -26,17 +20,8 @@
             <span class="text-red-500 text-lg title-text">Upcoming Orders</span>
           </div>
           <div class="grid grid-cols-4 gap-2 text-center mx-auto justify-center mt-2 w-5/6">
-            <div class="chip">
-              <span>7/14</span>
-            </div>
-            <div class="chip">
-              <span>7/11</span>
-            </div>
-            <div class="chip">
-              <span>7/18</span>
-            </div>
-            <div class="chip">
-              <span>7/25</span>
+            <div v-for="(date, index) in futureDates" :key="`fd-${index}`" class="chip">
+              <span>{{ date }}</span>
             </div>
           </div>
         </div>
@@ -80,6 +65,7 @@
 </template>
 
 <script>
+import moment from 'moment-timezone'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -89,7 +75,9 @@ export default {
   },
   data () {
     return {
-      dateRanges: null
+      dateRanges: null,
+      pastDates: [],
+      futureDates: []
     }
   },
   computed: {
@@ -98,6 +86,9 @@ export default {
     })
   },
   async mounted () {
+    const startOfWeek = moment.tz('America/Chicago').startOf('isoWeek')
+    this.pastDates = [startOfWeek.clone().subtract(14, 'days').format('M/DD'), startOfWeek.clone().subtract(7, 'days').format('M/DD'), startOfWeek.clone().format('M/DD')]
+    this.futureDates = [startOfWeek.clone().add(7, 'days').format('M/DD'), startOfWeek.clone().add(14, 'days').format('M/DD'), startOfWeek.clone().add(21, 'days').format('M/DD'), startOfWeek.clone().add(28, 'days').format('M/DD')]
     try {
       await this.getProducts()
     } catch (e) {
