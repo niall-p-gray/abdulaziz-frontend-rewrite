@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-primary min-h-screen">
+  <div class="main">
     <div class="container">
       <h1 class="text-3xl title-text">
         Howdy Kolache Links

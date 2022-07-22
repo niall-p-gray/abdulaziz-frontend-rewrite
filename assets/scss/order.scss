@@ -1,0 +1,71 @@
+.order {
+  &__title {
+    @apply text-3xl title-text;
+  }
+  &__date {
+    @apply w-1/2 mt-10 grid grid-cols-2 text-center mx-auto gap-3;
+    &__title {
+      @apply text-center border-b-red-500 border-b-2;
+      span {
+        @apply text-red-500 text-lg title-text;
+      }
+    }
+    &__grid {
+      @apply grid grid-cols-3 gap-2 text-center mx-auto justify-center mt-2 w-5/6;
+    }
+  }
+  &__actions {
+    @apply mt-10 w-1/2 mx-auto;
+    &__grid {
+      @apply grid grid-cols-2 gap-5;
+    }
+  }
+  &__instructions {
+    @apply mt-10 rounded-xl bg-[#eeebcc] py-10 px-8;
+    &__title {
+      @apply text-center text-2xl;
+    }
+    &__list {
+      @apply list-disc w-2/5 mx-auto;
+    }
+    &__subtitle {
+      @apply mt-2 font-light italic text-gray-400;
+    }
+  }
+  &__table {
+    @apply relative overflow-x-auto shadow-md sm:rounded-lg;
+    &__table {
+      @apply w-full text-sm text-left text-gray-500 dark:text-gray-400;
+      &__head {
+        @apply text-xs text-gray-700 uppercase bg-white border-b-2 border-gray-200;
+        &__th {
+          @apply px-6 py-3 border-x-2 border-gray-200;
+        }
+      }
+      &__tr {
+        @apply bg-white border-b;
+        &__td {
+          @apply px-4 py-2 border-x-2 border-gray-200 whitespace-nowrap;
+        }
+        &__weekly-orders {
+          @apply px-4 py-2 border-x-2 border-gray-200;
+          input {
+            @apply border-2 border-gray-300 rounded-sm w-8 h-6 text-center text-black;
+          }
+        }
+        &__total {
+          @apply text-black text-lg;
+        }
+        &__edited {
+          @apply text-gray-400 font-light;
+        }
+        &__total {
+          @apply text-gray-700 font-light text-lg;
+        }
+        &__all-orders {
+          @apply text-gray-900 font-semibold;
+        }
+      }
+    }
+  }
+}

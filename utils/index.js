@@ -56,3 +56,24 @@ export const getRequest = (tabName, params, offset, mergedResponse) => {
     }
   })
 }
+
+export const singleRecordGetRequest = (tabName, recordId) => {
+  // eslint-disable-next-line no-async-promise-executor
+  return new Promise(async function (resolve, reject) {
+    try {
+      const options = {
+        method: 'get',
+        contentType: 'application/json',
+        muteHttpExceptions: false
+      }
+
+      const apiHost = 'https://api.airtable.com/v0/' + baseId + '/' + tabName + '/' + recordId
+      const apiURL = apiHost + '?api_key=' + apiKey
+
+      const response = await axios.get(apiURL, options)
+      resolve(response.data.fields)
+    } catch (err) {
+      reject(err)
+    }
+  })
+}

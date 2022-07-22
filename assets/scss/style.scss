@@ -1,8 +1,17 @@
+@import './loading.scss';
+@import './order.scss';
+
+.main {
+  @apply bg-primary min-h-screen;
+}
 .title-text {
   font-family: 'Josefin Sans', sans-serif;
 }
 .chip {
   @apply bg-gray-200 rounded-lg py-1 px-2 w-fit hover:bg-yellow-100 font-light cursor-pointer;
+}
+.chip-selected {
+  @apply bg-yellow-100;
 }
 .btn {
   @apply bg-yellow-300 px-6 py-3 rounded-xl cursor-pointer;
