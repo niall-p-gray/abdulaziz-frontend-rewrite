@@ -10,7 +10,7 @@
           <production-team class="mt-4" :links="productionLinks" />
         </div>
         <div class="col-span-3">
-          <coffee-shop-card />
+          <coffee-shop-card :coffee-shops="coffeeShops" />
         </div>
       </div>
     </div>
@@ -29,7 +29,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pageLinks: 'home/getPageLinks'
+      pageLinks: 'home/getPageLinks',
+      coffeeShops: 'home/getCoffeeShops'
     }),
     employeeLinks () {
       return this.pageLinks.filter(link => link.fields.Section === 'Employee Links')
@@ -41,13 +42,15 @@ export default {
   async mounted () {
     try {
       await this.getPageLinks()
+      this.getCoffeeShops()
     } catch (error) {
       console.error(error)
     }
   },
   methods: {
     ...mapActions('home', [
-      'getPageLinks'
+      'getPageLinks',
+      'getCoffeeShops'
     ])
   }
 }

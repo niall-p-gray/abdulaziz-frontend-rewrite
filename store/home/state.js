@@ -1,3 +1,4 @@
 export default () => ({
-  pageLinks: []
+  pageLinks: [],
+  coffeeShops: []
 })

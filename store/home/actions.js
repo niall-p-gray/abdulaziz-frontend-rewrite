@@ -10,5 +10,15 @@ export default {
     } catch (error) {
       console.log(error)
     }
+  },
+  getCoffeeShops: async ({ commit }, payload) => {
+    const coffeeShopsDataGetParams = getParamBuilder([{ param: 'filterByFormula', value: ['{Client Type}="1. Coffee Shop"'] }])
+    try {
+      const coffeeShopsRaw = await getRequest('Clients', coffeeShopsDataGetParams, null, null)
+      const items = coffeeShopsRaw.records
+      commit('setCoffeeShops', items)
+    } catch (error) {
+      console.log(error)
+    }
   }
 }
