@@ -6,41 +6,23 @@
       </h3>
     </div>
     <div class="card__content">
-      <div class="card__content__link">
-        <span class="card__content__link__text">Production Planer (App)</span>
+      <a v-for="(link, index) in links" :key="index" :href="link.fields.URL" target="_blank" class="card__content__link">
+        <span class="card__content__link__text"> {{ link.fields.Name }} </span>
         <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Production Planer (Sheet)</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Admin Orders Summary</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Daily Checklists</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Weekly Inventory</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Kolaches / Labor Hour</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
-      <div class="card__content__link">
-        <span class="card__content__link__text">Task Timing</span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </div>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'EmployeeCard'
+  name: 'EmployeeCard',
+  props: {
+    links: {
+      type: Array,
+      required: true
+    }
+  }
 }
 </script>
 
