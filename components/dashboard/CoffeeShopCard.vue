@@ -6,10 +6,10 @@
       </h3>
     </div>
     <div class="card__content">
-      <router-link v-for="(shop, index) in coffeeShops" :key="index" :to="`coffee-shop/${shop.fields['Rec ID']}`" class="card__content__link">
+      <nuxt-link v-for="(shop, index) in coffeeShops" :key="index" :to="`coffee-shop/${shop.fields['Rec ID']}`" class="card__content__link">
         <span class="card__content__link__text"> {{ shop.fields.Name }} </span>
         <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </router-link>
+      </nuxt-link>
     </div>
   </div>
 </template>

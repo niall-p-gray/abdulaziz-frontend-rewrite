@@ -48,8 +48,6 @@ export const getRequest = (tabName, params, offset, mergedResponse) => {
       while (response.data.offset) {
         mergedResponse = getRequest(tabName, params, JSON.parse(response).offset, mergedResponse)
       }
-
-      console.log('response', mergedResponse)
       resolve(mergedResponse)
     } catch (err) {
       reject(err)

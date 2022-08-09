@@ -39,14 +39,14 @@
         </div>
       </div>
       <div class="mt-10">
-        <order-table v-if="filteredProducts.length > 0" :items="filteredProducts" />
+        <order-table v-if="filteredProducts.length > 0 && !loading" :items="filteredProducts" />
         <loading v-else class="justify-center flex w-full" />
       </div>
       <div class="order__actions">
-        <button class="btn btn__disabled mr-2">
+        <button class="btn mr-2" :class="saveEnabled ? '' : 'btn__disabled'" @click="updateOrders">
           Save Order
         </button>
-        <button class="btn ml-2">
+        <button class="btn ml-2" :class="saveEnabled ? 'btn__disabled' : ''" @click="saveEnabled = true">
           Make Standing Order
         </button>
       </div>
@@ -89,14 +89,16 @@ export default {
     return {
       pastDates: [],
       futureDates: [],
-      selectedDate: null
+      selectedDate: null,
+      saveEnabled: false
     }
   },
   computed: {
     ...mapGetters({
       products: 'order/getProducts',
       selectedClient: 'order/getSelectedClient',
-      selectedOrders: 'order/getSelectedOrders'
+      selectedOrders: 'order/getSelectedOrders',
+      loading: 'order/getLoading'
     }),
     filteredProducts () {
       return this.selectedClient['Chosen Products'] ? this.products.filter(product => this.selectedClient['Chosen Products'].includes(product.id)) : []
@@ -162,7 +164,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('order', ['getProducts', 'getClient', 'getClientOrders']),
+    ...mapActions('order', ['getProducts', 'getClient', 'getClientOrders', 'updateOrders']),
     formatDate (date, format) {
       return moment.tz(date, 'America/Chicago').format(format)
     }

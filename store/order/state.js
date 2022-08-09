@@ -1,5 +1,7 @@
 export default () => ({
   products: [],
   selectedClient: {},
-  selectedOrders: []
+  selectedOrders: [],
+  changedOrders: {},
+  loading: false
 })

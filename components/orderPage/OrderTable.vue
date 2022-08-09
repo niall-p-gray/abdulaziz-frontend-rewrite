@@ -33,7 +33,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in items" :key="index" class="order__table__table__tr">
+        <tr v-for="(item, index) in orders" :key="index" class="order__table__table__tr">
           <td scope="row" class="order__table__table__tr__td">
             <p class="font-semibold text-black">
               {{ item.fields.Name }}
@@ -46,7 +46,7 @@
           </td>
           <template v-if="item.weeklyOrders">
             <td v-for="(order, orderIndex) in item.weeklyOrders" :key="`order-${orderIndex}`" class="order__table__table__tr__weekly-orders">
-              <input :value="order" type="text">
+              <input :value="order" type="text" @input="orderChanged(index, orderIndex, $event.target.value)">
             </td>
             <td class="text-center">
               <span class="order__table__table__tr__total">{{ addOrders(item.weeklyOrders) }}</span>
@@ -78,6 +78,7 @@
 <script>
 import moment from 'moment-timezone'
 import _ from 'lodash'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   name: 'OrderTable',
@@ -89,13 +90,16 @@ export default {
   },
   data () {
     return {
-      orders: {}
+      orders: []
     }
   },
   computed: {
+    ...mapGetters({
+      changedOrders: 'order/getChangedOrders'
+    }),
     allOrdersTotal () {
       let total = 0
-      this.items.forEach((item) => {
+      this.orders.forEach((item) => {
         if (item.weeklyOrders) {
           total += this.addOrders(item.weeklyOrders)
         }
@@ -103,21 +107,31 @@ export default {
       return total
     }
   },
+  watch: {
+    items (newItems) {
+      this.orders = newItems
+    }
+  },
   mounted () {
-    this.items.forEach((item) => {
-      this.orders[item.id] = new Array(7).fill(0)
-      if (item.orders) {
-        const index = this.getDayOfWeek(item.orders.date) - 1
-        this.orders[item.id][index] = item.orders.orders
-      }
-    })
+    this.orders = JSON.parse(JSON.stringify(this.items))
   },
   methods: {
-    getDayOfWeek: (date) => {
+    ...mapMutations({
+      setChangedOrders: 'order/setChangedOrders'
+    }),
+    getDayOfWeek (date) {
       return moment.tz(date, 'America/Chicago').day()
     },
-    addOrders: (orders) => {
+    addOrders (orders) {
       return _.sum(orders)
+    },
+    orderChanged (itemIndex, orderIndex, value) {
+      const localChangedOrders = this.changedOrders
+      const changedDay = moment.tz('America/Chicago').startOf('isoWeek').add(orderIndex, 'days').format('YYYY-MM-DD')
+      this.orders[itemIndex].weeklyOrders[orderIndex] = parseInt(value)
+      const orderId = this.orders[itemIndex].orders.filter(order => order.date === changedDay)[0].id
+      localChangedOrders[orderId] = this.orders[itemIndex].weeklyOrders[orderIndex]
+      this.setChangedOrders(localChangedOrders)
     }
   }
 }

@@ -7,5 +7,11 @@ export default {
   },
   setSelectedOrders (state, orders) {
     state.selectedOrders = orders
+  },
+  setChangedOrders (state, orders) {
+    state.changedOrders = orders
+  },
+  toggleLoading (state) {
+    state.loading = !state.loading
   }
 }

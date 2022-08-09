@@ -7,5 +7,11 @@ export default {
   },
   getSelectedOrders (state) {
     return state.selectedOrders
+  },
+  getChangedOrders (state) {
+    return state.changedOrders
+  },
+  getLoading (state) {
+    return state.loading
   }
 }
