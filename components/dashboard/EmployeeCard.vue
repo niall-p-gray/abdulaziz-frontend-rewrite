@@ -19,7 +19,7 @@
 export default {
   name: 'EmployeeCard',
   components: {
-    Loading: () => import('@/components/layout/loading')
+    Loading: () => import('@/components/layout/Loading')
   },
   props: {
     links: {
