@@ -43,7 +43,7 @@
         <loading v-else class="justify-center flex w-full" />
       </div>
       <div class="order__actions">
-        <button class="btn mr-2" :class="saveEnabled ? '' : 'btn__disabled'" @click="updateOrders">
+        <button class="btn mr-2" :class="saveEnabled ? '' : 'btn__disabled'" @click="updateOrdersLocal">
           Save Order
         </button>
         <button class="btn ml-2" :class="saveEnabled ? 'btn__disabled' : ''" @click="saveEnabled = true">
@@ -167,6 +167,18 @@ export default {
     ...mapActions('order', ['getProducts', 'getClient', 'getClientOrders', 'updateOrders']),
     formatDate (date, format) {
       return moment.tz(date, 'America/Chicago').format(format)
+    },
+    async updateOrdersLocal () {
+      try {
+        await this.updateOrders()
+        await this.getProducts({
+          clientName: this.selectedClient.Name,
+          selectedDate: this.selectedDate,
+          clientId: this.selectedClient['Rec ID']
+        })
+      } catch (e) {
+        console.log(e)
+      }
     }
   }
 }
