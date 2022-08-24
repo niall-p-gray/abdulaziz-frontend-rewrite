@@ -13,5 +13,8 @@ export default {
   },
   toggleLoading (state) {
     state.loading = !state.loading
+  },
+  setOrderLastEditedAt (state, editedAt) {
+    state.orderLastEditedAt = editedAt
   }
 }

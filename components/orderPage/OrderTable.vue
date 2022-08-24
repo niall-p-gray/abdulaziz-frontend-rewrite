@@ -46,7 +46,7 @@
           </td>
           <template v-if="item.weeklyOrders">
             <td v-for="(order, orderIndex) in item.weeklyOrders" :key="`order-${orderIndex}`" class="order__table__table__tr__weekly-orders">
-              <input :value="order" type="text" @input="orderChanged(index, orderIndex, $event.target.value)">
+              <input :value="order.count" type="text" @input="orderChanged2(order, $event.target.value)">
             </td>
             <td class="text-center">
               <span class="order__table__table__tr__total">{{ addOrders(item.weeklyOrders) }}</span>
@@ -56,7 +56,7 @@
         <tr class="order__table__table__tr">
           <td class=" px-4 py-2" colspan="7">
             <span class="order__table__table__tr__edited">
-              Last Edited: 7/7 12:17
+              Last Edited: {{ lastEditedAt }}
             </span>
           </td>
           <td class=" px-4 py-2 text-center">
@@ -86,6 +86,10 @@ export default {
     items: {
       type: Array,
       default: () => []
+    },
+    selectedDate: {
+      type: String,
+      default: ''
     }
   },
   data () {
@@ -95,7 +99,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      changedOrders: 'order/getChangedOrders'
+      changedOrders: 'order/getChangedOrders',
+      lastEditedAt: 'order/getOrderLastEditedAt'
     }),
     allOrdersTotal () {
       let total = 0
@@ -123,14 +128,38 @@ export default {
       return moment.tz(date, 'America/Chicago').day()
     },
     addOrders (orders) {
-      return _.sum(orders)
+      return _.sum(orders.map(order => parseInt(order.count)))
     },
-    orderChanged (itemIndex, orderIndex, value) {
-      const localChangedOrders = this.changedOrders
-      const changedDay = moment.tz('America/Chicago').startOf('isoWeek').add(orderIndex, 'days').format('YYYY-MM-DD')
-      this.orders[itemIndex].weeklyOrders[orderIndex] = parseInt(value)
-      const orderId = this.orders[itemIndex].orders.filter(order => order.date === changedDay)[0].id
-      localChangedOrders[orderId] = this.orders[itemIndex].weeklyOrders[orderIndex]
+    orderChanged (itemIndex, orderIndex, order, value) {
+      this.orders[itemIndex].weeklyOrders[orderIndex].count = parseInt(value)
+      order.count = value
+      const localChangedOrders = JSON.parse(JSON.stringify(this.changedOrders))
+      const changedDay = moment.tz(this.selectedDate, 'America/Chicago').add(orderIndex + 1, 'days').format('YYYY-MM-DD')
+      if (this.orders[itemIndex].weeklyOrders[orderIndex].id) {
+        console.log([...localChangedOrders, this.orders[itemIndex].weeklyOrders[orderIndex]])
+        this.setChangedOrders([...localChangedOrders, this.orders[itemIndex].weeklyOrders[orderIndex]])
+        console.log('setChangedOrders', this.changedOrders)
+        // localChangedOrders.push(this.orders[itemIndex].weeklyOrders[orderIndex])
+      } else {
+        localChangedOrders.filter(order => order.day === changedDay).length > 0
+          ? localChangedOrders.filter(order => order.day === changedDay)[0].count = parseInt(value)
+          : localChangedOrders.push({
+            day: changedDay,
+            count: parseInt(value)
+          })
+      }
+      this.setChangedOrders(localChangedOrders)
+    },
+    orderChanged2 (order, newValue) {
+      const localChangedOrders = JSON.parse(JSON.stringify(this.changedOrders))
+      if (localChangedOrders.filter(changedOrder => changedOrder.id === order.id).length === 0) {
+        localChangedOrders.push({
+          id: order.id,
+          count: parseInt(newValue)
+        })
+      } else {
+        localChangedOrders.filter(changedOrder => changedOrder.id === order.id)[0].count = parseInt(newValue)
+      }
       this.setChangedOrders(localChangedOrders)
     }
   }

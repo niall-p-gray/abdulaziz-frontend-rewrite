@@ -25,11 +25,16 @@ export default {
       const pastCutOff = moment.tz(selectedDate, 'America/Chicago').format('MM/DD/YYYY')
       const futureCutOff = moment.tz(selectedDate, 'America/Chicago').add(7, 'days').format('MM/DD/YYYY')
 
-      const orderDataGetParams = getParamBuilder([{ param: 'filterByFormula', value: ['AND(IS_AFTER({Week Start}, "' + pastCutOff + '"), IS_BEFORE({Week Start}, "' + futureCutOff + '"), {Client Rec ID}="' + clientId + '", NOT({Data Source}="Admin Order Creation Page"))'] }, { param: 'fields[]', value: ['Date', 'Week Start', 'Order Item(s)'] }])
+      const orderDataGetParams = getParamBuilder([{ param: 'filterByFormula', value: ['AND(IS_AFTER({Week Start}, "' + pastCutOff + '"), IS_BEFORE({Week Start}, "' + futureCutOff + '"), {Client Rec ID}="' + clientId + '", NOT({Data Source}="Admin Order Creation Page"))'] }, { param: 'fields[]', value: ['Date', 'Week Start', 'Order Item(s)', 'Last Modified'] }])
 
       const clientOrderData = await getRequest('Order', orderDataGetParams, null, null)
       const clientOrderDataRecords = clientOrderData.records
       const orderIds = clientOrderDataRecords.map(record => record.id)
+
+      const lastEditedAtArray = clientOrderDataRecords.map(record => moment.tz(record.fields['Last Modified'], 'America/Chicago'))
+      const lastEditedAt = moment.max(lastEditedAtArray)
+      const formattedLastModified = moment.tz(lastEditedAt, 'America/Chicago').format('M/DD HH:mm')
+      commit('setOrderLastEditedAt', formattedLastModified)
       const orderIdsRegex = orderIds.toString().replace(/,/g, '|')
       const orderItemDataGetParams = getParamBuilder([{ param: 'filterByFormula', value: ['REGEX_MATCH({Order Rec ID}, "' + orderIdsRegex + '")'] }, { param: 'fields[]', value: ['Order Rec ID', 'Product', 'Orders'] }])
 
@@ -54,11 +59,16 @@ export default {
         })
       })
       products.forEach((product, pIndex) => {
-        const weeklyOrders = new Array(7).fill(0)
+        const weeklyOrders = new Array(7).fill({
+          count: 0
+        })
         if (products[pIndex].orders.length > 0) {
           products[pIndex].orders.forEach((order) => {
             const index = getDayOfWeek(order.date) - 1
-            weeklyOrders[index] = order.orders
+            weeklyOrders[index] = {
+              count: order.orders,
+              id: order.id
+            }
           })
         }
         products[pIndex].weeklyOrders = weeklyOrders
@@ -86,22 +96,42 @@ export default {
     commit('toggleLoading')
     const changedOrders = getters.getChangedOrders
     try {
-      const orderIds = Object.keys(changedOrders)
-      const data = []
-      orderIds.forEach((id, index) => {
-        data.push({
-          id,
-          fields: {
-            Orders: Object.values(changedOrders)[index]
-          }
-        })
-      })
-      const resp = await base('Order Item').update(data)
+      const existingOrders = []
+      for (const order of changedOrders) {
+        if (order.id) {
+          existingOrders.push({
+            id: order.id,
+            fields: {
+              Orders: order.count
+            }
+          })
+        }
+      }
+      console.log('changedOrders', changedOrders)
+      const resp = await base('Order Item').update(existingOrders)
       commit('toggleLoading')
       return resp
     } catch (err) {
-      commit('toggleLoading')
+      console.log(err)
       return err
     }
+    // try {
+    //   const orderIds = Object.keys(changedOrders)
+    //   const data = []
+    //   orderIds.forEach((id, index) => {
+    //     data.push({
+    //       id,
+    //       fields: {
+    //         Orders: Object.values(changedOrders)[index]
+    //       }
+    //     })
+    //   })
+    //   const resp = await base('Order Item').update(data)
+    //   commit('toggleLoading')
+    //   return resp
+    // } catch (err) {
+    //   commit('toggleLoading')
+    //   return err
+    // }
   }
 }

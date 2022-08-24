@@ -39,7 +39,7 @@
         </div>
       </div>
       <div class="mt-10">
-        <order-table v-if="filteredProducts.length > 0 && !loading" :items="filteredProducts" />
+        <order-table v-if="filteredProducts.length > 0 && !loading" :items="filteredProducts" :selected-date="selectedDate" />
         <loading v-else class="justify-center flex w-full" />
       </div>
       <div class="order__actions">

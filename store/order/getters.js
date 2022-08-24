@@ -13,5 +13,8 @@ export default {
   },
   getLoading (state) {
     return state.loading
+  },
+  getOrderLastEditedAt (state) {
+    return state.orderLastEditedAt
   }
 }
