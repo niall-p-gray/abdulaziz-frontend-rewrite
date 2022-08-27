@@ -97,6 +97,7 @@ export default {
     const changedOrders = getters.getChangedOrders
     try {
       const existingOrders = []
+      const newOrders = []
       for (const order of changedOrders) {
         if (order.id) {
           existingOrders.push({
@@ -105,33 +106,50 @@ export default {
               Orders: order.count
             }
           })
+        } else if (order.count) {
+          newOrders.push({
+            count: order.count,
+            day: order.day,
+            productId: order.productId
+          })
         }
       }
-      console.log('changedOrders', changedOrders)
-      const resp = await base('Order Item').update(existingOrders)
+      const groupedOrders = {}
+      newOrders.forEach((order) => {
+        if (groupedOrders[order.day]) {
+          groupedOrders[order.day].push(order)
+        } else {
+          groupedOrders[order.day] = [order]
+        }
+      })
+      if (existingOrders.length > 0) {
+        await base('Order Item').update(existingOrders)
+      }
+      for (const date of Object.keys(groupedOrders)) {
+        const order = await base('Order').create([{
+          fields: {
+            Date: date,
+            Client: [getters.getSelectedClient['Rec ID']]
+          }
+        }])
+        const orderId = order[0].id
+        const orderItems = groupedOrders[date].map((item) => {
+          return {
+            fields: {
+              Product: [item.productId],
+              Orders: item.count,
+              Order: [orderId]
+            }
+          }
+        })
+        await base('Order Item').create(orderItems)
+      }
+      commit('setChangedOrders', [])
       commit('toggleLoading')
-      return resp
+      return
     } catch (err) {
       console.log(err)
       return err
     }
-    // try {
-    //   const orderIds = Object.keys(changedOrders)
-    //   const data = []
-    //   orderIds.forEach((id, index) => {
-    //     data.push({
-    //       id,
-    //       fields: {
-    //         Orders: Object.values(changedOrders)[index]
-    //       }
-    //     })
-    //   })
-    //   const resp = await base('Order Item').update(data)
-    //   commit('toggleLoading')
-    //   return resp
-    // } catch (err) {
-    //   commit('toggleLoading')
-    //   return err
-    // }
   }
 }

@@ -46,7 +46,7 @@
           </td>
           <template v-if="item.weeklyOrders">
             <td v-for="(order, orderIndex) in item.weeklyOrders" :key="`order-${orderIndex}`" class="order__table__table__tr__weekly-orders">
-              <input :value="order.count" type="text" @input="orderChanged2(order, $event.target.value)">
+              <input :value="order.count" type="text" @input="orderChanged(order, $event.target.value, orderIndex, index)">
             </td>
             <td class="text-center">
               <span class="order__table__table__tr__total">{{ addOrders(item.weeklyOrders) }}</span>
@@ -130,32 +130,16 @@ export default {
     addOrders (orders) {
       return _.sum(orders.map(order => parseInt(order.count)))
     },
-    orderChanged (itemIndex, orderIndex, order, value) {
-      this.orders[itemIndex].weeklyOrders[orderIndex].count = parseInt(value)
-      order.count = value
+    orderChanged (order, newValue, orderIndex, itemIndex) {
       const localChangedOrders = JSON.parse(JSON.stringify(this.changedOrders))
+      const productId = this.orders[itemIndex] ? this.orders[itemIndex].id : null
       const changedDay = moment.tz(this.selectedDate, 'America/Chicago').add(orderIndex + 1, 'days').format('YYYY-MM-DD')
-      if (this.orders[itemIndex].weeklyOrders[orderIndex].id) {
-        console.log([...localChangedOrders, this.orders[itemIndex].weeklyOrders[orderIndex]])
-        this.setChangedOrders([...localChangedOrders, this.orders[itemIndex].weeklyOrders[orderIndex]])
-        console.log('setChangedOrders', this.changedOrders)
-        // localChangedOrders.push(this.orders[itemIndex].weeklyOrders[orderIndex])
-      } else {
-        localChangedOrders.filter(order => order.day === changedDay).length > 0
-          ? localChangedOrders.filter(order => order.day === changedDay)[0].count = parseInt(value)
-          : localChangedOrders.push({
-            day: changedDay,
-            count: parseInt(value)
-          })
-      }
-      this.setChangedOrders(localChangedOrders)
-    },
-    orderChanged2 (order, newValue) {
-      const localChangedOrders = JSON.parse(JSON.stringify(this.changedOrders))
-      if (localChangedOrders.filter(changedOrder => changedOrder.id === order.id).length === 0) {
+      if (localChangedOrders.filter(changedOrder => (changedOrder.id === order.id && changedOrder.id)).length === 0) {
         localChangedOrders.push({
           id: order.id,
-          count: parseInt(newValue)
+          count: parseInt(newValue),
+          day: changedDay,
+          productId
         })
       } else {
         localChangedOrders.filter(changedOrder => changedOrder.id === order.id)[0].count = parseInt(newValue)
