@@ -39,6 +39,7 @@ export default {
     }
   },
   async mounted () {
+    console.log(process.env)
     try {
       await this.getPageLinks()
       this.getCoffeeShops()
