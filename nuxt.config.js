@@ -75,7 +75,8 @@ export default {
   },
 
   moment: {
-    timezone: true
+    timezone: true,
+    defaultTimezone: 'America/Chicago'
   },
 
   devServerHandlers: []
