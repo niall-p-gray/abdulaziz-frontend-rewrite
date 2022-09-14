@@ -46,7 +46,11 @@
           </td>
           <template v-if="item.weeklyOrders">
             <td v-for="(order, orderIndex) in item.weeklyOrders" :key="`order-${orderIndex}`" class="order__table__table__tr__weekly-orders">
-              <input :value="order.count" type="text" @input="orderChanged(order, $event.target.value, orderIndex, index)">
+              <input v-if="checkIfAvailable(orderIndex, item.fields['Lead Time (hrs)']) == 'AVAILABLE'" :value="order.count" type="text" @input="orderChanged(order, $event.target.value, orderIndex, index)">
+              <input v-else-if="checkIfAvailable(orderIndex, item.fields['Lead Time (hrs)']) == 'LEAD_TIME_NOT_MET'" class="bg-red-200 border-red-200" :value="order.count" type="text" @input="orderChanged(order, $event.target.value, orderIndex, index)">
+              <span v-else-if="checkIfAvailable(orderIndex, item.fields['Lead Time (hrs)']) == 'DELIVERY_NOT_AVAILABLE'">
+                {{ order.count == 0 ? '-' : order.count }}
+              </span>
             </td>
             <td class="text-center">
               <span class="order__table__table__tr__total">{{ addOrders(item.weeklyOrders) }}</span>
@@ -100,7 +104,8 @@ export default {
   computed: {
     ...mapGetters({
       changedOrders: 'order/getChangedOrders',
-      lastEditedAt: 'order/getOrderLastEditedAt'
+      lastEditedAt: 'order/getOrderLastEditedAt',
+      selectedClient: 'order/getSelectedClient'
     }),
     allOrdersTotal () {
       let total = 0
@@ -145,6 +150,20 @@ export default {
         localChangedOrders.filter(changedOrder => changedOrder.id === order.id)[0].count = parseInt(newValue)
       }
       this.setChangedOrders(localChangedOrders)
+    },
+    checkIfAvailable (orderIndex, leadTime) {
+      const inputDate = moment.tz(this.selectedDate, 'America/Chicago').add(orderIndex + 1, 'days')
+      const dayOfWeek = moment.tz(this.selectedDate, 'America/Chicago').add(orderIndex + 1, 'days').format('dddd')
+      const deliveryAvailability = this.selectedClient ? this.selectedClient['Delivery Days'].includes(dayOfWeek) : false
+      const todayPlusLeadTime = moment.tz('America/Chicago').add(leadTime, 'hours')
+
+      if (!deliveryAvailability && !this.$route.query.admin) {
+        return 'DELIVERY_NOT_AVAILABLE'
+      } else if (todayPlusLeadTime.isAfter(inputDate) && !this.$route.query.admin) {
+        return 'LEAD_TIME_NOT_MET'
+      } else {
+        return 'AVAILABLE'
+      }
     }
   }
 }
