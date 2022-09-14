@@ -16,7 +16,6 @@
     </div>
   </div>
 </template>
-
 <script>
 import { mapActions, mapGetters } from 'vuex'
 
@@ -40,6 +39,7 @@ export default {
     }
   },
   async mounted () {
+    console.log('env', process.env)
     try {
       await this.getPageLinks()
       this.getCoffeeShops()
