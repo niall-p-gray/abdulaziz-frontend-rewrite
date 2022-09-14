@@ -6,10 +6,15 @@
       </h3>
     </div>
     <div v-if="links.length > 0" class="card__content">
-      <a v-for="(link, index) in links" :key="index" :href="link.fields.URL" target="_blank" class="card__content__link">
-        <span class="card__content__link__text"> {{ link.fields.Name }} </span>
-        <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
-      </a>
+      <div v-for="(link, index) in links" :key="index">
+        <nuxt-link v-if="link.fields.Name === 'Production Planner (App)'" to="/production/planner" class="card__content__link">
+          Production Planner (App)
+        </nuxt-link>
+        <a v-else :href="link.fields.URL" target="_blank" class="card__content__link">
+          <span class="card__content__link__text"> {{ link.fields.Name }} </span>
+          <font-awesome-icon :icon="['fas', 'chevron-right']" class="card__content__link__icon" />
+        </a>
+      </div>
     </div>
     <loading v-else class="justify-center w-full" />
   </div>
