@@ -39,7 +39,7 @@ export default {
     }
   },
   async mounted () {
-    console.log(process.env)
+    console.log('env', process.env)
     try {
       await this.getPageLinks()
       this.getCoffeeShops()
