@@ -1,0 +1,48 @@
+.upcoming-orders {
+  &__title {
+    @apply text-5xl text-center;
+  }
+  &__client-type {
+    @apply mt-5;
+  }
+  &__content {
+    @apply bg-white p-20 rounded mt-10;
+    &__day {
+      @apply mb-10;
+      &__title {
+        @apply flex gap-16;
+        &__date {
+          @apply text-3xl;
+          mark {
+            @apply inline-block pb-3;
+            line-height: 0.1em;
+          }
+        }
+        &__orders {
+          @apply text-2xl text-gray-300;
+        }
+      }
+      &__table {
+        @apply w-full mt-5;
+        &__head {
+          @apply grid grid-cols-6 text-center text-gray-300 text-sm;
+        }
+        &__body {
+          @apply text-xl;
+          &__row {
+            @apply grid grid-cols-6 bg-stone-50 border border-spacing-2 border-gray-200 rounded-lg text-center py-5 px-2 my-3;
+            &__inline {
+              @apply flex gap-3 justify-start;
+              img {
+                @apply w-8 h-8;
+              }
+            }
+            &__delivery {
+              @apply flex justify-center;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
 <template>
-  <div class="px-8 py-3 xl:px-40 xl:py-10">
+  <div class="px-8 py-3 xl:px-40 xl:py-10 bg-bgColor">
     <div>
       <BackButton v-if="shouldShowBackButton" />
       <div class="text-center mt-6 xl:mt-2">
