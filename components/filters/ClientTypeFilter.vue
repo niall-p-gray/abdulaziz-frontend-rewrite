@@ -8,7 +8,7 @@
       </label>
       <label class="option" v-for="(option, index) in options" :key="index">
         <input type="checkbox" @change="toggle(option)" :checked="isSelected(option)" />
-        <span class="text">{{ option }}</span>
+        <span class="text">{{ option.replace(/^[0-9]\./, '') }}</span>
       </label>
     </div>
   </div>
