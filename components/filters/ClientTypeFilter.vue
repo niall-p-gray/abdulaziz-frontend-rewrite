@@ -2,7 +2,7 @@
   <div class="wrapper">
     <span>Client Type(s)</span>
     <div class="options">
-      <label class="option">
+      <label class="option" @click="unselectAll">
         <input type="checkbox" :checked="!selectedOptions.length" disabled />
         <span class="text">All</span>
       </label>
@@ -35,11 +35,18 @@ export default {
         this.selectedOptions.push(option)
       }
 
-      this.$emit('input', this.selectedOptions)
-      this.$emit('change')
+      this.notify()
     },
     isSelected (option) {
       return this.selectedOptions.includes(option)
+    },
+    unselectAll () {
+      this.selectedOptions = []
+      this.notify()
+    },
+    notify () {
+      this.$emit('input', this.selectedOptions)
+      this.$emit('change')
     }
   }
 }
