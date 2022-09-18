@@ -9,15 +9,15 @@
   font-family: 'Josefin Sans', sans-serif;
 }
 .chip {
-  @apply bg-gray-200 rounded-lg py-1 px-2 w-fit hover:bg-yellow-100 font-light cursor-pointer;
+  @apply bg-gray-200 rounded-lg py-1 px-2 w-fit hover:bg-yellow text-brown font-light cursor-pointer;
 }
 .chip-selected {
-  @apply bg-yellow-100;
+  @apply bg-yellow;
 }
 .btn {
-  @apply bg-yellow-300 px-6 py-3 rounded-xl cursor-pointer;
+  @apply bg-yellow px-3 py-2 text-brown font-medium cursor-pointer;
   &__disabled {
-    @apply bg-yellow-50 text-gray-400 cursor-not-allowed;
+    @apply opacity-60 cursor-not-allowed;
   }
 }
 .container {
