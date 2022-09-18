@@ -2,6 +2,10 @@
   <div class="wrapper">
     <span>Client Type(s)</span>
     <div class="options">
+      <label class="option">
+        <input type="checkbox" :checked="!selectedOptions.length" disabled />
+        <span class="text">All</span>
+      </label>
       <label class="option" v-for="(option, index) in options" :key="index">
         <input type="checkbox" @change="toggle(option)" :checked="isSelected(option)" />
         <span class="text">{{ option }}</span>
