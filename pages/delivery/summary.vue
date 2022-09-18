@@ -1,13 +1,16 @@
 <template>
   <div>
     <portal to="page-title">Delivery Summary</portal>
-    <div v-if="!loading && !error">
-      <ClientTypeOrders
-      v-for="(clientTypeOrders, type) in groupedClientTypeOrders"
-      :key="type"
-      :type="type"
-      :orders='clientTypeOrders.data' />
-      <p v-if="!groupedClientTypeOrders.length" class="text-center">No orders</p>
+    <div v-if="!loading && !error" class="mt-16">
+      <ClientTypeFilter v-model="selectedClientTypes" :options="availableClientTypeList" />
+      <div class="mt-16">
+        <ClientTypeOrders
+        v-for="(clientTypeOrders, type) in groupedClientTypeOrders"
+        :key="type"
+        :type="type"
+        :orders='clientTypeOrders.data' />
+        <p v-if="!groupedClientTypeOrders.length" class="text-center">No orders</p>
+      </div>
     </div>
     <div v-else class="text-center">
       <p v-if="loading">Loading...</p>
@@ -19,15 +22,18 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ClientTypeOrders from '@/components/delivery/summary/ClientTypeOrders'
+import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 
 export default {
   layout: 'dashboard',
   components: {
-    ClientTypeOrders
+    ClientTypeOrders,
+    ClientTypeFilter
   },
   data () {
     return {
       selectedDate: '2022-09-19', // WIP
+      selectedClientTypes: [],
       loading: false,
       error: false
     }
@@ -38,7 +44,8 @@ export default {
   computed: {
     ...mapGetters({
       products: 'delivery-summary/products',
-      ordersPerClient: 'delivery-summary/ordersPerClient'
+      ordersPerClient: 'delivery-summary/ordersPerClient',
+      clients: 'delivery-summary/clients'
     }),
     clientOrders () {
       const orders = this.ordersPerClient
@@ -78,6 +85,10 @@ export default {
         const clientOrder = this.clientOrders[index]
         const clientType = clientOrder.client.type
 
+        if (this.selectedClientTypes.length && !this.selectedClientTypes.includes(clientType)) {
+          continue
+        }
+
         if (!data[clientType]) {
           data[clientType] = {
             type: clientType,
@@ -89,6 +100,19 @@ export default {
       }
 
       return data
+    },
+    availableClientTypeList () {
+      const list = []
+
+      this.clients.forEach((client) => {
+        const type = client.fields['Client Type']
+
+        if (!list.includes(type)) {
+          list.push(type)
+        }
+      })
+
+      return list
     }
   },
   methods: {

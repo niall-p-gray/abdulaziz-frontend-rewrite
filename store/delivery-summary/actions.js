@@ -24,14 +24,8 @@ export default {
 
     commit('setProducts', records)
   },
-  async getClients ({ commit, getters }) {
-    const filterById = getters.orderItems.map(rec => `RECORD_ID()='${rec.fields['Client Rec ID'][0]}'`).join(',')
-
-    const query = {
-      filterByFormula: `OR(${filterById})`
-    }
-
-    const records = await base('Clients').select(query).all()
+  async getClients ({ commit }) {
+    const records = await base('Clients').select().all()
 
     commit('setClients', records)
   }
