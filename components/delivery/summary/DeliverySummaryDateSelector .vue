@@ -14,7 +14,7 @@
               </button>
             </template>
         </datePicker>
-        <button>
+        <button @click="reset">
           <font-awesome-icon :icon="['fas', 'chevron-left']" class="text-xs" />
           <span>Back to Today</span>
         </button>
@@ -76,6 +76,12 @@ export default {
       this.selectedDate = currentDate.format('YYYY/MM/DD')
 
       this.$emit('change', currentDate.format('YYYY-MM-DD'))
+    },
+    reset () {
+      this.selectedDate = this.initialDate
+
+      // initial date was in YYYY/MM/DD format, and change listeners expects YYYY-MM-DD
+      this.$emit('change', this.initialDate.replaceAll('/', '-'))
     }
   }
 }
