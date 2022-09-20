@@ -1,18 +1,27 @@
 <template>
   <div>
     <portal to="page-title">Delivery Summary</portal>
-    <div v-if="!loading && !error" class="mt-16">
-      <ClientTypeFilter v-model="selectedClientTypes" :options="availableClientTypeList" />
+    <DeliverySummaryDateSelector
+      @change="onDateSelected"
+      :initial-date="initialDate.format('YYYY/MM/DD')"
+      class="mt-16"
+    />
+    <ClientTypeFilter
+      v-show="availableClientTypeList.length"
+      v-model="selectedClientTypes"
+      :options="availableClientTypeList"
+    />
+    <div v-if="!loading && !error">
       <div class="mt-16">
         <ClientTypeOrders
         v-for="(clientTypeOrders, type) in groupedClientTypeOrders"
         :key="type"
         :type="type"
         :orders='clientTypeOrders.data' />
-        <p v-if="!groupedClientTypeOrders.length" class="text-center">No orders</p>
+        <p v-if="!Object.keys(groupedClientTypeOrders).length" class="text-center">No orders</p>
       </div>
     </div>
-    <div v-else class="text-center">
+    <div v-else class="text-center mt-40">
       <p v-if="loading">Loading...</p>
       <p v-else class="text-red-500">Ops! Something went wrong, tlease try again</p>
     </div>
@@ -22,24 +31,26 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ClientTypeOrders from '@/components/delivery/summary/ClientTypeOrders'
+import DeliverySummaryDateSelector from '@/components/delivery/summary/DeliverySummaryDateSelector '
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 
 export default {
   layout: 'dashboard',
   components: {
     ClientTypeOrders,
-    ClientTypeFilter
+    ClientTypeFilter,
+    DeliverySummaryDateSelector
   },
   data () {
     return {
-      selectedDate: '2022-09-19', // WIP
       selectedClientTypes: [],
       loading: false,
-      error: false
+      error: false,
+      initialDate: this.$moment() // today
     }
   },
   mounted () {
-    this.load()
+    this.load(this.initialDate.format('YYYY-MM-DD')) // Initially load day’s orders
   },
   computed: {
     ...mapGetters({
@@ -121,14 +132,15 @@ export default {
       getProducts: 'delivery-summary/getProducts',
       getClients: 'delivery-summary/getClients'
     }),
-    async load () {
+    onDateSelected (date) {
+      this.load(date)
+    },
+    async load (orderDate) {
       this.loading = true
       this.error = false
 
       try {
-        await this.getOrderItems({
-          orderDate: this.selectedDate
-        })
+        await this.getOrderItems({ orderDate })
         await this.getProducts()
         await this.getClients()
       } catch (error) {
