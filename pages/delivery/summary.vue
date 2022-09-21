@@ -20,6 +20,9 @@
         :orders='clientTypeOrders.data' />
         <p v-if="!Object.keys(groupedClientTypeOrders).length" class="text-center">No orders</p>
       </div>
+      <div class="print-all-orders">
+        <button class="btn">Print orders</button>
+      </div>
     </div>
     <div v-else class="text-center mt-40">
       <p v-if="loading">Loading...</p>
@@ -153,3 +156,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.print-all-orders{
+  @apply flex justify-center mt-6 lg:mt-10;
+}
+</style>
