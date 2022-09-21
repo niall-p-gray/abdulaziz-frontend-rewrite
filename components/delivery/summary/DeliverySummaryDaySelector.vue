@@ -34,6 +34,9 @@ export default {
       currentSlideIndex: 0
     }
   },
+  mounted () {
+    this.slideToSelectedDay()
+  },
   computed: {
     daysInMonth () {
       let days = this.currentMonthTotalDays
@@ -82,6 +85,18 @@ export default {
       }
 
       this.currentSlideIndex--
+    },
+    slideToSelectedDay () {
+      // Figure out which slide belongs the selected day to, and slide to it
+      const slideIndex = Math.ceil(this.currentDay / 10) - 1 // Subtracting 1 because currentSlideIndex is zero based
+      this.currentSlideIndex = slideIndex
+    }
+  },
+  watch: {
+    date: {
+      handler: function () {
+        this.slideToSelectedDay()
+      }
     }
   }
 }
