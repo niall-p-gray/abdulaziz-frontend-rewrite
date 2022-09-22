@@ -6,8 +6,13 @@
       </h1>
       <div class="grid grid-cols-5 gap-4 justify-center mt-8">
         <div class="col-span-2">
-          <employee-card :links="employeeLinks" />
-          <production-team class="mt-4" :links="productionLinks" />
+          <LinksCard
+          v-for="(group, index) in groupedLinks"
+          :key="index"
+          :title="group.title"
+          :links="group.links"
+          :class="{'mt-6': index > 0}"
+          />
         </div>
         <div class="col-span-3">
           <coffee-shop-card :coffee-shops="coffeeShops" />
@@ -18,24 +23,50 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import LinksCard from '@/components/dashboard/LinksCard'
 
 export default {
   name: 'IndexPage',
   components: {
-    EmployeeCard: () => import('@/components/dashboard/EmployeeCard'),
     CoffeeShopCard: () => import('@/components/dashboard/CoffeeShopCard'),
-    ProductionTeam: () => import('@/components/dashboard/ProductionTeam')
+    LinksCard
   },
   computed: {
     ...mapGetters({
       pageLinks: 'home/getPageLinks',
       coffeeShops: 'home/getCoffeeShops'
     }),
-    employeeLinks () {
-      return this.pageLinks.filter(link => link.fields.Section === 'Employee Links')
-    },
-    productionLinks () {
-      return this.pageLinks.filter(link => link.fields.Section === 'Production Team Links')
+    groupedLinks () {
+      const groups = []
+
+      for (let index = 0; index < this.pageLinks.length; index++) {
+        const link = this.pageLinks[index]
+
+        if (!link.fields.Section) {
+          continue
+        }
+
+        let group = groups.find(g => g.title === link.fields.Section)
+
+        if (!group) {
+          group = {
+            title: link.fields.Section,
+            links: []
+          }
+
+          groups.push(group)
+        }
+
+        group.links.push({
+          name: link.fields.Name,
+          url: link.fields.URL
+        })
+
+        const groupIndex = groups.findIndex(g => g.title === link.fields.Section)
+        groups.splice(groupIndex, 1, group)
+      }
+
+      return groups
     }
   },
   async mounted () {
