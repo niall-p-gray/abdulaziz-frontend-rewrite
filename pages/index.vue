@@ -36,33 +36,57 @@ export default {
       pageLinks: 'home/getPageLinks',
       coffeeShops: 'home/getCoffeeShops'
     }),
+    links () {
+      const links = []
+
+      for (let index = 0; index < this.pageLinks.length; index++) {
+        const pageLink = this.pageLinks[index]
+        const link = {
+          name: pageLink.fields.Name,
+          section: pageLink.fields.Section,
+          url: pageLink.fields.URL,
+          external: true
+        }
+
+        if (link.name.toLowerCase() === 'production planner (app)') {
+          link.external = false
+          link.url = '/production/planner'
+        }
+
+        if (link.name.toLowerCase() === 'delivery summary') {
+          link.external = false
+          link.url = '/delivery/summary'
+        }
+
+        links.push(link)
+      }
+
+      return links
+    },
     groupedLinks () {
       const groups = []
 
-      for (let index = 0; index < this.pageLinks.length; index++) {
-        const link = this.pageLinks[index]
+      for (let index = 0; index < this.links.length; index++) {
+        const link = this.links[index]
 
-        if (!link.fields.Section) {
+        if (!link.section) {
           continue
         }
 
-        let group = groups.find(g => g.title === link.fields.Section)
+        let group = groups.find(g => g.title === link.section)
 
         if (!group) {
           group = {
-            title: link.fields.Section,
+            title: link.section,
             links: []
           }
 
           groups.push(group)
         }
 
-        group.links.push({
-          name: link.fields.Name,
-          url: link.fields.URL
-        })
+        group.links.push(link)
 
-        const groupIndex = groups.findIndex(g => g.title === link.fields.Section)
+        const groupIndex = groups.findIndex(g => g.title === link.section)
         groups.splice(groupIndex, 1, group)
       }
 
