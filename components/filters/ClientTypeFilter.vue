@@ -2,9 +2,13 @@
   <div class="wrapper">
     <span>Client Type(s)</span>
     <div class="options">
+      <label class="option" @click="unselectAll">
+        <input type="checkbox" :checked="!selectedOptions.length" disabled />
+        <span class="text">All</span>
+      </label>
       <label class="option" v-for="(option, index) in options" :key="index">
         <input type="checkbox" @change="toggle(option)" :checked="isSelected(option)" />
-        <span class="text">{{ option }}</span>
+        <span class="text">{{ option.replace(/^[0-9]\./, '') }}</span>
       </label>
     </div>
   </div>
@@ -31,11 +35,18 @@ export default {
         this.selectedOptions.push(option)
       }
 
-      this.$emit('input', this.selectedOptions)
-      this.$emit('change')
+      this.notify()
     },
     isSelected (option) {
       return this.selectedOptions.includes(option)
+    },
+    unselectAll () {
+      this.selectedOptions = []
+      this.notify()
+    },
+    notify () {
+      this.$emit('input', this.selectedOptions)
+      this.$emit('change')
     }
   }
 }
