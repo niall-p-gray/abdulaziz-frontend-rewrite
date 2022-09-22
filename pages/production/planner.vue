@@ -9,7 +9,7 @@
     />
     <div v-if="!loading && !error" class="w-10/12 mx-auto flex justify-center mt-16">
       <div v-if="aggregatedProductOrders.length">
-        <table >
+        <table class="table table--edgeless">
           <thead>
             <tr class="text-muted text-sm">
               <th class="text-center uppercase">
@@ -179,32 +179,5 @@ export default {
 <style scoped>
 .text-muted {
   color: #909090;
-}
-
-th {
-  font-weight: lighter;
-}
-
-tr {
-  border-bottom: 1px solid #d1d1d1;
-}
-
-th,
-td {
-  border-right: 1px solid #d1d1d1;
-}
-
-th:last-child,
-td:last-child {
-  border-right: none;
-}
-
-th,
-td {
-  padding: 2px 10px;
-}
-
-td:nth-child(1) {
-  padding-left: 0;
 }
 </style>
