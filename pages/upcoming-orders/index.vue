@@ -7,13 +7,13 @@
       <ClientTypeFilter v-model="selectedClientTypes" :options="clientTypes" />
     </div>
     <div class="upcoming-orders__content">
-      <div class="upcoming-orders__content__day">
+      <div v-for="date in Object.keys(upcomingOrders)" :key="date" class="upcoming-orders__content__day">
         <div class="upcoming-orders__content__day__title">
           <h1 class="upcoming-orders__content__day__title__date">
-            <mark>Mon, 3/14</mark>
+            <mark>{{ formatDate(date) }}</mark>
           </h1>
           <h2 class="upcoming-orders__content__day__title__orders">
-            3 orders
+            {{ calculateTotalOrders(upcomingOrders[date]) }} orders
           </h2>
         </div>
         <div class="upcoming-orders__content__day__table">
@@ -26,181 +26,26 @@
             <p />
           </div>
           <div class="upcoming-orders__content__day__table__body">
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
+            <div v-for="client in upcomingOrders[date]" :key="`${client['Rec ID']-date}`" class="upcoming-orders__content__day__table__body__row">
+              <p> {{ client[0]['Ready Time'] }} </p>
+              <p> {{ client[0]['Summed Orders'] }} </p>
+              <div v-if="client[0]['Temperature'] == 'Hot'" class="upcoming-orders__content__day__table__body__row__inline">
                 <img src="~/assets/icons/warm.svg" alt="warm">
                 <span>Warm</span>
               </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
+              <div v-else-if="client[0]['Temperature'] == 'Room Temperature'" class="upcoming-orders__content__day__table__body__row__inline">
                 <img src="~/assets/icons/thermometer.svg" alt="room">
                 <span>Room Temp</span>
               </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/user-check.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
+              <div v-else-if="client[0]['Temperature'] == 'Chilled'" class="upcoming-orders__content__day__table__body__row__inline">
                 <img src="~/assets/icons/cold.svg" alt="cold">
                 <span>Cold</span>
               </div>
+              <div v-else class="upcoming-orders__content__day__table__body__row__inline" />
               <div class="upcoming-orders__content__day__table__body__row__delivery">
                 <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
               </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="upcoming-orders__content__day">
-        <div class="upcoming-orders__content__day__title">
-          <h1 class="upcoming-orders__content__day__title__date">
-            <mark>Mon, 3/14</mark>
-          </h1>
-          <h2 class="upcoming-orders__content__day__title__orders">
-            3 orders
-          </h2>
-        </div>
-        <div class="upcoming-orders__content__day__table">
-          <div class="upcoming-orders__content__day__table__head">
-            <p>ready time</p>
-            <p>#</p>
-            <p>temp</p>
-            <p>del</p>
-            <p>client</p>
-            <p />
-          </div>
-          <div class="upcoming-orders__content__day__table__body">
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/warm.svg" alt="warm">
-                <span>Warm</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/thermometer.svg" alt="room">
-                <span>Room Temp</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/user-check.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/cold.svg" alt="cold">
-                <span>Cold</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="upcoming-orders__content__day">
-        <div class="upcoming-orders__content__day__title">
-          <h1 class="upcoming-orders__content__day__title__date">
-            <mark>Mon, 3/14</mark>
-          </h1>
-          <h2 class="upcoming-orders__content__day__title__orders">
-            3 orders
-          </h2>
-        </div>
-        <div class="upcoming-orders__content__day__table">
-          <div class="upcoming-orders__content__day__table__head">
-            <p>ready time</p>
-            <p>#</p>
-            <p>temp</p>
-            <p>del</p>
-            <p>client</p>
-            <p />
-          </div>
-          <div class="upcoming-orders__content__day__table__body">
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/warm.svg" alt="warm">
-                <span>Warm</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/thermometer.svg" alt="room">
-                <span>Room Temp</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/user-check.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
-              </div>
-            </div>
-            <div class="upcoming-orders__content__day__table__body__row">
-              <p>9:00 am</p>
-              <p>36</p>
-              <div class="upcoming-orders__content__day__table__body__row__inline">
-                <img src="~/assets/icons/cold.svg" alt="cold">
-                <span>Cold</span>
-              </div>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
-              </div>
-              <p>Sean Germaine</p>
+              <p>{{ client[0].client.Name }}</p>
               <div class="upcoming-orders__content__day__table__body__row__delivery">
                 <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
               </div>
@@ -213,6 +58,9 @@
 </template>
 
 <script>
+import moment from 'moment-timezone'
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'UpcomingOrders',
   components: {
@@ -231,6 +79,23 @@ export default {
         'Wholesale'
       ],
       selectedClientTypes: []
+    }
+  },
+  computed: {
+    ...mapGetters({
+      upcomingOrders: 'upcoming-orders/getUpcomingOrders'
+    })
+  },
+  mounted () {
+    this.getUpcomingOrders()
+  },
+  methods: {
+    ...mapActions('upcoming-orders', ['getUpcomingOrders']),
+    formatDate (date) {
+      return moment(date).format('ddd, M/DD')
+    },
+    calculateTotalOrders (orders) {
+      return Object.values(orders).length
     }
   }
 }
