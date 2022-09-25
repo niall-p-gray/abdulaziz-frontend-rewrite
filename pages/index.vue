@@ -6,8 +6,13 @@
       </h1>
       <div class="grid grid-cols-5 gap-4 justify-center mt-8">
         <div class="col-span-2">
-          <employee-card :links="employeeLinks" />
-          <production-team class="mt-4" :links="productionLinks" />
+          <LinksCard
+          v-for="(group, index) in groupedLinks"
+          :key="index"
+          :title="group.title"
+          :links="group.links"
+          :class="{'mt-6': index > 0}"
+          />
         </div>
         <div class="col-span-3">
           <coffee-shop-card :coffee-shops="coffeeShops" />
@@ -18,24 +23,74 @@
 </template>
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import LinksCard from '@/components/dashboard/LinksCard'
 
 export default {
   name: 'IndexPage',
   components: {
-    EmployeeCard: () => import('@/components/dashboard/EmployeeCard'),
     CoffeeShopCard: () => import('@/components/dashboard/CoffeeShopCard'),
-    ProductionTeam: () => import('@/components/dashboard/ProductionTeam')
+    LinksCard
   },
   computed: {
     ...mapGetters({
       pageLinks: 'home/getPageLinks',
       coffeeShops: 'home/getCoffeeShops'
     }),
-    employeeLinks () {
-      return this.pageLinks.filter(link => link.fields.Section === 'Employee Links')
+    links () {
+      const links = []
+
+      for (let index = 0; index < this.pageLinks.length; index++) {
+        const pageLink = this.pageLinks[index]
+        const link = {
+          name: pageLink.fields.Name,
+          section: pageLink.fields.Section,
+          url: pageLink.fields.URL,
+          external: true
+        }
+
+        if (link.name.toLowerCase() === 'production planner (app)') {
+          link.external = false
+          link.url = '/production/planner'
+        }
+
+        if (link.name.toLowerCase() === 'delivery summary') {
+          link.external = false
+          link.url = '/delivery/summary'
+        }
+
+        links.push(link)
+      }
+
+      return links
     },
-    productionLinks () {
-      return this.pageLinks.filter(link => link.fields.Section === 'Production Team Links')
+    groupedLinks () {
+      const groups = []
+
+      for (let index = 0; index < this.links.length; index++) {
+        const link = this.links[index]
+
+        if (!link.section) {
+          continue
+        }
+
+        let group = groups.find(g => g.title === link.section)
+
+        if (!group) {
+          group = {
+            title: link.section,
+            links: []
+          }
+
+          groups.push(group)
+        }
+
+        group.links.push(link)
+
+        const groupIndex = groups.findIndex(g => g.title === link.section)
+        groups.splice(groupIndex, 1, group)
+      }
+
+      return groups
     }
   },
   async mounted () {
