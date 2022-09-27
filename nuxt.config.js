@@ -39,7 +39,7 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxtjs/fontawesome',
     '@nuxtjs/moment',
-    '@nuxtjs/dotenv',
+    ['@nuxtjs/dotenv', { systemvars: true }],
     '@nuxtjs/svg'
   ],
 
