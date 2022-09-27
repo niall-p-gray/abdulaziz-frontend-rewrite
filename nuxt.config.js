@@ -2,6 +2,11 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  env: {
+    AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
+    AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'howdy-admin',
