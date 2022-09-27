@@ -13,6 +13,11 @@
           :links="group.links"
           :class="{'mt-6': index > 0}"
           />
+          <LinksCard
+          :title="rewrittenLinks.title"
+          :links="rewrittenLinks.links"
+          class="mt-6"
+          />
         </div>
         <div class="col-span-3">
           <coffee-shop-card :coffee-shops="coffeeShops" />
@@ -36,6 +41,23 @@ export default {
       pageLinks: 'home/getPageLinks',
       coffeeShops: 'home/getCoffeeShops'
     }),
+    rewrittenLinks () {
+      const rewrittenLinks = {
+        title: 'Rewritten Links',
+        links: []
+      }
+
+      rewrittenLinks.links = this.links.filter(link => !link.external)
+
+      rewrittenLinks.links.push({
+        name: 'Client Order Page/Form',
+        url: 'coffee-shop/rec09aRb0a4T1j0tu',
+        section: 'Rewritten Links',
+        external: false
+      })
+
+      return rewrittenLinks
+    },
     links () {
       const links = []
 
