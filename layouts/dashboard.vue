@@ -37,7 +37,7 @@ export default {
 }
 
 .page-title-container {
-  @apply text-center mt-6 xl:mt-2;
+  @apply text-center mt-16 xl:mt-8;
 }
 
 .page-title {
