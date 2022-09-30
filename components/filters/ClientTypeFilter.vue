@@ -33,6 +33,15 @@ export default {
       openOptionsDropdown: false
     }
   },
+  mounted () {
+    window.addEventListener('click', (e) => {
+      if (e.target.matches('.toggle-dropdown-btn')) return
+      if (e.target.closest('.toggle-dropdown-btn')) return
+      if (e.target.closest('.options')) return
+
+      this.openOptionsDropdown = false
+    })
+  },
   methods: {
     toggle (option) {
       if (this.isSelected(option)) {
