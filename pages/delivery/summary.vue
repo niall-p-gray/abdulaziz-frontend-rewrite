@@ -21,7 +21,10 @@
         <p v-if="!Object.keys(groupedClientTypeOrders).length" class="text-center">No orders</p>
       </div>
       <div class="print-all-orders">
-        <button class="btn">Print all orders</button>
+        <button class="btn">
+          <img class="w-4 h-4" src="~/assets/icons/print.svg" >
+          <span class="ml-3">Print all orders</span>
+        </button>
       </div>
     </main>
     <div v-else class="text-center mt-40">
@@ -168,5 +171,9 @@ main {
 
 .print-all-orders{
   @apply flex justify-center mt-16 lg:mt-6 order-1 lg:order-2 lg:mt-10;
+}
+
+.btn {
+  @apply flex items-center;
 }
 </style>
