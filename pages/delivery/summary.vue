@@ -21,7 +21,7 @@
         <p v-if="!Object.keys(groupedClientTypeOrders).length" class="text-center">No orders</p>
       </div>
       <div class="print-all-orders">
-        <button class="btn">Print orders</button>
+        <button class="btn">Print all orders</button>
       </div>
     </main>
     <div v-else class="text-center mt-40">
