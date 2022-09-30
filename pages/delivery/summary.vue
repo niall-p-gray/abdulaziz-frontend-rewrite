@@ -11,8 +11,8 @@
       v-model="selectedClientTypes"
       :options="availableClientTypeList"
     />
-    <div v-if="!loading && !error">
-      <div class="mt-16">
+    <main v-if="!loading && !error">
+      <div class="mt-16 orders-container">
         <ClientTypeOrders
         v-for="(clientTypeOrders, type) in groupedClientTypeOrders"
         :key="type"
@@ -23,7 +23,7 @@
       <div class="print-all-orders">
         <button class="btn">Print orders</button>
       </div>
-    </div>
+    </main>
     <div v-else class="text-center mt-40">
       <p v-if="loading">Loading...</p>
       <p v-else class="text-red-500">Ops! Something went wrong, tlease try again</p>
@@ -158,7 +158,15 @@ export default {
 </script>
 
 <style scoped>
+main {
+  @apply flex flex-col;
+}
+
+.orders-container {
+  @apply order-2 lg:order-1;
+}
+
 .print-all-orders{
-  @apply flex justify-center mt-6 lg:mt-10;
+  @apply flex justify-center mt-16 lg:mt-6 order-1 lg:order-2 lg:mt-10;
 }
 </style>
