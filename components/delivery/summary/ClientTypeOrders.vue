@@ -181,4 +181,14 @@ export default {
 .btn {
   @apply flex items-center;
 }
+
+.btn span{
+  @apply hidden;
+}
+
+@media (min-width: 1024px) {
+  .btn span{
+    @apply block;
+  }
+}
 </style>
