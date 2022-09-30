@@ -1,9 +1,9 @@
 <template>
-  <div class="px-8 py-3 xl:px-40 xl:py-10">
+  <div class="page">
     <div>
       <BackButton v-if="shouldShowBackButton" />
-      <div class="text-center mt-6 xl:mt-2">
-        <h1 class="text-3xl lg:text-4xl page-title font-medium">
+      <div class="page-title-container">
+        <h1 class="page-title">
           <portal-target name="page-title"></portal-target>
         </h1>
       </div>
@@ -30,3 +30,17 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.page {
+  @apply px-8 py-3 xl:px-40 xl:py-10;
+}
+
+.page-title-container {
+  @apply text-center mt-6 xl:mt-2;
+}
+
+.page-title {
+  @apply text-3xl lg:text-4xl font-medium;
+}
+</style>
