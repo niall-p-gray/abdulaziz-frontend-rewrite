@@ -7,34 +7,36 @@
         <span class="ml-3">Print {{ formattedClientType }} Section</span>
       </button>
     </div>
-    <table class="table table--edgeless">
-      <thead>
-        <th>Client/Address</th>
-        <th v-for="(productName, index) in productNames" :key="index">
-          <span>{{ productName }}</span>
-        </th>
-        <th class="total">Totals</th>
-      </thead>
-      <tbody>
-        <tr v-for="(clientOrder, index) in orders" :key="index">
-          <td>
-            <strong>{{ clientOrder.client.name }}</strong>
-            <span>{{ clientOrder.client.address }}</span>
-          </td>
-          <td v-for="product in clientOrder.products" :key="product.id" :class="{'gray-out': !product.qty}">
-            {{ product.qty }}
-          </td>
-          <td class="total">{{ clientOrder.totalOrders }}</td>
-        </tr>
-        <tr>
-          <td class="total">Total</td>
-          <td v-for="(product, index) in totalOrdersPerProduct" :key="index" class="total">
-            {{ product.qty }}
-          </td>
-          <td class="total !bg-yellow">{{ totalOrders }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-container">
+      <table class="table table--edgeless">
+        <thead>
+          <th>Client/Address</th>
+          <th v-for="(productName, index) in productNames" :key="index">
+            <span>{{ productName }}</span>
+          </th>
+          <th class="total">Totals</th>
+        </thead>
+        <tbody>
+          <tr v-for="(clientOrder, index) in orders" :key="index">
+            <td>
+              <strong>{{ clientOrder.client.name }}</strong>
+              <span>{{ clientOrder.client.address }}</span>
+            </td>
+            <td v-for="product in clientOrder.products" :key="product.id" :class="{'gray-out': !product.qty}">
+              {{ product.qty }}
+            </td>
+            <td class="total">{{ clientOrder.totalOrders }}</td>
+          </tr>
+          <tr>
+            <td class="total">Total</td>
+            <td v-for="(product, index) in totalOrdersPerProduct" :key="index" class="total">
+              {{ product.qty }}
+            </td>
+            <td class="total !bg-yellow">{{ totalOrders }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 </template>
 
@@ -127,6 +129,11 @@ export default {
 
 .client-type .header h2 {
   @apply text-2xl font-medium;
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
 }
 
 .table {
