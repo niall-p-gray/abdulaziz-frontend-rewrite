@@ -90,3 +90,5 @@ sw.*
 *.swp
 
 .prettierrc
+# Local Netlify folder
+.netlify
