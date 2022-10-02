@@ -13,7 +13,7 @@ exports.handler = async (event, context) => {
     }
   }
 
-  phoneNumber = phoneNumber.replace('+', '')
+  phoneNumber = phoneNumber.replace('+', '').trim()
 
   try {
     const options = {
@@ -24,7 +24,20 @@ exports.handler = async (event, context) => {
 
     const response = await axios.get(`https://api.typeform.com/forms/${formId}/responses?query=${phoneNumber}`, options)
 
-    const answers = response.data.items.map(item => item.answers);
+    const answers = []
+
+    response.data.items.forEach(item => {
+      const obj = {}
+
+      item.answers.forEach(answer => {
+        const question = answer.field.type === 'short_text' ? 'name' : 'phone_number'
+        const value = answer.text || answer.phone_number
+
+        obj[question] = value
+      })
+
+      if (obj.phone_number.replace('+', '') === phoneNumber) answers.push(obj)
+    });
 
     return { statusCode: 200, body: JSON.stringify({ answers }) }
   } catch (error) {
