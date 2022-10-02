@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 exports.handler = async (event, context) => {
-  const formId = 'qJe8D1BW'
+  const formId = 'rewards'
   let phoneNumber = event.queryStringParameters['phone-number']
 
   if (!phoneNumber) {
