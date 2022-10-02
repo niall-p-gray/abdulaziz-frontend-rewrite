@@ -6,6 +6,7 @@
         <input
           v-model="phoneNumber"
           type="search"
+          @keydown.enter="search"
           :disabled="loading"
           placeholder="Type a phone number"
           class="flex-1 h-full"
