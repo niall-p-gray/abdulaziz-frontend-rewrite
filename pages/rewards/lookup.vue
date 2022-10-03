@@ -63,6 +63,12 @@ export default {
   },
   methods: {
     async search () {
+      if (typeof process.env.TYPEFORM_API_KEY === 'undefined') {
+        console.log('TYPEFORM_API_KEY is not set')
+      } else {
+        console.log('TYPEFORM_API_KEY is set')
+      }
+
       if (!this.canSubmit) return
 
       this.loading = true
