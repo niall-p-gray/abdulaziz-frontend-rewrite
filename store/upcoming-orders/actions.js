@@ -61,8 +61,44 @@ export default {
 
       // commit to store
       commit('setUpcomingOrders', upcomingOrdersGroupedByClient)
+      commit('setFilteredOrders', upcomingOrdersGroupedByClient)
     } catch (error) {
       console.log(error)
+    }
+  },
+  filterOrdersByClientType: ({ commit, state }, payload) => {
+    if (payload.includes('All') || payload.length === 0) {
+      commit('setFilteredOrders', state.upcomingOrders)
+    } else {
+      commit('setFilteredOrders', [])
+      const filters = {
+        '1. Demo Box': 'Demo Box',
+        '2. Storefront': 'Storefront',
+        '3. Coffee Shop': 'Coffee Shops',
+        '4. Bar': 'Bars',
+        '5. Wholesale': 'Wholesale',
+        '6. Catering': 'Catering',
+        '7. Direct To Consumer': 'Direct To Consumer'
+      }
+      const filteredOrders = Object.keys(state.upcomingOrders).reduce((acc, date) => {
+        const orders = state.upcomingOrders[date]
+        const filteredOrders = Object.keys(orders).reduce((acc, clientId) => {
+          const orders = state.upcomingOrders[date][clientId]
+          const filteredOrders = orders.filter((order) => {
+            const clientType = order.client['Client Type']
+            return payload.includes(filters[clientType])
+          })
+          if (filteredOrders.length > 0) {
+            acc[clientId] = filteredOrders
+          }
+          return acc
+        }, {})
+        if (Object.keys(filteredOrders).length > 0) {
+          acc[date] = filteredOrders
+        }
+        return acc
+      }, {})
+      commit('setFilteredOrders', filteredOrders)
     }
   }
 }

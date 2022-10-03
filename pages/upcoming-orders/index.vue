@@ -7,13 +7,13 @@
       <ClientTypeFilter v-model="selectedClientTypes" :options="clientTypes" />
     </div>
     <div class="upcoming-orders__content">
-      <div v-for="date in Object.keys(upcomingOrders)" :key="date" class="upcoming-orders__content__day">
+      <div v-for="date in Object.keys(filteredOrders)" :key="date" class="upcoming-orders__content__day">
         <div class="upcoming-orders__content__day__title">
           <h1 class="upcoming-orders__content__day__title__date">
             <mark>{{ formatDate(date) }}</mark>
           </h1>
           <h2 class="upcoming-orders__content__day__title__orders">
-            {{ calculateTotalOrders(upcomingOrders[date]) }} orders
+            {{ calculateTotalOrders(filteredOrders[date]) }} orders
           </h2>
         </div>
         <div class="upcoming-orders__content__day__table">
@@ -26,7 +26,7 @@
             <p />
           </div>
           <div class="upcoming-orders__content__day__table__body">
-            <div v-for="client in upcomingOrders[date]" :key="`${client['Rec ID']-date}`" class="upcoming-orders__content__day__table__body__row">
+            <div v-for="client in filteredOrders[date]" :key="`${client[0]['Rec ID']}-${date}`" class="upcoming-orders__content__day__table__body__row">
               <p> {{ client[0]['Ready Time'] }} </p>
               <p> {{ client[0]['Summed Orders'] }} </p>
               <div v-if="client[0]['Temperature'] == 'Hot'" class="upcoming-orders__content__day__table__body__row__inline">
@@ -46,7 +46,7 @@
                 <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
               </div>
               <p>{{ client[0].client.Name }}</p>
-              <div class="upcoming-orders__content__day__table__body__row__delivery">
+              <div class="upcoming-orders__content__day__table__body__row__delivery !hidden">
                 <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
               </div>
             </div>
@@ -71,26 +71,33 @@ export default {
     return {
       clientTypes: [
         'All',
+        'Demo Box',
+        'Storefront',
         'Coffee Shops',
-        'Internal',
+        'Bar',
+        'Wholesale',
         'Catering',
-        'Bars',
-        'Retail',
-        'Wholesale'
+        'Direct To Consumer'
       ],
       selectedClientTypes: []
     }
   },
   computed: {
     ...mapGetters({
-      upcomingOrders: 'upcoming-orders/getUpcomingOrders'
+      upcomingOrders: 'upcoming-orders/getUpcomingOrders',
+      filteredOrders: 'upcoming-orders/getFilteredOrders'
     })
+  },
+  watch: {
+    selectedClientTypes () {
+      this.filterOrdersByClientType(this.selectedClientTypes)
+    }
   },
   mounted () {
     this.getUpcomingOrders()
   },
   methods: {
-    ...mapActions('upcoming-orders', ['getUpcomingOrders']),
+    ...mapActions('upcoming-orders', ['getUpcomingOrders', 'filterOrdersByClientType']),
     formatDate (date) {
       return moment(date).format('ddd, M/DD')
     },
