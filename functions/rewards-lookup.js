@@ -2,15 +2,15 @@ const axios = require('axios')
 
 exports.handler = async (event, context) => {
   const formId = 'rewards'
+  const apiKey = process.env.TYPEFORM_API_KEY
   let phoneNumber = event.queryStringParameters['phone-number']
 
+  if (!apiKey) {
+    return errorMsg('Api key was not set')
+  }
+
   if (!phoneNumber) {
-    return {
-      statusCode: 400,
-      body: JSON.stringify({
-        msg: 'phone-number parameter is required'
-      })
-    }
+    return errorMsg('phone-number parameter is required', 400)
   }
 
   phoneNumber = phoneNumber.replace('+', '').trim()
@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
   try {
     const options = {
         headers: {
-            Authorization: `Bearer ${process.env.TYPEFORM_API_KEY}`
+            Authorization: `Bearer ${apiKey}`
         }
     }
 
@@ -43,8 +43,18 @@ exports.handler = async (event, context) => {
   } catch (error) {
     console.error(error)
 
-    return {
-      statusCode: 500
+    // If Typeform rejects the given API key
+    if (error.response.status === 401) {
+      return errorMsg('Could not connect to Typeform because the API key was invalid')
     }
+
+    return errorMsg('An error occurred, please try again')
+  }
+}
+
+const errorMsg = (str, statusCode = 500) => {
+  return {
+    statusCode,
+    body: JSON.stringify({ msg: str })
   }
 }
