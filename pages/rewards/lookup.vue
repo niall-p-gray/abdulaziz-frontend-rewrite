@@ -63,6 +63,8 @@ export default {
   },
   methods: {
     async search () {
+      if (!this.canSubmit) return
+
       this.loading = true
       this.error = false
 
