@@ -69,8 +69,7 @@ export default {
       this.error = false
 
       try {
-        const baseUrl = `${window.location.protocol}//${window.location.hostname}:8888`
-        const res = await this.$axios.get(`${baseUrl}/.netlify/functions/rewards-lookup?phone-number=${this.phoneNumber}`)
+        const res = await this.$axios.get(`/.netlify/functions/rewards-lookup?phone-number=${this.phoneNumber}`)
 
         this.answers = res.data.answers
       } catch (error) {
