@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 exports.handler = async (event, context) => {
-  const formId = 'rewards'
+  const formId = 'Tklz9tEC'
   const apiKey = process.env.TYPEFORM_API_KEY
   let phoneNumber = event.queryStringParameters['phone-number']
 
