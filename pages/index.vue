@@ -126,7 +126,6 @@ export default {
     }
   },
   async mounted () {
-    console.log('sup ', process.env.TYPEFORM_API_KEY)
     this.loading = true
 
     try {
