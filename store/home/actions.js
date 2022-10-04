@@ -1,4 +1,5 @@
 import { getParamBuilder, getRequest } from '@/utils'
+import base from '@/airtable'
 
 export default {
   getPageLinks: async ({ commit }, payload) => {
@@ -11,14 +12,9 @@ export default {
       console.log(error)
     }
   },
-  getCoffeeShops: async ({ commit }, payload) => {
-    const coffeeShopsDataGetParams = getParamBuilder([{ param: 'filterByFormula', value: ['{Client Type}="1. Coffee Shop"'] }])
-    try {
-      const coffeeShopsRaw = await getRequest('Clients', coffeeShopsDataGetParams, null, null)
-      const items = coffeeShopsRaw.records
-      commit('setCoffeeShops', items)
-    } catch (error) {
-      console.log(error)
-    }
+  getClients: async ({ commit }) => {
+    const records = await base('Clients').select().all()
+
+    commit('setClients', records)
   }
 }
