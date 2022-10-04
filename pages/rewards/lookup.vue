@@ -63,6 +63,8 @@ export default {
   },
   methods: {
     async search () {
+      console.log(process.env.TYPEFORM_API_KEY)
+      console.log(process.env.AIRTABLE_BASE_ID)
       if (typeof process.env.TYPEFORM_API_KEY === 'undefined') {
         console.log('TYPEFORM_API_KEY is not set')
       } else {
