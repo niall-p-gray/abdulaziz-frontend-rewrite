@@ -66,6 +66,13 @@ export default {
         external: false
       })
 
+      rewrittenLinks.links.push({
+        name: 'Rewards Lookup',
+        url: 'rewards/lookup',
+        section: 'Rewritten Links',
+        external: false
+      })
+
       return rewrittenLinks
     },
     links () {
