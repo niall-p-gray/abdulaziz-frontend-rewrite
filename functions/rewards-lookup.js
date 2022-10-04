@@ -5,6 +5,8 @@ exports.handler = async (event, context) => {
   const apiKey = process.env.TYPEFORM_API_KEY
   let phoneNumber = event.queryStringParameters['phone-number']
 
+  return { statusCode: 200, body: JSON.stringify({ env: process.env }) }
+
   if (!apiKey) {
     return errorMsg('Api key was not set')
   }
@@ -39,7 +41,7 @@ exports.handler = async (event, context) => {
       if (obj.phone_number.replace('+', '') === phoneNumber) answers.push(obj)
     });
 
-    return { statusCode: 200, body: JSON.stringify({ answers: process.env }) }
+    return { statusCode: 200, body: JSON.stringify({ answers }) }
   } catch (error) {
     console.error(error)
 
