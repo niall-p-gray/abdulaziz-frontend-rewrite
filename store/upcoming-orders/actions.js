@@ -67,7 +67,7 @@ export default {
     }
   },
   filterOrdersByClientType: ({ commit, state }, payload) => {
-    if (payload.includes('All') || payload.length === 0) {
+    if (payload.length === 0) {
       commit('setFilteredOrders', state.upcomingOrders)
     } else {
       commit('setFilteredOrders', [])

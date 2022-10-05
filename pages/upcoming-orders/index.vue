@@ -70,7 +70,6 @@ export default {
   data () {
     return {
       clientTypes: [
-        'All',
         'Demo Box',
         'Storefront',
         'Coffee Shops',
