@@ -73,6 +73,13 @@ export default {
         external: false
       })
 
+      rewrittenLinks.links.push({
+        name: 'Upcoming Orders',
+        url: '/upcoming-orders',
+        section: 'Rewritten Links',
+        external: false
+      })
+
       return rewrittenLinks
     },
     links () {
@@ -95,6 +102,11 @@ export default {
         if (link.name.toLowerCase() === 'delivery summary') {
           link.external = false
           link.url = '/delivery/summary'
+        }
+
+        if (link.name.toLowerCase() === 'upcoming orders') {
+          link.external = false
+          link.url = '/upcoming-orders'
         }
 
         links.push(link)
