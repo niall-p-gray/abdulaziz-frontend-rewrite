@@ -1,0 +1,10 @@
+[dev]
+   command = 'npm run nuxt'
+[build]
+  command = 'npm run generate'
+  publish = 'dist'
+  functions = 'functions'
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"

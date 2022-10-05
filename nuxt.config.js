@@ -2,6 +2,16 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
 
+  generate: {
+    fallback: true
+  },
+
+  env: {
+    AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
+    AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY,
+    TYPEFORM_API_KEY: process.env.TYPEFORM_API_KEY
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'howdy-admin',
@@ -39,7 +49,7 @@ export default {
     '@nuxtjs/tailwindcss',
     '@nuxtjs/fontawesome',
     '@nuxtjs/moment',
-    '@nuxtjs/dotenv',
+    ['@nuxtjs/dotenv', { systemvars: true }],
     '@nuxtjs/svg'
   ],
 

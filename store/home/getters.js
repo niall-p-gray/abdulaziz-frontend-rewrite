@@ -2,7 +2,7 @@ export default {
   getPageLinks (state) {
     return state.pageLinks
   },
-  getCoffeeShops (state) {
-    return state.coffeeShops
+  clients (state) {
+    return state.clients
   }
 }
