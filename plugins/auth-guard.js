@@ -21,9 +21,9 @@ const isLoggedIn = () => {
   const loginDate = moment(lastLoginTime).local()
   const today = moment().local()
 
-  const minsSinceLastLogIn = today.diff(loginDate, 'minutes')
+  const daysSinceLastLogIn = today.diff(loginDate, 'days')
 
-  if (minsSinceLastLogIn > 10) {
+  if (daysSinceLastLogIn > 7) {
     localStorage.setItem('loggedIn', false)
     return false
   }
