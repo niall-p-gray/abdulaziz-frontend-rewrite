@@ -1,6 +1,8 @@
 <template>
   <div class="order-page">
-    <portal to="page-title">Client Ordering Page</portal>
+    <portal v-if="currenClient" to="page-title">
+      <ClientInfo :client="currenClient" />
+    </portal>
     <div>
       <div v-if="!loading && !error" >
         <WeekSelector v-model="selectedWeek" />
@@ -18,31 +20,37 @@
 import { mapActions, mapGetters } from 'vuex'
 import OrderFormDesktop from '@/components/client-ordering-page/OrderFormDesktop'
 import WeekSelector from '@/components/client-ordering-page/WeekSelector'
+import ClientInfo from '@/components/client-ordering-page/ClientInfo'
 import airQuery from '@/utils/airtable-query-builder'
 
 export default {
   layout: 'dashboard',
   components: {
     OrderFormDesktop,
-    WeekSelector
+    WeekSelector,
+    ClientInfo
   },
   data () {
     return {
       selectedWeek: this.$moment().startOf('isoWeek'),
-      loading: false,
+      loading: true,
       error: false
     }
   },
   async mounted () {
     const fromDate = this.$moment().endOf('isoWeek').subtract(4, 'weeks').format('MM/DD/YYYY')
     const toDate = this.$moment().startOf('isoWeek').add(4, 'weeks').format('MM/DD/YYYY')
-    const clientId = 'recRmSjmCCnfCTnj4'
 
     this.loading = true
     this.error = false
 
     try {
-      await this.getClients({ filterByFormula: airQuery().whereId(clientId).get() })
+      await this.getClients({ filterByFormula: airQuery().whereId(this.$route.params.id).get() })
+      // Redirect to 404 page if the client does not exist
+      if (!this.currenClient) {
+        this.$nuxt.error({ statusCode: 404, message: 'Not found' })
+        return
+      }
 
       await this.getProducts({
         filterByFormula: airQuery()
@@ -57,7 +65,7 @@ export default {
         filterByFormula: airQuery()
           .after('Week Start', fromDate)
           .before('Week Start', toDate)
-          .where('Client Rec ID', clientId)
+          .where('Client Rec ID', this.currenClient.id)
           .get()
       })
 
@@ -65,7 +73,7 @@ export default {
         filterByFormula: airQuery()
           .after('Week Start', fromDate)
           .before('Week Start', toDate)
-          .where('Client Rec ID', clientId)
+          .where('Client Rec ID', this.currenClient.id)
           .not('Data Source', 'Admin Order Creation Page')
           .get()
       })
@@ -97,7 +105,7 @@ export default {
       orders: 'entities/orders/orders'
     }),
     currenClient () {
-      return this.clients[0]
+      return this.clients.find(client => client.id === this.$route.params.id)
     }
   }
 }
