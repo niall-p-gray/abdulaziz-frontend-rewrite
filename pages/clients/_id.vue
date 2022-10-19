@@ -32,7 +32,7 @@ export default {
   },
   data () {
     return {
-      selectedWeek: this.$moment().startOf('isoWeek'),
+      selectedWeek: this.$moment().startOf('isoWeek').format('DD-MM-YYYY'),
       loading: true,
       error: false
     }

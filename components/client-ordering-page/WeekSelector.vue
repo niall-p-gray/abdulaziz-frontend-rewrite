@@ -43,7 +43,7 @@ export default {
     select (date) {
       this.selectedDate = date
 
-      this.$emit('input', this.$moment(date, 'MM/DD'))
+      this.$emit('input', this.$moment(date, 'MM/DD').format('DD-MM-YYYY'))
     }
   },
   computed: {

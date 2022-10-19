@@ -33,7 +33,7 @@
           <td></td>
         </tr>
         <tr>
-          <td colspan="6" class="edit-date">Last edited: 10/15 11:55</td>
+          <td colspan="6" class="edit-date"><WeekOrdersLastEditDate :week="selectedWeek" /></td>
           <td colspan="3" class="total !text-left">Totals</td>
           <td class="total !bg-yellow">{{ selectedWeekTotalOrders }}</td>
         </tr>
@@ -44,12 +44,17 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
+import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
+  components: {
+    WeekOrdersLastEditDate
+  },
   props: {
-    // momemt instance
     selectedWeek: {
-      required: true
+      required: true,
+      validator: ddmmyyDateValidator
     }
   },
   computed: {
@@ -82,7 +87,8 @@ export default {
         // Initialize week orders for this particular product, this will be populated with the correct quantities below
         entry.weekDayOrders = {}
         Array.apply(null, Array(7)).forEach((_, i) => {
-          const weekDay = this.selectedWeek.isoWeekday(i + 1).format('YYYY-MM-DD')
+          const selectedWeekStart = this.$moment(this.selectedWeek, 'DD-MM-YYYY')
+          const weekDay = selectedWeekStart.isoWeekday(i + 1).format('YYYY-MM-DD')
           entry.weekDayOrders[weekDay] = { qty: 0 }
         })
 
