@@ -27,9 +27,22 @@ export default () => {
       filters.push(`NOT({${column}}="${value}")`)
       return this
     },
+    notEmpty (column) {
+      filters.push(`NOT({${column}}=BLANK())`)
+      return this
+    },
     whereIn (column, values) {
       const re = values.join('|')
       filters.push(`REGEX_MATCH({${column}}, "${re}")`)
+      return this
+    },
+    whereInId (values) {
+      const re = values.join('|')
+      filters.push(`REGEX_MATCH(RECORD_ID(), "${re}")`)
+      return this
+    },
+    whereId (id) {
+      filters.push(`RECORD_ID()="${id}"`)
       return this
     }
   }
