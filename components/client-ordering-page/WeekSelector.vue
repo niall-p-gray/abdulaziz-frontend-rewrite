@@ -1,31 +1,51 @@
 <template>
   <div class="week-selector">
-    <div>
-      <div :class="{'active': weeks.past.includes(selectedDate)}" class="title">Past Orders</div>
-      <ul>
-        <li
-          @click="select(date)"
-          v-for="(date, index) in weeks.past"
-          :key="index"
-          :class="{ active: date === selectedDate }"
-        >
-          {{ date }}
-        </li>
-      </ul>
+    <div class="tabs-container">
+      <div class="tab">
+        <div
+        @click="switchTab('past-weeks')"
+        :class="{'active': selectedTab == 'past-weeks'}"
+        class="title">Past Orders</div>
+        <ul>
+          <li
+            @click="select(date)"
+            v-for="(date, index) in weeks.past"
+            :key="index"
+            :class="{ active: date === selectedDate }"
+          >
+            {{ date }}
+          </li>
+        </ul>
+      </div>
+      <div class="tab">
+        <div
+        @click="switchTab('upcoming-weeks')"
+        :class="{'active': selectedTab == 'upcoming-weeks'}"
+        class="title">
+          Upcoming Orders
+        </div>
+        <ul>
+          <li
+            @click="select(date)"
+            v-for="(date, index) in weeks.future"
+            :key="index"
+            :class="{ active: date === selectedDate }"
+          >
+            {{ date }}
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="ml-10">
-      <div :class="{'active': weeks.future.includes(selectedDate)}" class="title">Upcoming Orders</div>
-      <ul>
-        <li
-          @click="select(date)"
-          v-for="(date, index) in weeks.future"
-          :key="index"
-          :class="{ active: date === selectedDate }"
-        >
-          {{ date }}
-        </li>
-      </ul>
-    </div>
+    <ul class="mobile-options">
+      <li
+        @click="select(date)"
+        v-for="(date, index) in selectedTabWeeks"
+        :key="index"
+        :class="{ active: date === selectedDate }"
+      >
+        {{ date }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -33,17 +53,40 @@
 export default {
   data () {
     return {
-      selectedDate: null
+      selectedDate: null,
+      selectedTab: null
     }
   },
   mounted () {
-    this.selectedDate = this.weeks.future[0] // Initially preselect the first upcoming week
+    // Initially preselect the first upcoming week
+    this.selectedTab = 'upcoming-weeks'
+    this.selectedDate = this.weeks.future[0]
   },
   methods: {
     select (date) {
       this.selectedDate = date
 
+      if (this.weeks.future.includes(date)) {
+        this.selectedTab = 'upcoming-weeks'
+      } else {
+        this.selectedTab = 'past-weeks'
+      }
+
       this.$emit('input', this.$moment(date, 'MM/DD').format('DD-MM-YYYY'))
+    },
+    switchTab (targetTab) {
+      // This can only be called on small devices
+      if (process.client && screen.width > 1024) {
+        return
+      }
+
+      this.selectedTab = targetTab
+
+      if (this.selectedTab === 'upcoming-weeks') {
+        this.selectedDate = this.weeks.future[0]
+      } else {
+        this.selectedDate = this.weeks.past[0]
+      }
     }
   },
   computed: {
@@ -74,30 +117,45 @@ export default {
       }
 
       return weeks
+    },
+    selectedTabWeeks () {
+      if (this.selectedTab === 'upcoming-weeks') {
+        return this.weeks.future
+      } else {
+        return this.weeks.past
+      }
     }
   }
 }
 </script>
 
 <style scoped>
-.week-selector {
-  @apply flex justify-center w-6/12 mx-auto;
+.tabs-container {
+  @apply flex justify-between w-full lg:mx-auto;
+}
+
+.tab {
+  @apply w-full;
 }
 
 .title {
   padding: 10px;
-  border-bottom: 2px #212322 solid;
+  border-bottom: 1px #d3d3d3 solid;
   color: #212322;
-  @apply text-center font-bold w-full;
+  @apply text-center font-bold w-full cursor-pointer;
 }
 
 .title.active {
-  border-color: #e56a54;
+  border-bottom: 2px #e56a54 solid;
   color: #e56a54;
 }
 
 ul {
-  @apply mt-4 flex justify-center w-auto;
+  @apply mt-4 flex justify-center w-auto hidden;
+}
+
+ul.mobile-options {
+  @apply !flex;
 }
 
 ul li {
@@ -110,5 +168,32 @@ ul li {
 ul li:hover,
 ul li.active {
   @apply !bg-yellow;
+}
+
+@media (min-width: 1024px) {
+  .tabs-container {
+    @apply flex justify-center w-6/12 mx-auto;
+  }
+
+  .tabs-container ul {
+    @apply flex;
+  }
+
+  .tab {
+    @apply w-auto;
+  }
+
+  .tab:nth-child(2) {
+    @apply ml-4 lg:ml-10;
+  }
+
+  .title {
+    border-bottom: 2px #212322 solid;
+    cursor: default;
+  }
+
+  ul.mobile-options {
+    @apply !hidden;
+  }
 }
 </style>
