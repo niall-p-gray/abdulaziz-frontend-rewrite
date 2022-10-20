@@ -11,7 +11,8 @@
             @click="select(date)"
             v-for="(date, index) in weeks.past"
             :key="index"
-            :class="{ active: date === selectedDate }"
+            :class="{ selected: date === selectedDate }"
+            class="chip"
           >
             {{ date }}
           </li>
@@ -29,7 +30,8 @@
             @click="select(date)"
             v-for="(date, index) in weeks.future"
             :key="index"
-            :class="{ active: date === selectedDate }"
+            :class="{ selected: date === selectedDate }"
+            class="chip"
           >
             {{ date }}
           </li>
@@ -41,7 +43,8 @@
         @click="select(date)"
         v-for="(date, index) in selectedTabWeeks"
         :key="index"
-        :class="{ active: date === selectedDate }"
+        :class="{ selected: date === selectedDate }"
+        class="chip"
       >
         {{ date }}
       </li>
@@ -72,7 +75,7 @@ export default {
         this.selectedTab = 'past-weeks'
       }
 
-      this.$emit('input', this.$moment(date, 'MM/DD').format('DD-MM-YYYY'))
+      this.notify()
     },
     switchTab (targetTab) {
       // This can only be called on small devices
@@ -87,6 +90,11 @@ export default {
       } else {
         this.selectedDate = this.weeks.past[0]
       }
+
+      this.notify()
+    },
+    notify () {
+      this.$emit('input', this.$moment(this.selectedDate, 'MM/DD').format('DD-MM-YYYY'))
     }
   },
   computed: {
@@ -158,16 +166,9 @@ ul.mobile-options {
   @apply !flex;
 }
 
-ul li {
-  width: 55px;
-  @apply flex justify-center items-center rounded-lg py-2 ml-1 cursor-pointer;
-  background: #fffacc;
-  transition: background 0.25s;
-}
-
-ul li:hover,
-ul li.active {
-  @apply !bg-yellow;
+.chip {
+  min-width: 55px;
+  @apply ml-1;
 }
 
 @media (min-width: 1024px) {

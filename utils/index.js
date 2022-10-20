@@ -1,4 +1,5 @@
 import axios from 'axios'
+import moment from 'moment'
 
 const baseId = process.env.AIRTABLE_BASE_ID
 const apiKey = process.env.AIRTABLE_API_KEY
@@ -79,3 +80,9 @@ export const singleRecordGetRequest = (tabName, recordId) => {
 export const TEST_CLIENT_IDS = [
   'recQ3nAfYJ41yUrj5'
 ]
+
+export const weekDayNames = () => {
+  return Array.apply(null, Array(7)).map((_, index) => {
+    return moment(index, 'e').startOf('week').isoWeekday(index + 1).format('dddd')
+  })
+}

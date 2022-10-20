@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col items-center">
-    <img v-if="logoUrl" :src="logoUrl" class="rounded-full w-20 h-20" />
-    <span class="mt-3">{{ name }}</span>
+    <img v-if="logoUrl" :src="logoUrl" class="rounded-full w-16 h-16 md:w-20 md:h-20" />
+    <span class="mt-3 text-3xl md:text-4xl">{{ name }}</span>
   </div>
 </template>
 

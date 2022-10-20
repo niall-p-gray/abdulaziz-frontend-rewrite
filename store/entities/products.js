@@ -22,6 +22,6 @@ export const actions = {
 
 export const getters = {
   products (state) {
-    return state.products
+    return [...state.products].sort((a, b) => a.fields['Display Order'] - b.fields['Display Order'])
   }
 }

@@ -6,9 +6,10 @@
     <div>
       <div v-if="!loading && !error" >
         <WeekSelector v-model="selectedWeek" />
-        <OrderFormDesktop :selected-week="selectedWeek" class="mt-16" />
+        <OrderFormMobile v-if="isMobile" :selected-week="selectedWeek" class="mt-10" />
+        <OrderFormDesktop v-else :selected-week="selectedWeek" class="mt-16" />
       </div>
-      <div class="mt-16 flex justify-center">
+      <div v-else class="mt-16 flex justify-center">
         <span v-if="loading">Loading...</span>
         <span v-else class="text-red-500">An error occured, please try refreshing</span>
       </div>
@@ -19,6 +20,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import OrderFormDesktop from '@/components/client-ordering-page/OrderFormDesktop'
+import OrderFormMobile from '@/components/client-ordering-page/OrderFormMobile'
 import WeekSelector from '@/components/client-ordering-page/WeekSelector'
 import ClientInfo from '@/components/client-ordering-page/ClientInfo'
 import airQuery from '@/utils/airtable-query-builder'
@@ -27,6 +29,7 @@ export default {
   layout: 'dashboard',
   components: {
     OrderFormDesktop,
+    OrderFormMobile,
     WeekSelector,
     ClientInfo
   },
@@ -106,6 +109,13 @@ export default {
     }),
     currenClient () {
       return this.clients.find(client => client.id === this.$route.params.id)
+    },
+    isMobile () {
+      if (process.client) {
+        return screen.width < 1024
+      }
+
+      return undefined
     }
   }
 }

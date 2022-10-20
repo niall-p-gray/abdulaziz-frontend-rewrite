@@ -10,12 +10,19 @@
 .title-text {
   font-family: 'Josefin Sans', sans-serif;
 }
+
 .chip {
-  @apply bg-gray-200 rounded-lg py-1 px-2 w-fit hover:bg-yellow text-brown font-light cursor-pointer;
+  min-width: 55px;
+  @apply inline-flex justify-center items-center rounded-lg p-2 cursor-pointer text-center;
+  background: #fffacc;
+  transition: background 0.25s;
+  &.selected,
+  &:hover {
+    @apply bg-yellow;
+  }
 }
-.chip-selected {
-  @apply bg-yellow;
-}
+
+
 .btn {
   @apply bg-yellow px-3 py-2 text-brown font-medium cursor-pointer;
   &__disabled {

@@ -22,8 +22,11 @@
               <p>{{ product.description }}</p>
             </div>
           </td>
-          <td v-for="(order, index2) in product.weekDayOrders" :key="index2">
-            <input type="text" :value="order.qty">
+          <td v-for="(order, day) in product.weekDayOrders" :key="day">
+            <DailyOrderQuantityInput
+            :qty="order.qty"
+            :day="day"
+            :product-id="product.id" />
           </td>
           <td class="total">{{ product.totalWeekOrders }}</td>
         </tr>
@@ -45,11 +48,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
+import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
 import { ddmmyyDateValidator } from '@/utils/prop-validators'
+import { weekDayNames } from '@/utils'
 
 export default {
   components: {
-    WeekOrdersLastEditDate
+    WeekOrdersLastEditDate,
+    DailyOrderQuantityInput
   },
   props: {
     selectedWeek: {
@@ -63,11 +69,8 @@ export default {
       orders: 'entities/orders/orders',
       orderItems: 'entities/order-items/orderItems'
     }),
-    // Constructs and returns an array containing names of weekdays
     weekDayNames () {
-      return Array.apply(null, Array(7)).map((_, index) => {
-        return this.$moment(index, 'e').startOf('week').isoWeekday(index + 1).format('ddd')
-      })
+      return weekDayNames().map(name => name.substring(0, 3))
     },
     selectedWeekProductOrders () {
       const productOrders = this.products.map((product) => {
@@ -75,7 +78,6 @@ export default {
           id: product.id,
           name: product.fields.Name,
           description: product.fields.Description,
-          displayOrder: product.fields['Display Order'],
           logo: null
         }
 
@@ -88,7 +90,7 @@ export default {
         entry.weekDayOrders = {}
         Array.apply(null, Array(7)).forEach((_, i) => {
           const selectedWeekStart = this.$moment(this.selectedWeek, 'DD-MM-YYYY')
-          const weekDay = selectedWeekStart.isoWeekday(i + 1).format('YYYY-MM-DD')
+          const weekDay = selectedWeekStart.isoWeekday(i + 1).format('DD-MM-YYYY')
           entry.weekDayOrders[weekDay] = { qty: 0 }
         })
 
@@ -97,14 +99,11 @@ export default {
         return entry
       })
 
-      // Sort product orders according to displayOrder field
-      productOrders.sort((a, b) => a.displayOrder - b.displayOrder)
-
       // Loop through selected week’s orders and finish populating totalWeekOrders & weekDayOrders properties
       // of each product in productOrders array
       for (let index = 0; index < this.orderItems.length; index++) {
         const order = this.orderItems[index]
-        const orderDate = order.fields['Order Date']
+        const orderDate = this.$moment(order.fields['Order Date'], 'YYYY-MM-DD').format('DD-MM-YYYY')
 
         const productOrder = productOrders.find(product => product.id === order.fields.Product[0])
         const productOrderIndex = productOrders.indexOf(productOrder)
