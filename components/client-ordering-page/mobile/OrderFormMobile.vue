@@ -3,14 +3,14 @@
     <WeekDaySelector v-model="selectedDate" />
     <div class="mt-12">
       <div>
-        <div v-for="product in productOrders" :key="product.id" class="item">
+        <div v-for="product in selectedWeekProductOrders" :key="product.id" class="item">
           <div class="icon">
             <img v-if="product.logo" :src="product.logo" />
           </div>
           <strong class="title">{{ product.name }}</strong>
           <DailyOrderQuantityInput
             v-if="selectedDate"
-            :qty="product.qtyForSelectedDay"
+            :qty="product.weekDayOrders[selectedDate].qty"
             :day="selectedDate"
             :product-id="product.id"
             :show-buttons="true"
@@ -38,47 +38,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      products: 'entities/products/products',
-      orders: 'entities/orders/orders',
-      orderItems: 'entities/order-items/orderItems',
-      selectedWeek: 'weekly-client-orders/selectedWeek'
-    }),
-    // Returns orders per product for the selected day
-    productOrders () {
-      const products = this.products.map((product) => {
-        const entry = {
-          id: product.id,
-          name: product.fields.Name,
-          description: product.fields.Description,
-          logo: null,
-          qtyForSelectedDay: 0
-        }
-
-        if (product.fields.Logo && product.fields.Logo.length) {
-          entry.logo = product.fields.Logo[0].thumbnails.small.url
-        }
-
-        return entry
-      })
-
-      this.orderItems.forEach((order) => {
-        const orderDate = this.$moment(order.fields['Order Date'], 'YYYY-MM-DD').format('DD-MM-YYYY')
-
-        if (orderDate !== this.selectedDate) {
-          return
-        }
-
-        const product = products.find(product => product.id === order.fields.Product[0])
-        const productIndex = products.indexOf(product)
-
-        if (product) {
-          product.qtyForSelectedDay += order.fields.Orders
-          products.splice(productIndex, 1, product)
-        }
-      })
-
-      return products
-    }
+      selectedWeekProductOrders: 'weekly-client-orders/selectedWeekProductOrders'
+    })
   }
 }
 </script>

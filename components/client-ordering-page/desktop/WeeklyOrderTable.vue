@@ -32,7 +32,7 @@
       </tr>
       <tr class="total">
         <td colspan="2" class="!text-left">Day Totals</td>
-        <td v-for="(qty, date) in dailyTotalOrders" :key="date">{{ qty }}</td>
+        <td v-for="(qty, date) in selectedWeekDailyTotalOrders" :key="date">{{ qty }}</td>
         <td></td>
       </tr>
       <tr>
@@ -65,39 +65,11 @@ export default {
   },
   computed: {
     ...mapGetters({
-      selectedWeek: 'weekly-client-orders/selectedWeek'
+      selectedWeekDailyTotalOrders: 'weekly-client-orders/selectedWeekDailyTotalOrders',
+      selectedWeekTotalOrders: 'weekly-client-orders/selectedWeekTotalOrders'
     }),
     weekDayNames () {
       return weekDayNames().map(name => name.substring(0, 3))
-    },
-    // Aggregated orders for each day of the selected week, across all products
-    dailyTotalOrders () {
-      const dailyOrders = {}
-
-      for (let index = 0; index < this.orders.length; index++) {
-        const productOrder = this.orders[index]
-
-        for (const date in productOrder.weekDayOrders) {
-          const order = productOrder.weekDayOrders[date]
-
-          if (dailyOrders[date]) {
-            dailyOrders[date] += order.qty
-          } else {
-            dailyOrders[date] = order.qty
-          }
-        }
-      }
-
-      return dailyOrders
-    },
-    selectedWeekTotalOrders () {
-      let total = 0
-
-      for (const key in this.dailyTotalOrders) {
-        total += this.dailyTotalOrders[key]
-      }
-
-      return total
     }
   }
 }
