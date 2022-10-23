@@ -9,7 +9,7 @@
           </div>
           <strong class="title">{{ product.name }}</strong>
           <DailyOrderQuantityInput
-            v-if="selectedDate"
+            v-if="selectedDate && product.weekDayOrders[selectedDate]"
             :qty="product.weekDayOrders[selectedDate].qty"
             :day="selectedDate"
             :product-id="product.id"
