@@ -22,7 +22,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import WeekDaySelector from '@/components/client-ordering-page/WeekDaySelector'
+import WeekDaySelector from '@/components/client-ordering-page/mobile/WeekDaySelector'
 import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
 import { ddmmyyDateValidator } from '@/utils/prop-validators'
 

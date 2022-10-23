@@ -19,8 +19,8 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import OrderFormDesktop from '@/components/client-ordering-page/OrderFormDesktop'
-import OrderFormMobile from '@/components/client-ordering-page/OrderFormMobile'
+import OrderFormDesktop from '@/components/client-ordering-page/desktop/OrderFormDesktop'
+import OrderFormMobile from '@/components/client-ordering-page/mobile/OrderFormMobile'
 import WeekSelector from '@/components/client-ordering-page/WeekSelector'
 import ClientInfo from '@/components/client-ordering-page/ClientInfo'
 import airQuery from '@/utils/airtable-query-builder'
