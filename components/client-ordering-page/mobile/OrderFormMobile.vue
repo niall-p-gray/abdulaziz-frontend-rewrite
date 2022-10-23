@@ -18,6 +18,7 @@
         </div>
       </div>
       <WeekTotals v-if="selectedDate" :selected-day="selectedDate" class="mt-6" />
+      <WeekOrdersLastEditDate class="mt-8" />
     </div>
   </div>
 </template>
@@ -27,12 +28,14 @@ import { mapGetters } from 'vuex'
 import WeekDaySelector from '@/components/client-ordering-page/mobile/WeekDaySelector'
 import WeekTotals from '@/components/client-ordering-page/mobile/WeekTotals'
 import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
+import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
 
 export default {
   components: {
     WeekDaySelector,
     DailyOrderQuantityInput,
-    WeekTotals
+    WeekTotals,
+    WeekOrdersLastEditDate
   },
   data () {
     return {

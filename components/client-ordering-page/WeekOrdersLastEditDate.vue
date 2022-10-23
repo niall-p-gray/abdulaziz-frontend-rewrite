@@ -1,5 +1,5 @@
 <template>
-  <span class="text-gray-600 italic">Last edited: {{ date }}</span>
+  <span>Last edited: {{ date }}</span>
 </template>
 
 <script>
@@ -27,3 +27,9 @@ export default {
   }
 }
 </script>
+
+<style>
+span {
+  @apply text-gray-600 italic block text-center lg:inline lg:text-left;
+}
+</style>
