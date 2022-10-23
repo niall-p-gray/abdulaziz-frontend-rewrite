@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -64,8 +66,12 @@ export default {
     // Initially preselect the first upcoming week
     this.selectedTab = 'upcoming-weeks'
     this.selectedDate = this.weeks.future[0]
+    this.commit()
   },
   methods: {
+    ...mapActions({
+      updateSelectedWeek: 'weekly-client-orders/updateSelectedWeek'
+    }),
     select (date) {
       this.selectedDate = date
 
@@ -75,7 +81,7 @@ export default {
         this.selectedTab = 'past-weeks'
       }
 
-      this.notify()
+      this.commit()
     },
     switchTab (targetTab) {
       // This can only be called on small devices
@@ -91,10 +97,11 @@ export default {
         this.selectedDate = this.weeks.past[0]
       }
 
-      this.notify()
+      this.commit()
     },
-    notify () {
-      this.$emit('input', this.$moment(this.selectedDate, 'MM/DD').format('DD-MM-YYYY'))
+    commit () {
+      const date = this.$moment(this.selectedDate, 'MM/DD').format('DD-MM-YYYY')
+      this.updateSelectedWeek(date)
     }
   },
   computed: {

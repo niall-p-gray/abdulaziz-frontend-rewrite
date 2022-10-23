@@ -1,29 +1,23 @@
 <template>
   <div class="mx-auto">
-    <WeeklyOrderTable :orders="selectedWeekProductOrders" :selected-week="selectedWeek" />
+    <WeeklyOrderTable :orders="selectedWeekProductOrders" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import WeeklyOrderTable from '@/components/client-ordering-page/desktop/WeeklyOrderTable'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
   components: {
     WeeklyOrderTable
   },
-  props: {
-    selectedWeek: {
-      required: true,
-      validator: ddmmyyDateValidator
-    }
-  },
   computed: {
     ...mapGetters({
       products: 'entities/products/products',
       orders: 'entities/orders/orders',
-      orderItems: 'entities/order-items/orderItems'
+      orderItems: 'entities/order-items/orderItems',
+      selectedWeek: 'weekly-client-orders/selectedWeek'
     }),
     selectedWeekProductOrders () {
       const productOrders = this.products.map((product) => {

@@ -4,15 +4,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
-  props: {
-    week: {
-      required: true,
-      validator: ddmmyyDateValidator
-    }
-  },
   computed: {
     ...mapGetters({
       orders: 'entities/orders/orders'

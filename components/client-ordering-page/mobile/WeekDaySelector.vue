@@ -13,17 +13,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { weekDayNames } from '@/utils'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
   props: {
-    week: {
-      validator: ddmmyyDateValidator,
-      required: true
-    },
     value: {
-      validator: ddmmyyDateValidator,
       required: true
     }
   },
@@ -32,7 +27,13 @@ export default {
       format: 'DD-MM-YYYY'
     }
   },
+  mounted () {
+    this.setCurrentWeekdayAsSelected()
+  },
   computed: {
+    ...mapGetters({
+      week: 'weekly-client-orders/selectedWeek'
+    }),
     weekDayNames () {
       return weekDayNames().map(name => name.substring(0, 2))
     },
@@ -50,13 +51,16 @@ export default {
     },
     isSelected (weekdayNum) {
       return this.selectedDay.isoWeekday() === weekdayNum
+    },
+    setCurrentWeekdayAsSelected () {
+      const newWeekDay = this.selectedWeek.isoWeekday()
+      this.select(newWeekDay)
     }
   },
   watch: {
     week: {
-      handler: function (newWeek) {
-        const newWeekDay = this.selectedWeek.isoWeekday()
-        this.select(newWeekDay)
+      handler: function () {
+        this.setCurrentWeekdayAsSelected()
       }
     }
   }

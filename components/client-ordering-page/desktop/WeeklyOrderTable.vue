@@ -37,7 +37,7 @@
       </tr>
       <tr>
         <td colspan="6" class="edit-date">
-          <WeekOrdersLastEditDate :week="selectedWeek" />
+          <WeekOrdersLastEditDate />
         </td>
         <td colspan="3" class="total !text-left">Totals</td>
         <td class="total !bg-yellow">{{ selectedWeekTotalOrders }}</td>
@@ -47,8 +47,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { weekDayNames } from '@/utils'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
 import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
 
@@ -58,16 +58,15 @@ export default {
     WeekOrdersLastEditDate
   },
   props: {
-    selectedWeek: {
-      required: true,
-      validator: ddmmyyDateValidator
-    },
     orders: {
       required: true,
       type: Array
     }
   },
   computed: {
+    ...mapGetters({
+      selectedWeek: 'weekly-client-orders/selectedWeek'
+    }),
     weekDayNames () {
       return weekDayNames().map(name => name.substring(0, 3))
     },

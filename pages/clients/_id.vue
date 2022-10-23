@@ -5,9 +5,9 @@
     </portal>
     <div>
       <div v-if="!loading && !error" >
-        <WeekSelector v-model="selectedWeek" />
-        <OrderFormMobile v-if="isMobile" :selected-week="selectedWeek" class="mt-10" />
-        <OrderFormDesktop v-else :selected-week="selectedWeek" class="mt-16" />
+        <WeekSelector />
+        <OrderFormMobile v-if="isMobile" class="mt-10" />
+        <OrderFormDesktop v-else class="mt-16" />
       </div>
       <div v-else class="mt-16 flex justify-center">
         <span v-if="loading">Loading...</span>
@@ -35,7 +35,6 @@ export default {
   },
   data () {
     return {
-      selectedWeek: this.$moment().startOf('isoWeek').format('DD-MM-YYYY'),
       loading: true,
       error: false
     }

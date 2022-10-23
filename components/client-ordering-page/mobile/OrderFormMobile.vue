@@ -1,6 +1,6 @@
 <template>
   <div>
-    <WeekDaySelector v-model="selectedDate" :week="selectedWeek" />
+    <WeekDaySelector v-model="selectedDate" />
     <div class="mt-12">
       <div>
         <div v-for="product in productOrders" :key="product.id" class="item">
@@ -9,6 +9,7 @@
           </div>
           <strong class="title">{{ product.name }}</strong>
           <DailyOrderQuantityInput
+            v-if="selectedDate"
             :qty="product.qtyForSelectedDay"
             :day="selectedDate"
             :product-id="product.id"
@@ -24,29 +25,23 @@
 import { mapGetters } from 'vuex'
 import WeekDaySelector from '@/components/client-ordering-page/mobile/WeekDaySelector'
 import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
   components: {
     WeekDaySelector,
     DailyOrderQuantityInput
   },
-  props: {
-    selectedWeek: {
-      required: true,
-      validator: ddmmyyDateValidator
-    }
-  },
   data () {
     return {
-      selectedDate: this.selectedWeek
+      selectedDate: null
     }
   },
   computed: {
     ...mapGetters({
       products: 'entities/products/products',
       orders: 'entities/orders/orders',
-      orderItems: 'entities/order-items/orderItems'
+      orderItems: 'entities/order-items/orderItems',
+      selectedWeek: 'weekly-client-orders/selectedWeek'
     }),
     // Returns orders per product for the selected day
     productOrders () {
