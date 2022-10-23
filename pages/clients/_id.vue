@@ -8,6 +8,11 @@
         <WeekSelector />
         <OrderFormMobile v-if="isMobile" class="mt-10" />
         <OrderFormDesktop v-else class="mt-16" />
+        <div class="actions">
+          <button class="standing-order-btn">Make Standing Order</button>
+          <button class="btn">Save Order</button>
+        </div>
+        <p class="notice">To modify standind orders - please access from the desktop version of the app</p>
       </div>
       <div v-else class="mt-16 flex justify-center">
         <span v-if="loading">Loading...</span>
@@ -63,14 +68,6 @@ export default {
           .get()
       })
 
-      await this.getWeeklySales({
-        filterByFormula: airQuery()
-          .after('Week Start', fromDate)
-          .before('Week Start', toDate)
-          .where('Client Rec ID', this.currenClient.id)
-          .get()
-      })
-
       await this.getOrders({
         filterByFormula: airQuery()
           .after('Week Start', fromDate)
@@ -97,8 +94,7 @@ export default {
       getClients: 'entities/clients/get',
       getProducts: 'entities/products/get',
       getOrders: 'entities/orders/get',
-      getOrderItems: 'entities/order-items/get',
-      getWeeklySales: 'entities/weekly-sales/get'
+      getOrderItems: 'entities/order-items/get'
     })
   },
   computed: {
