@@ -14,12 +14,12 @@
     &__form-group {
       @apply mt-10 md:pr-72;
       &__label {
-        @apply text-lg text-left mr-5;
+        @apply text-sm md:text-lg text-left mr-5;
         &__radio-main {
-          @apply font-medium text-xl;
+          @apply font-medium text-base md:text-xl;
         }
         &__radio-second {
-          @apply ml-5 font-light;
+          @apply ml-2 md:ml-5 font-light;
           a {
             @apply text-greenTxt;
           }
@@ -29,7 +29,7 @@
         @apply bg-stone-50 border-2 border-stone-100 w-full rounded-lg py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary;
       }
       &__message {
-        @apply text-stone-300 font-normal italic;
+        @apply text-stone-300 font-normal italic mt-3;
         a {
           @apply text-greenTxt;
         }
@@ -37,13 +37,16 @@
       input[type="radio"] {
         -webkit-appearance: none;
         -moz-appearance: none;
-        @apply border-gray-300 bg-white appearance-none inline-block w-6 h-6 p-1 bg-clip-content rounded-full mr-5;
+        @apply border-gray-300 bg-white appearance-none inline-block w-6 h-6 p-1 bg-clip-content rounded-full mr-2 md:mr-5;
       }
       input[type="radio"]:checked {
         @apply bg-yellow border-yellow;
       }
       &__row {
-        @apply grid grid-cols-4 gap-5 py-10 border-b-2 border-stone-100;
+        @apply grid md:grid-cols-4 gap-3 md:gap-5 py-10 border-b-2 border-stone-100;
+        &__item {
+          @apply ml-5 md:ml-0;
+        }
       }
       &__checkbox {
         -webkit-appearance: none;
@@ -53,9 +56,15 @@
       &__checkbox:checked {
         @apply bg-yellow border-yellow;
       }
+      &__date-time {
+        @apply grid md:grid-cols-2 md:w-2/3 md:gap-10 gap-5;
+      }
+      &__grid {
+        @apply grid md:grid-cols-2 md:gap-5 gap-3 mt-3;
+      }
     }
     &__flavors {
-      @apply grid grid-cols-2 gap-10 mt-10;
+      @apply grid md:grid-cols-2 gap-10 mt-10;
       &__item {
         @apply grid grid-cols-8 gap-5 py-10 border-b-2 border-stone-100;
         &__circle {
