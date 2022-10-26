@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
@@ -49,12 +50,17 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      stageProductQtyUpdate: 'weekly-client-orders/UPDATE_STAGED_PRODUCT_QTY_UPDATES'
+    }),
     onChange () {
-      this.$emit('change', {
+      const productOrderToUpdate = {
         productId: this.productId,
-        qty: this.value,
+        oldQty: this.qty,
+        newQty: parseInt(this.value),
         day: this.day
-      })
+      }
+      this.stageProductQtyUpdate(productOrderToUpdate)
     },
     increment () {
       this.value++

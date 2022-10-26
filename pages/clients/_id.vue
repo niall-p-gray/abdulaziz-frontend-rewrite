@@ -1,7 +1,7 @@
 <template>
   <div class="order-page">
-    <portal v-if="currenClient" to="page-title">
-      <ClientInfo :client="currenClient" />
+    <portal v-if="currentClient" to="page-title">
+      <ClientInfo :client="currentClient" />
     </portal>
     <div>
       <div v-if="!loading && !error" >
@@ -10,7 +10,13 @@
         <OrderFormDesktop v-else class="mt-16" />
         <div class="actions">
           <button class="standing-order-btn">Make Standing Order</button>
-          <button class="btn">Save Order</button>
+          <button
+          @click="save"
+          :class="{'btn__disabled': savingChanges}"
+          :disabled="savingChanges"
+          class="btn">
+          {{ savingChanges ? 'Saving...' : 'Save Order' }}
+          </button>
         </div>
         <p class="notice">To modify standind orders - please access from the desktop version of the app</p>
       </div>
@@ -41,27 +47,32 @@ export default {
   data () {
     return {
       loading: true,
-      error: false
+      error: false,
+      savingChanges: false
     }
   },
   async mounted () {
     const fromDate = this.$moment().endOf('isoWeek').subtract(4, 'weeks').format('MM/DD/YYYY')
     const toDate = this.$moment().startOf('isoWeek').add(4, 'weeks').format('MM/DD/YYYY')
+    const testClientId = 'recQ3nAfYJ41yUrj5' // temp
+
+    // this.setSelectedClientId(this.$route.params.id)
+    this.setSelectedClientId(testClientId)
 
     this.loading = true
     this.error = false
 
     try {
-      await this.getClients({ filterByFormula: airQuery().whereId(this.$route.params.id).get() })
+      await this.getClients({ filterByFormula: airQuery().whereId(testClientId).get() })
       // Redirect to 404 page if the client does not exist
-      if (!this.currenClient) {
+      if (!this.currentClient) {
         this.$nuxt.error({ statusCode: 404, message: 'Not found' })
         return
       }
 
       await this.getProducts({
         filterByFormula: airQuery()
-          .whereInId(this.currenClient.fields['Chosen Products']) // Only fetch products chosen by this client
+          .whereInId(this.currentClient.fields['Chosen Products']) // Only fetch products chosen by this client
           .where('Available', 1)
           .notEmpty('Name')
           .notEmpty('Available Days')
@@ -72,7 +83,7 @@ export default {
         filterByFormula: airQuery()
           .after('Week Start', fromDate)
           .before('Week Start', toDate)
-          .where('Client Rec ID', this.currenClient.id)
+          .where('Client Rec ID', this.currentClient.id)
           .not('Data Source', 'Admin Order Creation Page')
           .get()
       })
@@ -94,17 +105,27 @@ export default {
       getClients: 'entities/clients/get',
       getProducts: 'entities/products/get',
       getOrders: 'entities/orders/get',
-      getOrderItems: 'entities/order-items/get'
-    })
+      getOrderItems: 'entities/order-items/get',
+      setSelectedClientId: 'weekly-client-orders/setSelectedClientId',
+      commitChanges: 'weekly-client-orders/commitChanges'
+    }),
+    async save () {
+      this.savingChanges = true
+      const success = await this.commitChanges()
+      this.savingChanges = false
+
+      if (success) {
+        alert('Saved')
+      } else {
+        alert('Failed to save')
+      }
+    }
   },
   computed: {
     ...mapGetters({
-      clients: 'entities/clients/clients',
-      orders: 'entities/orders/orders'
+      orders: 'entities/orders/orders',
+      currentClient: 'weekly-client-orders/currentClient'
     }),
-    currenClient () {
-      return this.clients.find(client => client.id === this.$route.params.id)
-    },
     isMobile () {
       if (process.client) {
         return screen.width < 1024
