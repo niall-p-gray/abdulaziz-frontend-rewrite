@@ -28,7 +28,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 span {
   @apply text-gray-600 italic block text-center lg:inline lg:text-left;
 }
