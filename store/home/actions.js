@@ -1,13 +1,10 @@
-import { getParamBuilder, getRequest } from '@/utils'
 import base from '@/airtable'
 
 export default {
   getPageLinks: async ({ commit }, payload) => {
-    const pageLinksDataGetParams = getParamBuilder([])
     try {
-      const pagesLinkRaw = await getRequest('Page Links', pageLinksDataGetParams, null, null)
-      const items = pagesLinkRaw.records
-      commit('setPageLinks', items)
+      const records = await base('Page Links').select().all()
+      commit('setPageLinks', records)
     } catch (error) {
       console.log(error)
     }
