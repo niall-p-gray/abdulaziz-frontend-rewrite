@@ -53,7 +53,7 @@ export const actions = {
     }
 
     try {
-      // Airtable only allows a max of 10 records to delete in a single request 
+      // Airtable only allows a max of 10 records to delete in a single request
       const chunks = breakUpArrayIntoChunks(ids, 10)
       for (let index = 0; index < chunks.length; index++) {
         const chunk = chunks[index]
