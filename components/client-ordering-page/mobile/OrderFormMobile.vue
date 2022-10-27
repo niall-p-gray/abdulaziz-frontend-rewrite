@@ -12,7 +12,7 @@
             v-if="selectedDate && product.weekDayOrders[selectedDate]"
             :qty="product.weekDayOrders[selectedDate].qty"
             :day="selectedDate"
-            :product-id="product.id"
+            :product="product"
             :show-buttons="true"
           />
         </div>

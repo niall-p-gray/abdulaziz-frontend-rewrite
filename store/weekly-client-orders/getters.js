@@ -19,7 +19,9 @@ export default {
         id: product.id,
         name: product.fields.Name,
         description: product.fields.Description,
-        logo: null
+        logo: null,
+        loadTimeInHrs: product.fields['Lead Time (hrs)'],
+        availableDays: product.fields['Available Days']
       }
 
       // // Some products may not have an icon/logo

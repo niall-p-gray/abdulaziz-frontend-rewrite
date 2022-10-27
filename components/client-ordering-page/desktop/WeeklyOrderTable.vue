@@ -25,7 +25,7 @@
           <DailyOrderQuantityInput
             :qty="order.qty"
             :day="day"
-            :product-id="product.id"
+            :product="product"
           />
         </td>
         <td class="total">{{ product.totalWeekOrders }}</td>

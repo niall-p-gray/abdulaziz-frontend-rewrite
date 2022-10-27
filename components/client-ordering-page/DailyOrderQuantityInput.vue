@@ -2,24 +2,25 @@
   <div class="flex justify-center items-center">
     <font-awesome-icon
       @click="decrement"
-      v-if="showButtons"
+      v-if="showButtons && editable"
       :icon="['fas', 'minus']"
       class="text-lg mr-2 cursor-pointer"
     />
     <input
-    v-if="shouldBeVisible"
     type="text"
     v-model="value"
+    :class="{'!bg-red-100': !editable, 'invisible': !shouldBeVisible}"
+    :disabled="!editable"
     @change="onChange"
     @keypress="onInput" >
     <font-awesome-icon
       @click="increment"
-      v-if="showButtons"
+      v-if="showButtons && editable"
       :icon="['fas', 'plus']"
       class="text-lg ml-2 cursor-pointer"
     />
     <img
-    v-if="showButtons"
+    v-if="showButtons && editable"
     @click="clear"
     class="ml-6"
     src="~/assets/icons/trash.svg" />
@@ -36,8 +37,8 @@ export default {
       default: false,
       type: Boolean
     },
-    productId: {
-      type: String,
+    product: {
+      type: Object,
       required: true
     },
     qty: {
@@ -64,6 +65,11 @@ export default {
       // Unless it's an admin editing, hide if the day is outside this client's delivery days
       return this.inAdminMode || deliveryDays.some(d => d.toLowerCase() === dayName.toLowerCase())
     },
+    editable () {
+      // Products can only be ordered X hours before the desired delivery day
+      const deadline = this.$moment(this.day, 'DD-MM-YYYY').subtract(this.product.loadTimeInHrs, 'hours')
+      return this.inAdminMode || this.$moment().isBefore(deadline)
+    },
     inAdminMode () {
       return this.$route.query.admin === 'true' || this.$route.query.admin === '1'
     }
@@ -85,7 +91,7 @@ export default {
       }
 
       const productOrderToUpdate = {
-        productId: this.productId,
+        productId: this.product.id,
         oldQty: this.qty,
         newQty: parseInt(this.value),
         day: this.day

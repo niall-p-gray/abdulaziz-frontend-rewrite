@@ -86,3 +86,17 @@ export const weekDayNames = () => {
     return moment(index, 'e').startOf('week').isoWeekday(index + 1).format('dddd')
   })
 }
+
+export const getWeekDayNumByName = (name) => {
+  const weekDays = weekDayNames()
+
+  for (let index = 0; index < weekDays.length; index++) {
+    const day = weekDays[index]
+
+    if (day.toLowerCase() === name.toLowerCase()) {
+      return index + 1
+    }
+  }
+}
+
+console.log(getWeekDayNumByName('Sunday'))
