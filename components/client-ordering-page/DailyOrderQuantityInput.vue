@@ -6,7 +6,7 @@
       :icon="['fas', 'minus']"
       class="text-lg mr-2 cursor-pointer"
     />
-    <input type="text" v-model="value" @change="onChange" />
+    <input type="text" v-model="value" @change="onChange" @keypress="onInput" >
     <font-awesome-icon
       @click="increment"
       v-if="showButtons"
@@ -53,7 +53,18 @@ export default {
     ...mapMutations({
       stageProductQtyUpdate: 'weekly-client-orders/UPDATE_STAGED_PRODUCT_QTY_UPDATES'
     }),
+    onInput (e) {
+      // Accept digits only
+      if (!(e.charCode >= 48 && e.charCode <= 57)) {
+        e.preventDefault()
+      }
+    },
     onChange () {
+      // Reset if the value is empty, negative or has a leading zero
+      if (/^0/.test(this.value) || /^-[0-9]*/.test(this.value) || this.value === '') {
+        this.value = 0
+      }
+
       const productOrderToUpdate = {
         productId: this.productId,
         oldQty: this.qty,
