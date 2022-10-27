@@ -54,16 +54,14 @@ export default {
   async mounted () {
     const fromDate = this.$moment().endOf('isoWeek').subtract(4, 'weeks').format('MM/DD/YYYY')
     const toDate = this.$moment().startOf('isoWeek').add(4, 'weeks').format('MM/DD/YYYY')
-    const testClientId = 'recQ3nAfYJ41yUrj5' // temp
 
-    // this.setSelectedClientId(this.$route.params.id)
-    this.setSelectedClientId(testClientId)
+    this.setSelectedClientId(this.$route.params.id)
 
     this.loading = true
     this.error = false
 
     try {
-      await this.getClients({ filterByFormula: airQuery().whereId(testClientId).get() })
+      await this.getClients({ filterByFormula: airQuery().whereId(this.$route.params.id).get() })
       // Redirect to 404 page if the client does not exist
       if (!this.currentClient) {
         this.$nuxt.error({ statusCode: 404, message: 'Not found' })
