@@ -1,35 +1,6 @@
 import moment from 'moment'
 
-const currentWeek = moment().startOf('isoWeek').format('DD-MM-YYYY')
-
-export const state = () => ({
-  selectedWeek: currentWeek, // Initial week,
-  selectedClientId: null,
-  stagedProductQtyUpdates: {}
-})
-
-export const mutations = {
-  SET_SELECTED_WEEK (state, week) {
-    state.selectedWeek = week
-  },
-  SET_SELECTED_CLIENT_ID (state, id) {
-    state.selectedClientId = id
-  },
-  SET_STAGED_PRODUCT_QTY_UPDATES (state, productOrderToUpdates) {
-    state.stagedProductQtyUpdates = productOrderToUpdates
-  },
-  UPDATE_STAGED_PRODUCT_QTY_UPDATES (state, productOrderToUpdate) {
-    if (!state.stagedProductQtyUpdates[productOrderToUpdate.productId]) {
-      state.stagedProductQtyUpdates[productOrderToUpdate.productId] = {}
-    }
-
-    const stage = state.stagedProductQtyUpdates[productOrderToUpdate.productId]
-
-    stage[productOrderToUpdate.day] = productOrderToUpdate
-  }
-}
-
-export const actions = {
+export default {
   updateSelectedWeek ({ commit }, week) {
     if (!/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/.test(week)) {
       console.error('Given date must be in DD-MM-YYYY format')
@@ -57,7 +28,10 @@ export const actions = {
 
         // Get current product’s order items for the current day/date
         const currentDayOrderItems = orderItems.filter(({ fields }) => {
-          return fields['Order Date'][0] === dateInYyyymmddFormat && fields.Product[0] === productId
+          return (
+            fields['Order Date'][0] === dateInYyyymmddFormat &&
+            fields.Product[0] === productId
+          )
         })
 
         // If there are no order items for current product on this particular date, create one
@@ -103,7 +77,6 @@ export const actions = {
 
         // If the new quantity is set to 0, delete all order items for this product on current day
         if (newQty === 0) {
-          console.log('The new qty is zero')
           const ids = currentDayOrderItems.map(o => o.id)
           console.log(`Deleting ${ids.length} order items`)
           try {
@@ -161,7 +134,10 @@ export const actions = {
           if (remaining > currentOrderItemQty) {
             amountToSubtract = currentOrderItemQty
           }
-          if (remaining === currentOrderItemQty || remaining < currentOrderItemQty) {
+          if (
+            remaining === currentOrderItemQty ||
+            remaining < currentOrderItemQty
+          ) {
             amountToSubtract = remaining
           }
 
@@ -178,97 +154,6 @@ export const actions = {
     commit('SET_STAGED_PRODUCT_QTY_UPDATES', {})
 
     return true // successful operation
-  }
-}
-
-export const getters = {
-  selectedWeek (state) {
-    return state.selectedWeek
-  },
-  currentClient (state, getters, rootState, rootGetters) {
-    const clients = rootGetters['entities/clients/clients']
-
-    return clients.find(client => client.id === state.selectedClientId)
-  },
-  selectedWeekProductOrders (state, getters, rootState, rootGetters) {
-    const { selectedWeek } = state
-    const products = rootGetters['entities/products/products']
-    const orderItems = rootGetters['entities/order-items/orderItems']
-
-    const productOrders = products.map((product) => {
-      const entry = {
-        id: product.id,
-        name: product.fields.Name,
-        description: product.fields.Description,
-        logo: null
-      }
-
-      // // Some products may not have an icon/logo
-      if (product.fields.Logo && product.fields.Logo.length) {
-        entry.logo = product.fields.Logo[0].thumbnails.small.url
-      }
-
-      // Initialize week orders for this particular product, this will be populated with the correct quantities below
-      entry.weekDayOrders = {}
-      Array.apply(null, Array(7)).forEach((_, i) => {
-        const selectedWeekStart = moment(selectedWeek, 'DD-MM-YYYY')
-        const weekDay = selectedWeekStart.isoWeekday(i + 1).format('DD-MM-YYYY')
-        entry.weekDayOrders[weekDay] = { qty: 0 }
-      })
-
-      entry.totalWeekOrders = 0 // This product’s cumulative orders for currently selected week
-
-      return entry
-    })
-
-    // Loop through selected week’s orders and finish populating totalWeekOrders & weekDayOrders properties
-    // of each product in productOrders array
-    for (let index = 0; index < orderItems.length; index++) {
-      const order = orderItems[index]
-      const orderDate = moment(order.fields['Order Date'], 'YYYY-MM-DD').format('DD-MM-YYYY')
-
-      const productOrder = productOrders.find(product => product.id === order.fields.Product[0])
-      const productOrderIndex = productOrders.indexOf(productOrder)
-
-      if (productOrder && productOrder.weekDayOrders[orderDate]) {
-        productOrder.weekDayOrders[orderDate].qty += order.fields.Orders
-        productOrder.totalWeekOrders += order.fields.Orders
-
-        productOrders.splice(productOrderIndex, 1, productOrder)
-      }
-    }
-
-    return productOrders
-  },
-  selectedWeekDailyTotalOrders (state, getters) {
-    const dailyOrders = {}
-    const weekOrders = getters.selectedWeekProductOrders
-
-    for (let index = 0; index < weekOrders.length; index++) {
-      const productOrder = weekOrders[index]
-
-      for (const date in productOrder.weekDayOrders) {
-        const order = productOrder.weekDayOrders[date]
-
-        if (dailyOrders[date]) {
-          dailyOrders[date] += order.qty
-        } else {
-          dailyOrders[date] = order.qty
-        }
-      }
-    }
-
-    return dailyOrders
-  },
-  selectedWeekTotalOrders (state, getters) {
-    let total = 0
-    const dailyTotalOrders = getters.selectedWeekDailyTotalOrders
-
-    for (const key in dailyTotalOrders) {
-      total += dailyTotalOrders[key]
-    }
-
-    return total
   }
 }
 
