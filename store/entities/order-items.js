@@ -1,4 +1,5 @@
 import base from '@/airtable'
+import { breakUpArrayIntoChunks } from '@/utils'
 
 export const state = () => ({
   orderItems: []
@@ -52,7 +53,13 @@ export const actions = {
     }
 
     try {
-      await base('Order Item').destroy(ids)
+      // Airtable only allows a max of 10 records to delete in a single request 
+      const chunks = breakUpArrayIntoChunks(ids, 10)
+      for (let index = 0; index < chunks.length; index++) {
+        const chunk = chunks[index]
+        await base('Order Item').destroy(chunk)
+      }
+
       commit('DELETE', ids)
     } catch (error) {
       throw new Error(`Could not delete given order items: ${error}`)

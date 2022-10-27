@@ -99,4 +99,12 @@ export const getWeekDayNumByName = (name) => {
   }
 }
 
-console.log(getWeekDayNumByName('Sunday'))
+export const breakUpArrayIntoChunks = (array, size) => {
+  const chunks = []
+
+  for (let index = 0; index < array.length; index += size) {
+    chunks.push(array.slice(index, index + size))
+  }
+
+  return chunks
+}
