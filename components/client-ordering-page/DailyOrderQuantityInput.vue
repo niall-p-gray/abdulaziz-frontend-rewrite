@@ -6,7 +6,12 @@
       :icon="['fas', 'minus']"
       class="text-lg mr-2 cursor-pointer"
     />
-    <input type="text" v-model="value" @change="onChange" @keypress="onInput" >
+    <input
+    v-if="shouldBeVisible"
+    type="text"
+    v-model="value"
+    @change="onChange"
+    @keypress="onInput" >
     <font-awesome-icon
       @click="increment"
       v-if="showButtons"
@@ -22,7 +27,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
@@ -47,6 +52,20 @@ export default {
   data () {
     return {
       value: this.qty
+    }
+  },
+  computed: {
+    ...mapGetters({
+      currentClient: 'weekly-client-orders/currentClient'
+    }),
+    shouldBeVisible () {
+      const dayName = this.$moment(this.day, 'DD-MM-YYYY').format('dddd')
+      const deliveryDays = this.currentClient.fields['Delivery Days'] || []
+      // Unless it's an admin editing, hide if the day is outside this client's delivery days
+      return this.inAdminMode || deliveryDays.some(d => d.toLowerCase() === dayName.toLowerCase())
+    },
+    inAdminMode () {
+      return this.$route.query.admin === 'true' || this.$route.query.admin === '1'
     }
   },
   methods: {
