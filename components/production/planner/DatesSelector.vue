@@ -4,7 +4,7 @@
       @click="toggle(date.date)"
       v-for="(date, index) in dateRange"
       :key="index"
-      :class="{ '!bg-yellow-300 font-bold': isDateSelected(date.date), '!cursor-not-allowed': !selectable }"
+      :class="{ '!bg-yellow font-bold': isDateSelected(date.date), '!cursor-not-allowed': !selectable }"
       class="bg-gray-100 text-gray-500 p-1 rounded-md hover:bg-yellow-100 cursor-pointer"
     >
       {{ date.displayValue }}
