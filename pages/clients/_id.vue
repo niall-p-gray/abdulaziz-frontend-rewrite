@@ -111,9 +111,15 @@ export default {
       this.savingChanges = false
 
       if (success) {
-        alert('Saved')
+        this.$notify({
+          text: 'Your changes have been successfully saved!',
+          type: 'success'
+        })
       } else {
-        alert('Failed to save')
+        this.$notify({
+          text: 'Could not save changes, please try again ',
+          type: 'error'
+        })
       }
     }
   },
