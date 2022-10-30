@@ -3,6 +3,8 @@
 @import './tables.scss';
 @import './inputs.scss';
 @import './pages/client-ordering-page.scss';
+@import './pages/login-page.scss';
+@import './create-order.scss';
 
 .main {
   @apply bg-primary min-h-screen;

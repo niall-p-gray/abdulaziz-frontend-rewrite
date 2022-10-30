@@ -1,0 +1,97 @@
+.create-order {
+  &__title {
+    @apply text-5xl text-center;
+  }
+  &__content {
+    @apply bg-white p-4 md:p-20 rounded mt-5;
+    &__question {
+      @apply text-2xl mt-10;
+      mark {
+        @apply inline-block pb-4;
+        line-height: 0.01em;
+      }
+    }
+    &__form-group {
+      @apply mt-10 md:pr-72;
+      &__label {
+        @apply text-sm md:text-lg text-left mr-5;
+        &__radio-main {
+          @apply font-medium text-base md:text-xl;
+        }
+        &__radio-second {
+          @apply ml-2 md:ml-5 font-light;
+          a {
+            @apply text-greenTxt;
+          }
+        }
+      }
+      &__input {
+        @apply bg-stone-50 border-2 border-stone-100 w-full rounded-lg py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary;
+      }
+      &__message {
+        @apply text-stone-300 font-normal italic mt-3;
+        a {
+          @apply text-greenTxt;
+        }
+      }
+      input[type="radio"] {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        @apply border-gray-300 bg-white appearance-none inline-block w-6 h-6 p-1 bg-clip-content rounded-full mr-2 md:mr-5;
+      }
+      input[type="radio"]:checked {
+        @apply bg-yellow border-yellow;
+      }
+      &__row {
+        @apply grid md:grid-cols-4 gap-3 md:gap-5 py-10 border-b-2 border-stone-100;
+        &__item {
+          @apply ml-5 md:ml-0;
+        }
+      }
+      &__checkbox {
+        -webkit-appearance: none;
+          -moz-appearance: none;
+          @apply w-3 h-3 text-yellow bg-white rounded border-2 border-gray-400 focus:ring-yellow dark:focus:ring-yellow focus:ring-2 mr-3;
+      }
+      &__checkbox:checked {
+        @apply bg-yellow border-yellow;
+      }
+      &__date-time {
+        @apply grid md:grid-cols-2 md:w-2/3 md:gap-10 gap-5;
+      }
+      &__grid {
+        @apply grid md:grid-cols-2 md:gap-5 gap-3 mt-3;
+      }
+    }
+    &__flavors {
+      @apply grid md:grid-cols-2 gap-10 mt-10;
+      &__item {
+        @apply grid grid-cols-8 gap-5 py-10 border-b-2 border-stone-100;
+        &__circle {
+          @apply w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center col-span-1;
+        }
+        &__name {
+          @apply text-lg font-medium underline col-span-3;
+        }
+        &__count {
+          @apply flex gap-3 col-span-3;
+          &__input {
+            @apply w-10 h-10 text-center bg-white border-gray-300 rounded focus:outline-none focus:border-yellow;
+          }
+          &__btn {
+            @apply h-10 w-10;
+          }
+        }
+      }
+    }
+    &__total {
+      @apply text-center text-lg mt-16;
+    }
+    &__create-btn {
+      @apply text-center;
+      button {
+        @apply bg-yellow text-black text-lg py-3 px-6 rounded mt-16;
+      }
+    }
+  }
+}

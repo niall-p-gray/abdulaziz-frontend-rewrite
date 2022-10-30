@@ -36,7 +36,7 @@
             </tr>
           </tbody>
         </table>
-        <button class="btn mt-16">Send To Production Planner Shee</button>
+        <PushOrdersToSheetButton :payload="sheetPayload" class="mt-16"/>
       </div>
       <p v-else class="text-center">No orders found for the selected dates</p>
     </div>
@@ -49,12 +49,14 @@
 
 <script>
 import DatesSelector from '@/components/production/planner/DatesSelector'
+import PushOrdersToSheetButton from '@/components/production/planner/PushOrdersToSheetButton'
 import base from '@/airtable'
 import { TEST_CLIENT_IDS } from '@/utils'
 
 export default {
   components: {
-    DatesSelector
+    DatesSelector,
+    PushOrdersToSheetButton
   },
   data () {
     return {
@@ -79,44 +81,54 @@ export default {
   },
   computed: {
     aggregatedProductOrders () {
-      const productOrders = []
-
-      if (!this.records.orderItems.length || !this.records.products.length) {
-        return productOrders
-      }
+      // Initialize f
+      const productOrders = this.records.products.map((product) => {
+        return {
+          id: product.id,
+          name: product.fields.Name,
+          description: product.fields.Description,
+          displayOrder: product.fields['Display Order'],
+          orderCount: 0
+        }
+      })
 
       for (let index = 0; index < this.records.orderItems.length; index++) {
         const orderItem = this.records.orderItems[index]
 
-        const product = this.records.products.find(prod => prod.id === orderItem.fields.Product[0])
-
-        let orderIndex
-        const productOrder = productOrders.find((prod, i) => {
-          if (prod.id === product.id) {
-            orderIndex = i
+        let productOrderIndex
+        const productOrder = productOrders.find((product, i) => {
+          if (product.id === orderItem.fields.Product[0]) {
+            productOrderIndex = i
             return true
           }
 
           return false
         })
 
-        if (!productOrder) {
-          productOrders.push({
-            id: product.id,
-            name: product.fields.Name,
-            description: product.fields.Description,
-            orderCount: orderItem.fields.Orders
-          })
-        } else {
+        if (productOrder) {
           productOrder.orderCount += orderItem.fields.Orders
-          productOrders.splice(orderIndex, 1, productOrder)
+          productOrders.splice(productOrderIndex, 1, productOrder)
         }
       }
 
-      return productOrders.sort((a, b) => b.orderCount - a.orderCount)
+      return productOrders.sort((a, b) => a.displayOrder - b.displayOrder)
     },
     totalOrders () {
       return this.aggregatedProductOrders.reduce((a, b) => a + b.orderCount, 0)
+    },
+    // What data should be sent to update the production planner spreadsheet
+    sheetPayload () {
+      const orders = this.aggregatedProductOrders.map((p) => {
+        return {
+          productName: p.name,
+          qty: p.orderCount
+        }
+      })
+
+      return {
+        dates: this.selectedDates,
+        orders
+      }
     }
   },
   methods: {
@@ -156,15 +168,8 @@ export default {
       }
     },
     async getProducts () {
-      // Retrieve all products for the order items we just fetched
       try {
-        const filterById = this.records.orderItems.map(rec => `RECORD_ID()='${rec.fields.Product[0]}'`).join(',')
-
-        const query = {
-          filterByFormula: `OR(${filterById})`
-        }
-
-        const records = await base('Products').select(query).all()
+        const records = await base('Products').select().all()
 
         this.records.products = records
       } catch (error) {
