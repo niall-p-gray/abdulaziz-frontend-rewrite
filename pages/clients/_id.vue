@@ -9,7 +9,6 @@
         <OrderFormMobile v-if="isMobile" class="mt-10" />
         <OrderFormDesktop v-else class="mt-16" />
         <div class="actions">
-          <button class="standing-order-btn">Make Standing Order</button>
           <button
           @click="save"
           :class="{'btn__disabled': savingChanges}"
@@ -18,7 +17,6 @@
           {{ savingChanges ? 'Saving...' : 'Save Order' }}
           </button>
         </div>
-        <p class="notice">To modify standind orders - please access from the desktop version of the app</p>
       </div>
       <div v-else class="mt-16 flex justify-center">
         <span v-if="loading">Loading...</span>

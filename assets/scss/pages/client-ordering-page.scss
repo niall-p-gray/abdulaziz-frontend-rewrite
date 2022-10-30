@@ -49,13 +49,5 @@
 
     .actions {
         @apply flex justify-center mt-8 lg:mt-20;
-
-        .standing-order-btn {
-            @apply btn btn__secondary mr-3 hidden lg:block;
-        }
-    }
-
-    .notice {
-        @apply mt-6 block lg:hidden italic text-sm;
     }
 }
