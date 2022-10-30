@@ -61,7 +61,7 @@ export default {
 
       rewrittenLinks.links.push({
         name: 'Client Order Page/Form',
-        url: 'clients/placeholder-id',
+        url: 'clients/recQ3nAfYJ41yUrj5',
         section: 'Rewritten Links',
         external: false
       })

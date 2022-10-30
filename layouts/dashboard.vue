@@ -9,6 +9,7 @@
       </div>
     </div>
     <Nuxt class="mt-10"/>
+    <notifications class="m-2"/>
   </div>
 </template>
 

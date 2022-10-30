@@ -1,0 +1,53 @@
+.order-page{
+    .table {
+        th:first-child{
+            border-right: none;
+        }
+
+        th:last-child{
+            padding: 14px 7px !important;
+        }
+
+        td:nth-child(1){
+            border-right: none;
+        }
+
+        td.product-info{
+            text-align: start;
+            border-left: none;
+            padding-left: 0 !important;
+        }
+
+        
+        th:nth-child(2){
+            text-align: start;
+            border-left: none;
+            padding-left: 0 !important;
+        }
+
+        th{
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        th, td{
+            text-align: center;
+        }
+
+        td{
+            padding: 14px 15px !important;
+        }
+
+        tr.total > td {
+            border: 1px solid #d1d1d1;
+        }
+
+        .edit-date{
+            text-align: start;
+            @apply text-gray-600;
+        }
+    }
+
+    .actions {
+        @apply flex justify-center mt-8 lg:mt-20;
+    }
+}
