@@ -4,7 +4,7 @@
       <h1 class="text-3xl title-text">
         Howdy Kolache Links
       </h1>
-      <div class="grid grid-cols-5 gap-4 justify-center mt-8">
+      <div v-if="!loading && !error" class="grid grid-cols-5 gap-4 justify-center mt-8">
         <div class="col-span-2">
           <LinksCard
           v-for="(group, index) in groupedLinks"
@@ -20,8 +20,12 @@
           />
         </div>
         <div class="col-span-3">
-          <coffee-shop-card :coffee-shops="coffeeShops" />
+          <ClientList />
         </div>
+      </div>
+      <div v-else class="flex justify-center items-center h-screen">
+        <span v-if="error" class="text-red-500">Oops, an error occurred. Please try reloading this page</span>
+        <span v-else>Loading...</span>
       </div>
     </div>
   </div>
@@ -29,17 +33,23 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import LinksCard from '@/components/dashboard/LinksCard'
+import ClientList from '@/components/dashboard/clients/ClientList'
 
 export default {
   name: 'IndexPage',
   components: {
-    CoffeeShopCard: () => import('@/components/dashboard/CoffeeShopCard'),
+    ClientList,
     LinksCard
+  },
+  data () {
+    return {
+      loading: true,
+      error: false
+    }
   },
   computed: {
     ...mapGetters({
-      pageLinks: 'home/getPageLinks',
-      coffeeShops: 'home/getCoffeeShops'
+      pageLinks: 'home/getPageLinks'
     }),
     rewrittenLinks () {
       const rewrittenLinks = {
@@ -51,7 +61,21 @@ export default {
 
       rewrittenLinks.links.push({
         name: 'Client Order Page/Form',
-        url: 'coffee-shop/rec09aRb0a4T1j0tu',
+        url: 'clients/placeholder-id',
+        section: 'Rewritten Links',
+        external: false
+      })
+
+      rewrittenLinks.links.push({
+        name: 'Rewards Lookup',
+        url: 'rewards/lookup',
+        section: 'Rewritten Links',
+        external: false
+      })
+
+      rewrittenLinks.links.push({
+        name: 'Upcoming Orders',
+        url: '/upcoming-orders',
         section: 'Rewritten Links',
         external: false
       })
@@ -78,6 +102,11 @@ export default {
         if (link.name.toLowerCase() === 'delivery summary') {
           link.external = false
           link.url = '/delivery/summary'
+        }
+
+        if (link.name.toLowerCase() === 'upcoming orders') {
+          link.external = false
+          link.url = '/upcoming-orders'
         }
 
         links.push(link)
@@ -116,18 +145,22 @@ export default {
     }
   },
   async mounted () {
-    console.log('env', process.env)
+    this.loading = true
+
     try {
       await this.getPageLinks()
-      this.getCoffeeShops()
+      await this.getClients()
     } catch (error) {
       console.error(error)
+      this.error = true
     }
+
+    this.loading = false
   },
   methods: {
     ...mapActions('home', [
       'getPageLinks',
-      'getCoffeeShops'
+      'getClients'
     ])
   }
 }
