@@ -1,10 +1,17 @@
 import moment from 'moment'
 
+// Routes that don’t require authentication 
+const whitelistedRouteNames = [
+  'clients-id'
+]
+
 export default ({ app, redirect }) => {
   app.router.beforeEach((to, from, next) => {
-    // Redirect to login, if we are not logged and we are not already going
+    // Redirect to login if we are not logged, target route is not whitelisted and we are not already going
     // to the login page
-    if (!isLoggedIn() && to.name !== 'login') return next('/login')
+    const whitelisted = whitelistedRouteNames.includes(to.name)
+    if (!isLoggedIn() && !whitelisted && to.name !== 'login') return next('/login')
+
     // Prevent us from accessing the login page while logged in
     if (isLoggedIn() && to.name === 'login') return next('/')
 
