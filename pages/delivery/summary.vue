@@ -68,7 +68,7 @@ export default {
       const orders = this.ordersPerClient
 
       // In order to align product names in the <thead> with their corresponding quantity inside the <tbody>,
-      // We need to sort orders[CLIENT_X].products array alphabetically (by the product name)
+      // We need to sort orders[CLIENT_X].products array in the same specific order
       const orderedOrders = []
 
       for (const key in orders) {
@@ -78,7 +78,7 @@ export default {
         const keys = Object.keys(products)
 
         keys.sort((a, b) => {
-          return products[a].name.localeCompare(products[b].name)
+          return products[a].displayOrder - products[b].displayOrder
         })
 
         const orderedProducts = keys.reduce((obj, k) => {
