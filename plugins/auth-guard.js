@@ -1,6 +1,6 @@
 import moment from 'moment'
 
-// Routes that don’t require authentication 
+// Routes that don’t require authentication
 const whitelistedRouteNames = [
   'clients-id'
 ]
