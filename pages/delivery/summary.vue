@@ -14,11 +14,11 @@
     <main v-if="!loading && !error">
       <div class="mt-16 orders-container">
         <ClientTypeOrders
-        v-for="(clientTypeOrders, type) in groupedClientTypeOrders"
-        :key="type"
-        :type="type"
+        v-for="(clientTypeOrders, index) in groupedClientTypeOrders"
+        :key="index"
+        :type="clientTypeOrders.type"
         :orders='clientTypeOrders.data' />
-        <p v-if="!Object.keys(groupedClientTypeOrders).length" class="text-center">No orders</p>
+        <p v-if="!groupedClientTypeOrders.length" class="text-center">No orders</p>
       </div>
       <div class="print-all-orders">
         <button class="btn">
@@ -96,27 +96,36 @@ export default {
     },
     // Returns an object (clientOrders) keyed by client types
     groupedClientTypeOrders () {
-      const data = {}
+      const groups = []
 
       for (let index = 0; index < this.clientOrders.length; index++) {
         const clientOrder = this.clientOrders[index]
         const clientType = clientOrder.client.type
+        const displayOrder = parseInt(clientType.match(/[0-9]*/)[0])
 
         if (this.selectedClientTypes.length && !this.selectedClientTypes.includes(clientType)) {
           continue
         }
 
-        if (!data[clientType]) {
-          data[clientType] = {
+        let group = groups.find(g => g.type === clientType)
+
+        if (!group) {
+          group = {
             type: clientType,
-            data: []
+            data: [],
+            displayOrder
           }
+
+          groups.push(group)
         }
 
-        data[clientType].data.push(clientOrder)
+        group.data.push(clientOrder)
+
+        const groupIndex = groups.findIndex(g => g.type === clientType)
+        groups.splice(groupIndex, 1, group)
       }
 
-      return data
+      return groups.sort((a, b) => a.displayOrder - b.displayOrder)
     },
     availableClientTypeList () {
       const list = []
