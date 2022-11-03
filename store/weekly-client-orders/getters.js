@@ -10,7 +10,8 @@ export default {
     return clients.find(client => client.id === state.selectedClientId)
   },
   selectedWeekProductOrders (state, getters, rootState, rootGetters) {
-    const { selectedWeek } = state
+    const selectedWeek = state.selectedWeek
+    const stagedUpdates = state.stagedProductQtyUpdates
     const products = rootGetters['entities/products/products']
     const orderItems = rootGetters['entities/order-items/orderItems']
 
@@ -24,7 +25,7 @@ export default {
         availableDays: product.fields['Available Days']
       }
 
-      // // Some products may not have an icon/logo
+      // Some products may not have an icon/logo
       if (product.fields.Logo && product.fields.Logo.length) {
         entry.logo = product.fields.Logo[0].thumbnails.small.url
       }
@@ -42,7 +43,7 @@ export default {
       return entry
     })
 
-    // Loop through selected week’s orders and finish populating totalWeekOrders & weekDayOrders properties
+    // Loop through selected week’s orders and finish populating weekDayOrders property
     // of each product in productOrders array
     for (let index = 0; index < orderItems.length; index++) {
       const order = orderItems[index]
@@ -57,10 +58,32 @@ export default {
 
       if (productOrder && productOrder.weekDayOrders[orderDate]) {
         productOrder.weekDayOrders[orderDate].qty += order.fields.Orders
-        productOrder.totalWeekOrders += order.fields.Orders
 
         productOrders.splice(productOrderIndex, 1, productOrder)
       }
+    }
+
+    // Calculate & populate totalWeekOrders prop for each product
+    for (let index = 0; index < productOrders.length; index++) {
+      const productOrder = productOrders[index]
+
+      productOrder.totalWeekOrders = 0
+
+      for (const date in productOrder.weekDayOrders) {
+        // Are there any pending qty updates for this product and on this date?
+        if (stagedUpdates[productOrder.id] && stagedUpdates[productOrder.id][date]) {
+          // Take into account qty updates that are awaiting to be applied/saved, and preview them
+          const qty = stagedUpdates[productOrder.id][date].newQty
+
+          productOrder.weekDayOrders[date].qty = qty
+          productOrder.totalWeekOrders += qty
+        } else {
+          // This day's qty did not change for this item
+          productOrder.totalWeekOrders += productOrder.weekDayOrders[date].qty
+        }
+      }
+
+      productOrders.splice(index, 1, productOrder)
     }
 
     return productOrders

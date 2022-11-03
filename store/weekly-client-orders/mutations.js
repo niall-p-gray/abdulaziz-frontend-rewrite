@@ -9,12 +9,19 @@ export default {
     state.stagedProductQtyUpdates = productOrderToUpdates
   },
   UPDATE_STAGED_PRODUCT_QTY_UPDATES (state, productOrderToUpdate) {
-    if (!state.stagedProductQtyUpdates[productOrderToUpdate.productId]) {
-      state.stagedProductQtyUpdates[productOrderToUpdate.productId] = {}
+    const prodId = productOrderToUpdate.productId
+
+    if (!state.stagedProductQtyUpdates[prodId]) {
+      state.stagedProductQtyUpdates[prodId] = {}
     }
 
-    const stage = state.stagedProductQtyUpdates[productOrderToUpdate.productId]
+    const stagedQtyUpdates = state.stagedProductQtyUpdates[prodId]
 
-    stage[productOrderToUpdate.day] = productOrderToUpdate
+    stagedQtyUpdates[productOrderToUpdate.day] = productOrderToUpdate
+
+    state.stagedProductQtyUpdates = {
+      ...state.stagedProductQtyUpdates,
+      [prodId]: { ...stagedQtyUpdates }
+    }
   }
 }
