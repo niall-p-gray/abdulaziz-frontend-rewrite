@@ -2,12 +2,20 @@ import moment from 'moment'
 
 export default {
   updateSelectedWeek ({ commit }, week) {
-    if (!/^[0-9]{2}-[0-9]{2}-[0-9]{4}$/.test(week)) {
-      console.error('Given date must be in DD-MM-YYYY format')
+    if (!isValidDateFormat(week)) {
+      console.error('Given week must be in DD-MM-YYYY format')
       return
     }
 
     commit('SET_SELECTED_WEEK', week)
+  },
+  updateSelectedDay ({ commit }, day) {
+    if (!isValidDateFormat(day)) {
+      console.error('Given day must be in DD-MM-YYYY format')
+      return
+    }
+
+    commit('SET_SELECTED_DAY', day)
   },
   setSelectedClientId ({ commit }, id) {
     commit('SET_SELECTED_CLIENT_ID', id)
@@ -171,4 +179,8 @@ const updateOrderItem = async (dispatch, orderItem, qty) => {
   }
 
   return false
+}
+
+const isValidDateFormat = (date) => {
+  return /^[0-9]{2}-[0-9]{2}-[0-9]{4}$/.test(date)
 }

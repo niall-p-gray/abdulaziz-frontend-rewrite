@@ -13,15 +13,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { weekDayNames } from '@/utils'
 
 export default {
-  props: {
-    value: {
-      required: true
-    }
-  },
   data () {
     return {
       format: 'DD-MM-YYYY'
@@ -32,7 +27,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      week: 'weekly-client-orders/selectedWeek'
+      week: 'weekly-client-orders/selectedWeek',
+      day: 'weekly-client-orders/selectedDay'
     }),
     weekDayNames () {
       return weekDayNames().map(name => name.substring(0, 2))
@@ -41,13 +37,16 @@ export default {
       return this.$moment(this.week, this.format)
     },
     selectedDay () {
-      return this.$moment(this.value, this.format)
+      return this.$moment(this.day, this.format)
     }
   },
   methods: {
+    ...mapActions({
+      updateSelectedDay: 'weekly-client-orders/updateSelectedDay'
+    }),
     select (weekdayNum) {
       const date = this.selectedWeek.isoWeekday(weekdayNum).format(this.format)
-      this.$emit('input', date)
+      this.updateSelectedDay(date)
     },
     isSelected (weekdayNum) {
       return this.selectedDay.isoWeekday() === weekdayNum

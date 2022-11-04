@@ -4,6 +4,9 @@ export default {
   selectedWeek (state) {
     return state.selectedWeek
   },
+  selectedDay (state) {
+    return state.selectedDay
+  },
   currentClient (state, getters, rootState, rootGetters) {
     const clients = rootGetters['entities/clients/clients']
 
@@ -117,5 +120,8 @@ export default {
     }
 
     return total
+  },
+  areTherePendingChanges (state) {
+    return Object.keys(state.stagedProductQtyUpdates).length
   }
 }
