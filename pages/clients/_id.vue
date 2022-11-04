@@ -11,8 +11,8 @@
         <div class="actions">
           <button
           @click="save"
-          :class="{'btn__disabled': savingChanges}"
-          :disabled="savingChanges"
+          :class="{'btn__disabled': !areTherePendingChanges || savingChanges}"
+          :disabled="!areTherePendingChanges || savingChanges"
           class="btn">
           {{ savingChanges ? 'Saving...' : 'Save Order' }}
           </button>
@@ -126,7 +126,8 @@ export default {
   computed: {
     ...mapGetters({
       orders: 'entities/orders/orders',
-      currentClient: 'weekly-client-orders/currentClient'
+      currentClient: 'weekly-client-orders/currentClient',
+      areTherePendingChanges: 'weekly-client-orders/areTherePendingChanges'
     }),
     isMobile () {
       if (process.client) {

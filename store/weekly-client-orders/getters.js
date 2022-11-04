@@ -117,5 +117,8 @@ export default {
     }
 
     return total
+  },
+  areTherePendingChanges (state) {
+    return Object.keys(state.stagedProductQtyUpdates).length
   }
 }
