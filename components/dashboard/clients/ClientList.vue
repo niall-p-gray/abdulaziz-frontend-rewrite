@@ -23,10 +23,16 @@ export default {
     }),
     groupedClientTypes () {
       const groups = []
+      const clientTypesToInclude = ['storefront', 'coffee shop', 'bar']
 
       for (let index = 0; index < this.clients.length; index++) {
         const client = this.clients[index]
-        const clientType = client.fields['Client Type'].replace(/^[0-9]\./, '')
+        const clientType = client.fields['Client Type'].replace(/^[0-9]\./, '').trim()
+        const displayOrder = client.fields['Client Type'].match(/[0-9]*/)[0]
+
+        if (!clientTypesToInclude.includes(clientType.toLowerCase())) {
+          continue
+        }
 
         if (client.fields['Show on TOC?'] === 0) {
           continue
@@ -41,7 +47,8 @@ export default {
         if (!group) {
           group = {
             name: clientType,
-            clients: []
+            clients: [],
+            displayOrder
           }
 
           groups.push(group)
@@ -53,7 +60,7 @@ export default {
         groups.splice(groupIndex, 1, group)
       }
 
-      return groups.sort((a, b) => a.clients.length - b.clients.length)
+      return groups.sort((a, b) => a.displayOrder - b.displayOrder)
     }
   }
 }

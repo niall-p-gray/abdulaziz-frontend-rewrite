@@ -62,10 +62,12 @@ export default {
     }),
     // Used to populate table head
     productNames () {
-      // Product names must be in alphabetical order, in order to stay in sync with below cells
-      return this.products.map(p => p.fields.Name).sort((a, b) => {
-        return a.localeCompare(b)
+      // Product names must be ordered by the value of "Display Order", in order to stay in sync with below cells
+      const products = [...this.products].sort((a, b) => {
+        return a.fields['Display Order'] - b.fields['Display Order']
       })
+
+      return products.map(p => p.fields.Name)
     },
     formattedClientType () {
       // Client types start with a number and a dot
@@ -91,13 +93,14 @@ export default {
         data.push({
           id: product.id,
           name: product.fields.Name,
-          qty
+          qty,
+          displayOrder: product.fields['Display Order']
         })
       }
 
-      // Must be in alphabetical order (by product name)
+      // Must be in a specific order
       data.sort((a, b) => {
-        return a.name.localeCompare(b.name)
+        return a.displayOrder - b.displayOrder
       })
 
       return data

@@ -38,7 +38,8 @@ export default {
           newClientOrder.products[p.id] = {
             id: p.id,
             name: p.fields.Name,
-            qty: 0
+            qty: 0,
+            displayOrder: p.fields['Display Order']
           }
         })
 
