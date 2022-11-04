@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="selectedDay">
     <div class="item">
       <div class="label">Day Total</div>
       <div class="value">{{ selectedWeekDailyTotalOrders[selectedDay] }}</div>
@@ -13,19 +13,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { ddmmyyDateValidator } from '@/utils/prop-validators'
 
 export default {
-  props: {
-    selectedDay: {
-      validator: ddmmyyDateValidator,
-      required: true
-    }
-  },
   computed: {
     ...mapGetters({
       selectedWeekDailyTotalOrders: 'weekly-client-orders/selectedWeekDailyTotalOrders',
-      selectedWeekTotalOrders: 'weekly-client-orders/selectedWeekTotalOrders'
+      selectedWeekTotalOrders: 'weekly-client-orders/selectedWeekTotalOrders',
+      selectedDay: 'weekly-client-orders/selectedDay'
     })
   }
 }

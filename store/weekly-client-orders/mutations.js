@@ -2,6 +2,9 @@ export default {
   SET_SELECTED_WEEK (state, week) {
     state.selectedWeek = week
   },
+  SET_SELECTED_DAY (state, day) {
+    state.selectedDay = day
+  },
   SET_SELECTED_CLIENT_ID (state, id) {
     state.selectedClientId = id
   },
