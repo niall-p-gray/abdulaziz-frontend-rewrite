@@ -27,6 +27,10 @@ export default () => {
       filters.push(`NOT({${column}}="${value}")`)
       return this
     },
+    notIn (column, values) {
+      filters.push(values.map(value => `NOT({${column}}='${value}')`).join(','))
+      return this
+    },
     notEmpty (column) {
       filters.push(`NOT({${column}}=BLANK())`)
       return this

@@ -68,6 +68,7 @@
 import moment from 'moment-timezone'
 import { mapActions, mapGetters } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
+import { TEST_CLIENT_IDS } from '@/utils'
 
 export default {
   components: {
@@ -102,6 +103,7 @@ export default {
     try {
       await this.getOrders({
         filterByFormula: airQuery()
+          .notIn('Client Rec ID', TEST_CLIENT_IDS)
           .todayOrAfter('Date')
           .get(),
         sort: [{ field: 'Date', direction: 'asc' }]
