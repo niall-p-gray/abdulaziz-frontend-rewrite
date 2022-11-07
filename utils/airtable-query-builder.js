@@ -44,6 +44,10 @@ export default () => {
     whereId (id) {
       filters.push(`RECORD_ID()="${id}"`)
       return this
+    },
+    todayOrAfter (column) {
+      filters.push(`{${column}} >= TODAY()`)
+      return this
     }
   }
 }
