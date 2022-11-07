@@ -43,7 +43,8 @@
               </div>
               <div v-else class="upcoming-orders__content__day__table__body__row__inline" />
               <div class="upcoming-orders__content__day__table__body__row__delivery">
-                <img class="w-10 h-10" src="~/assets/icons/truck.svg" alt="truck">
+                <img v-if="client[0]['Delivery Type'] == 'Delivery'" src="~/assets/icons/truck.svg" class="w-10 h-10" >
+                <img v-if="client[0]['Delivery Type'] == 'Pickup'" src="~/assets/icons/user-check.svg" class="w-10 h-10" >
               </div>
               <p>{{ client[0].client.Name }}</p>
               <div class="upcoming-orders__content__day__table__body__row__delivery !hidden">
