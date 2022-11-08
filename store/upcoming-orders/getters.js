@@ -1,3 +1,5 @@
+import moment from 'moment-timezone'
+
 export default {
   selectedClientTypes (state) {
     return state.selectedClientTypes
@@ -29,6 +31,22 @@ export default {
         temperature: order.fields.Temperature,
         deliveryType: order.fields['Delivery Type'],
         clientName: client.fields.Name
+      })
+    }
+
+    // Order day orders by the ready time
+    for (const key in dates) {
+      const orders = dates[key]
+
+      dates[key] = orders.sort((a, b) => {
+        if (!a.readyTime || !b.readyTime) {
+          return false
+        }
+
+        const aReadyTime = moment(a.readyTime, 'hh:mm')
+        const bReadyTime = moment(b.readyTime, 'hh:mm')
+
+        return aReadyTime.unix() - bReadyTime.unix()
       })
     }
 
