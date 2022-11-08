@@ -105,6 +105,7 @@ export default {
         filterByFormula: airQuery()
           .notIn('Client Rec ID', TEST_CLIENT_IDS)
           .todayOrAfter('Date')
+          .before('Date', this.$moment().add('days', 28).format('MM/DD/YYYY'))
           .get(),
         sort: [{ field: 'Date', direction: 'asc' }]
       })
