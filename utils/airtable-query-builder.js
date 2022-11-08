@@ -27,6 +27,10 @@ export default () => {
       filters.push(`NOT({${column}}="${value}")`)
       return this
     },
+    notIn (column, values) {
+      filters.push(values.map(value => `NOT({${column}}='${value}')`).join(','))
+      return this
+    },
     notEmpty (column) {
       filters.push(`NOT({${column}}=BLANK())`)
       return this
@@ -43,6 +47,10 @@ export default () => {
     },
     whereId (id) {
       filters.push(`RECORD_ID()="${id}"`)
+      return this
+    },
+    todayOrAfter (column) {
+      filters.push(`{${column}} >= TODAY()`)
       return this
     }
   }
