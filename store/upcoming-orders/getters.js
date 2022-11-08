@@ -24,6 +24,10 @@ export default {
         dates[date] = []
       }
 
+      if (!order.fields['Summed Orders']){
+        continue
+      }
+
       dates[date].push({
         id: order.id,
         readyTime: order.fields['Ready Time'],
