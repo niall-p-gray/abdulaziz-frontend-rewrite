@@ -16,13 +16,14 @@
       }
       
       .qty {
-        @apply text-2xl text-gray-300;
+        @apply text-2xl;
+        color: #C4C4C4;
       }
     }
 
     .day-orders-container{
       margin-top: 5px;
-      
+
       .order {
         display: flex;
         margin-top: 12px;
