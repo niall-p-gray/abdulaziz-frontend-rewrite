@@ -1,55 +1,58 @@
 <template>
   <div class="upcoming-orders">
-    <h1 class="upcoming-orders__title">
-      Upcoming Orders
-    </h1>
-    <div v-if="!loading && !error" >
-      <div class="upcoming-orders__client-type">
+    <portal to="page-title">Upcoming Orders</portal>
+    <div v-if="!loading && !error" class="mt-16">
+      <div>
         <ClientTypeFilter :options="clientTypes" @change="onClientTypesFilterChange" />
       </div>
-      <div class="upcoming-orders__content">
-        <div v-for="(orders, date) in upcomingOrderDates" :key="date" class="upcoming-orders__content__day">
-          <div class="upcoming-orders__content__day__title">
-            <h1 class="upcoming-orders__content__day__title__date">
+      <div>
+        <div v-for="(orders, date) in upcomingOrderDates" :key="date" class="days">
+          <div class="day">
+            <h1 class="date">
               <mark>{{ formatDate(date) }}</mark>
             </h1>
-            <h2 class="upcoming-orders__content__day__title__orders">
+            <h2 class="qty">
               {{ orders.length }} orders
             </h2>
           </div>
-          <div class="upcoming-orders__content__day__table">
-            <div class="upcoming-orders__content__day__table__head">
-              <p>ready time</p>
-              <p>#</p>
-              <p>temp</p>
-              <p>del</p>
-              <p>client</p>
-              <p />
-            </div>
-            <div class="upcoming-orders__content__day__table__body">
-              <div v-for="order in orders" :key="order.id" class="upcoming-orders__content__day__table__body__row">
-                <p> {{ order.readyTime }} </p>
-                <p> {{ order.qty }} </p>
-                <div v-if="order.temperature == 'Hot'" class="upcoming-orders__content__day__table__body__row__inline">
-                  <img src="~/assets/icons/warm.svg" alt="warm">
-                  <span>Warm</span>
+          <div class="day-orders-container">
+            <div v-for="order in orders" :key="order.id" class="order">
+              <div class="cell time">
+                <div class="title">ready time</div>
+                <div class="value">{{ order.readyTime }}</div>
+              </div>
+              <div class="cell qty">
+                <div class="title">#</div>
+                <div class="value">{{ order.qty }}</div>
+              </div>
+              <div class="cell temperature">
+                <div class="title">temp</div>
+                <div class="value">
+                  <div v-if="order.temperature" class="flex items-center">
+                    <img v-if="order.temperature.toLowerCase() === 'hot'" src="~/assets/icons/warm.svg" >
+                    <img v-if="order.temperature.toLowerCase() === 'room temperature'" src="~/assets/icons/thermometer.svg" >
+                    <img v-if="order.temperature.toLowerCase() === 'chilled'" src="~/assets/icons/cold.svg" >
+
+                    <span class="ml-3">{{ formatTemp(order.temperature) }}</span>
+                  </div>
                 </div>
-                <div v-else-if="order.temperature == 'Room Temperature'" class="upcoming-orders__content__day__table__body__row__inline">
-                  <img src="~/assets/icons/thermometer.svg" alt="room">
-                  <span>Room Temp</span>
+              </div>
+              <div class="cell delivery">
+                <div class="title">del</div>
+                <div class="value">
+                  <div v-if="order.deliveryType" class="flex items-center">
+                    <img v-if="order.deliveryType.toLowerCase() === 'delivery'" src="~/assets/icons/truck.svg" >
+                    <img v-if="order.deliveryType.toLowerCase() === 'pickup'" src="~/assets/icons/user-check.svg" >
+                  </div>
                 </div>
-                <div v-else-if="order.temperature == 'Chilled'" class="upcoming-orders__content__day__table__body__row__inline">
-                  <img src="~/assets/icons/cold.svg" alt="cold">
-                  <span>Cold</span>
-                </div>
-                <div v-else class="upcoming-orders__content__day__table__body__row__inline" />
-                <div class="upcoming-orders__content__day__table__body__row__delivery">
-                  <img v-if="order.deliveryType == 'Delivery'" src="~/assets/icons/truck.svg" class="w-10 h-10" >
-                  <img v-if="order.deliveryType == 'Pickup'" src="~/assets/icons/user-check.svg" class="w-10 h-10" >
-                </div>
-                <p>{{ order.clientName }}</p>
-                <div class="upcoming-orders__content__day__table__body__row__delivery !hidden">
-                  <img class="w-6 h-6" src="~/assets/icons/pen.svg" alt="truck">
+              </div>
+              <div class="cell client">
+                <div class="title">client</div>
+                <div class="value">
+                  <div class="flex justify-between items-center">
+                    <span>{{ order.clientName }}</span>
+                    <img src="~/assets/icons/pen.svg" class="cursor-pointer" >
+                  </div>
                 </div>
               </div>
             </div>
@@ -131,6 +134,13 @@ export default {
     },
     formatDate (date) {
       return moment(date).format('ddd, M/DD')
+    },
+    formatTemp (temperature) {
+      if (temperature == 'Hot') return 'Warm'
+      if (temperature == 'chilled') return 'Cold'
+      if (temperature == 'Room Temperature') return 'Room Temp'
+
+      return temperature
     }
   }
 }
