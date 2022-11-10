@@ -1,21 +1,9 @@
 <template>
   <div class="mt-4">
     <h4 class="text-sm mb-4">Products</h4>
-    <div v-for="product in products" :key="product.id" class="item">
-      <div class="icon">
-        <img v-if="product.logo" :src="product.logo" />
-      </div>
-      <div class="ml-2 text-sm">
-        <strong>{{ product.name }}</strong>
-        <p class="text-sm text-gray-500">{{ product.description }}</p>
-      </div>
-      <div class="flex-1 text-right">
-        <span class="text-xl font-bold">#{{ product.qty }}</span>
-      </div>
-    </div>
-    <div class="mt-4 flex font-bold justify-between">
-      <span>Day total</span>
-      <span class="text-xl">#{{ total }}</span>
+    <div v-for="product in products" :key="product.id" class="flex items-center">
+        <span>{{ product.qty }}</span>
+        <span class="ml-2">{{ product.name }}</span>
     </div>
   </div>
 </template>
@@ -57,14 +45,8 @@ export default {
             const newEntry = {
               id: product.id,
               name: product.fields.Name,
-              description: product.fields.Description,
               qty: orderItem.fields.Orders,
-              logo: null,
               displayOrder: product.fields['Display Order']
-            }
-
-            if (product.fields.Logo && product.fields.Logo.length) {
-              newEntry.logo = product.fields.Logo[0].thumbnails.small.url
             }
 
             entries.push(newEntry)
@@ -73,23 +55,12 @@ export default {
       }
 
       return entries.sort((a, b) => a.displayOrder - b.displayOrder)
-    },
-    total () {
-      return this.products.reduce((qty, p) => qty + p.qty, 0)
     }
   }
 }
 </script>
 
 <style scoped>
-.item {
-  @apply flex items-center mt-3;
-}
-
-.icon {
-  @apply rounded-full w-7 h-7 bg-gray-200 text-sm;
-}
-
 h4 {
   color: #c4c4c4;
 }
