@@ -24,13 +24,19 @@ export default {
         dates[date] = []
       }
 
-      if (!order.fields['Summed Orders']){
+      if (!order.fields['Summed Orders']) {
         continue
+      }
+
+      let readyTime = order.fields['Ready Time']
+
+      if (readyTime) {
+        readyTime = moment(readyTime, 'hh:mm').format('h:mm a')
       }
 
       dates[date].push({
         id: order.id,
-        readyTime: order.fields['Ready Time'],
+        readyTime,
         qty: order.fields['Summed Orders'],
         temperature: order.fields.Temperature,
         deliveryType: order.fields['Delivery Type'],
@@ -47,8 +53,8 @@ export default {
           return false
         }
 
-        const aReadyTime = moment(a.readyTime, 'hh:mm')
-        const bReadyTime = moment(b.readyTime, 'hh:mm')
+        const aReadyTime = moment(a.readyTime, 'h:mm a')
+        const bReadyTime = moment(b.readyTime, 'h:mm a')
 
         return aReadyTime.unix() - bReadyTime.unix()
       })
