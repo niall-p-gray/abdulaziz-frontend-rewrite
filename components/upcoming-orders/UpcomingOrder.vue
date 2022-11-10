@@ -42,7 +42,9 @@
               </p>
             </div>
             <div class="actions hidden lg:flex justify-end">
-              <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs"/>
+              <a :href="order.editUrl" target="_blank">
+                <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs"/>
+              </a>
               <font-awesome-icon :icon="['fas', `chevron-${expanded ? 'up' : 'down'}`]" class="text-s ml-4" />
             </div>
           </div>
