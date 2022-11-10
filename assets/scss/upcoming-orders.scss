@@ -1,15 +1,18 @@
+$maxWidth: 1000px;
+$bgColor: #FBFBF9;
+
 .upcoming-orders {
   .days {
     @apply mb-10 mt-28 mx-auto w-11/12;
 
     .day {
-      @apply flex gap-20 md:gap-16;
+      @apply flex justify-between lg:justify-start lg:gap-20 md:gap-16;
 
       .date {
         @apply text-2xl md:text-3xl font-bold;
         mark {
           display: inline-block;
-          padding-bottom: 19px;
+          padding-bottom: 17px;
           line-height: 0.1em;
           background: #FCE30096;
         }
@@ -27,20 +30,28 @@
       .order {
         display: flex;
         margin-top: 12px;
+        flex-wrap: wrap;
+
+        @media screen and (max-width: $maxWidth) {
+          background: $bgColor;
+          padding: 13px 20px;
+        }
 
         &:first-child .title {
           display: block !important;
         }
 
         .cell {
-          overflow: hidden;
+          overflow:hidden;
 
           &.time{
             width: 12%;
+            order: 1;
           }
 
           &.qty{
             width: 12%;
+            order: 2;
 
             .title, .value {
               text-align: center;
@@ -49,6 +60,8 @@
 
           &.temperature{
             width: 17%;
+            order: 3;
+
             .value {
               font-weight: normal;
             }
@@ -56,20 +69,21 @@
 
           &.delivery{
             width: 11%;
+            order: 4;
           }
 
-          &:last-child{
+          &.client{
             flex: 1;
+            order: 5;
           }
 
           .title {
             color: #C4C4C4;
-            display: none;
-            @apply text-sm;
+            @apply text-sm block lg:hidden;
           }
 
           .value {
-            background: #FBFBF9;
+            background: $bgColor;
             color: #212322;
             border-radius: 8px;
             height: 100%;
@@ -79,6 +93,61 @@
 
           .title, .value {
             padding: 13px 20px;
+          }
+
+          @media screen and (max-width: $maxWidth) {
+            width: 33% !important;
+
+            .edit-btn {
+              display: none;
+            }
+
+            &.time, &.qty{
+              .value {
+                font-size: 22px !important;
+              }
+            }
+
+            &.time{
+              width: 40% !important;
+            }
+
+            &.qty {
+              width: 35% !important;
+              
+              .value, .title {                
+                text-align: left !important;
+              }
+            }
+
+            &.delivery {
+              width: 25% !important;
+              order: 2 !important;
+            }
+
+            &.temperature{
+              width: 40% !important;
+            }
+            
+            &.client{
+              width: 60% !important;
+            }
+            
+            &.client, &.temperature{
+              margin-top: 20px;
+            }
+
+            &.time, &.qty, &.delivery {
+              order: 2 !important;
+
+              .value {
+                font-size: 22px !important;
+              }
+            }
+
+            .title, .value {
+              padding: 0 !important;
+            }
           }
         }
       }

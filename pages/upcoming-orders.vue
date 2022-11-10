@@ -18,8 +18,8 @@
           <div class="day-orders-container">
             <div v-for="order in orders" :key="order.id" class="order">
               <div class="cell time">
-                <div class="title">ready time</div>
-                <div class="value">{{ order.readyTime }}</div>
+                <div class="title">Ready time</div>
+                <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
               </div>
               <div class="cell qty">
                 <div class="title">#</div>
@@ -35,23 +35,25 @@
 
                     <span class="ml-3">{{ formatTemp(order.temperature) }}</span>
                   </div>
+                  <div v-else>---</div>
                 </div>
               </div>
               <div class="cell delivery">
-                <div class="title">del</div>
+                <div class="title">Delivery</div>
                 <div class="value">
                   <div v-if="order.deliveryType" class="flex items-center">
                     <img v-if="order.deliveryType.toLowerCase() === 'delivery'" src="~/assets/icons/truck.svg" >
                     <img v-if="order.deliveryType.toLowerCase() === 'pickup'" src="~/assets/icons/user-check.svg" >
                   </div>
+                  <div v-else>---</div>
                 </div>
               </div>
               <div class="cell client">
-                <div class="title">client</div>
+                <div class="title">Client</div>
                 <div class="value">
                   <div class="flex justify-between items-center">
                     <span>{{ order.clientName }}</span>
-                    <img src="~/assets/icons/pen.svg" class="cursor-pointer" >
+                    <img src="~/assets/icons/pen.svg" class="cursor-pointer edit-btn" >
                   </div>
                 </div>
               </div>
@@ -136,9 +138,9 @@ export default {
       return moment(date).format('ddd, M/DD')
     },
     formatTemp (temperature) {
-      if (temperature == 'Hot') return 'Warm'
-      if (temperature == 'chilled') return 'Cold'
-      if (temperature == 'Room Temperature') return 'Room Temp'
+      if (temperature === 'Hot') return 'Warm'
+      if (temperature === 'chilled') return 'Cold'
+      if (temperature === 'Room Temperature') return 'Room Temp'
 
       return temperature
     }
