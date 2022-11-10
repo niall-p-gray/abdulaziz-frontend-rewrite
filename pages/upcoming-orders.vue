@@ -16,59 +16,7 @@
             </h2>
           </div>
           <div class="day-orders-container">
-            <div v-for="order in orders" :key="order.id" class="order">
-              <div class="cell time lg:order-1">
-                <div class="title">Ready time</div>
-                <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
-              </div>
-              <div class="cell time lg:order-2">
-                <div class="title">Delivery time</div>
-                <div class="value">{{ order.deliveryTime ? order.deliveryTime : '---' }}</div>
-              </div>
-              <div class="cell qty lg:order-3">
-                <div class="title">#</div>
-                <div class="value">{{ order.qty }}</div>
-              </div>
-              <div class="cell temperature lg:order-4">
-                <div class="title">Temperature</div>
-                <div class="value">
-                  <div v-if="order.temperature" class="flex items-center">
-                    <img v-if="order.temperature.toLowerCase() === 'hot'" src="~/assets/icons/warm.svg" >
-                    <img v-if="order.temperature.toLowerCase() === 'room temperature'" src="~/assets/icons/thermometer.svg" >
-                    <img v-if="order.temperature.toLowerCase() === 'chilled'" src="~/assets/icons/cold.svg" >
-
-                    <span class="ml-3">{{ formatTemp(order.temperature) }}</span>
-                  </div>
-                  <div v-else>---</div>
-                </div>
-              </div>
-              <div class="cell packaging lg:order-5">
-                <div class="title">Packaging</div>
-                <div class="value">{{ order.packaging ? order.packaging : '---'}}</div>
-              </div>
-              <div class="cell delivery lg:order-6">
-                <div class="title">Delivery</div>
-                <div class="value">
-                  <div v-if="order.deliveryType" class="flex items-center">
-                    <img v-if="order.deliveryType.toLowerCase() === 'delivery'" src="~/assets/icons/truck.svg" >
-                    <img v-if="order.deliveryType.toLowerCase() === 'pickup'" src="~/assets/icons/user-check.svg" >
-                  </div>
-                  <div v-else>---</div>
-                </div>
-              </div>
-              <div class="cell client lg:order-7">
-                <div class="title">Client</div>
-                <div class="value">
-                  <div class="flex justify-between items-center">
-                    <div>
-                      <p>{{ order.clientName }}</p>
-                      <p v-if="order.clientDetails" class="text-sm font-normal">{{ order.clientDetails }}</p>
-                    </div>
-                    <img src="~/assets/icons/pen.svg" class="cursor-pointer edit-btn" >
-                  </div>
-                </div>
-              </div>
-            </div>
+            <UpcomingOrder v-for="order in orders" :key="order.id" :order="order" />
           </div>
         </div>
       </div>
@@ -85,10 +33,13 @@ import moment from 'moment-timezone'
 import { mapActions, mapGetters } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
 import { TEST_CLIENT_IDS } from '@/utils'
+import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
+import UpcomingOrder from '@/components/upcoming-orders/UpcomingOrder'
 
 export default {
   components: {
-    ClientTypeFilter: () => import('~/components/filters/ClientTypeFilter.vue')
+    ClientTypeFilter,
+    UpcomingOrder
   },
   layout: 'dashboard',
   data () {
@@ -147,13 +98,6 @@ export default {
     },
     formatDate (date) {
       return moment(date).format('ddd, M/DD')
-    },
-    formatTemp (temperature) {
-      if (temperature === 'Hot') return 'Warm'
-      if (temperature === 'chilled') return 'Cold'
-      if (temperature === 'Room Temperature') return 'Room Temp'
-
-      return temperature
     }
   }
 }

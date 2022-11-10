@@ -1,0 +1,124 @@
+<template>
+  <div @click="expanded = !expanded" class="order lg:cursor-pointer">
+    <div class="main-content">
+      <div class="cell time lg:order-1">
+        <div class="title">Ready time</div>
+        <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
+      </div>
+      <div class="cell time lg:order-2">
+        <div class="title">Delivery time</div>
+        <div class="value">
+          {{ order.deliveryTime ? order.deliveryTime : '---' }}
+        </div>
+      </div>
+      <div class="cell qty lg:order-3">
+        <div class="title">#</div>
+        <div class="value">{{ order.qty }}</div>
+      </div>
+      <div class="cell temperature lg:order-4">
+        <div class="title">Temperature</div>
+        <div class="value">
+          <div v-if="order.temperature" class="flex items-center">
+            <img
+              v-if="order.temperature.toLowerCase() === 'hot'"
+              src="~/assets/icons/warm.svg"
+            />
+            <img
+              v-if="order.temperature.toLowerCase() === 'room temperature'"
+              src="~/assets/icons/thermometer.svg"
+            />
+            <img
+              v-if="order.temperature.toLowerCase() === 'chilled'"
+              src="~/assets/icons/cold.svg"
+            />
+
+            <span class="ml-3">{{ temperature }}</span>
+          </div>
+          <div v-else>---</div>
+        </div>
+      </div>
+      <div class="cell packaging lg:order-5">
+        <div class="title">Packaging</div>
+        <div class="value">{{ order.packaging ? order.packaging : '---' }}</div>
+      </div>
+      <div class="cell delivery lg:order-6">
+        <div class="title">Delivery</div>
+        <div class="value">
+          <div v-if="order.deliveryType" class="flex items-center">
+            <img
+              v-if="order.deliveryType.toLowerCase() === 'delivery'"
+              src="~/assets/icons/truck.svg"
+            />
+            <img
+              v-if="order.deliveryType.toLowerCase() === 'pickup'"
+              src="~/assets/icons/user-check.svg"
+            />
+          </div>
+          <div v-else>---</div>
+        </div>
+      </div>
+      <div class="cell client lg:order-7">
+        <div class="title">Client</div>
+        <div class="value">
+          <div class="flex justify-between items-center">
+            <div>
+              <p>{{ order.clientName }}</p>
+              <p v-if="order.clientDetails" class="text-sm font-normal">
+                {{ order.clientDetails }}
+              </p>
+            </div>
+            <div class="actions hidden lg:flex justify-end">
+              <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs"/>
+              <font-awesome-icon :icon="['fas', `chevron-${expanded ? 'up' : 'down'}`]" class="text-s ml-4" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div :class="{expanded: expanded}" class="expandable-content">
+      <div class="details">
+        <div class="detail">
+          <span class="title">Address</span>
+          <span class="value">{{ order.address ? order.address : '---' }}</span>
+        </div>
+        <div class="detail">
+          <span class="title">Contact name</span>
+          <span class="value">{{ order.contactName  ? order.contactName : '---'}}</span>
+        </div>
+        <div class="detail">
+          <span class="title">Contact phone number</span>
+          <span class="value">{{ order.phoneNumber ? order.phoneNumber : '---' }}</span>
+        </div>
+        <div class="detail">
+          <span class="title">Delivery note</span>
+          <span class="value">{{ order.notes ? order.notes : '---' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: {
+    order: {
+      required: true,
+      type: Object
+    }
+  },
+  data () {
+    return {
+      expanded: false
+    }
+  },
+  computed: {
+    temperature () {
+      if (this.order.temperature === 'Hot') return 'Warm'
+      if (this.order.temperature === 'chilled') return 'Cold'
+      if (this.order.temperature === 'Room Temperature') return 'Room Temp'
+
+      return this.order.temperature
+    }
+  }
+}
+</script>

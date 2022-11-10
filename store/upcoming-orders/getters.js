@@ -41,9 +41,13 @@ export default {
         qty: order.fields['Summed Orders'],
         packaging: order.fields.Packaging,
         temperature: order.fields.Temperature,
+        notes: order.fields.Notes,
         deliveryType: order.fields['Delivery Type'],
         clientDetails: order.fields['Client Details'],
-        clientName: client.fields.Name
+        address: order.fields['Delivery Address'] || client.fields.Address,
+        phoneNumber: order.fields['Order Phone'] || client.fields.Phone,
+        clientName: client.fields.Name,
+        contactName: order.fields['Order Contact'] || client.fields['Primary Contact']
       })
     }
 
