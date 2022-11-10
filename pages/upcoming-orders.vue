@@ -77,9 +77,17 @@ export default {
         sort: [{ field: 'Date', direction: 'asc' }]
       })
 
+      if (this.orders.length) {
+        await this.getOrderItems({
+          filterByFormula: airQuery().whereIn('Order Rec ID', this.orders.map(o => o.id)).get()
+        })
+      }
+
       await this.getClients({
         filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get()
       })
+
+      await this.getProducts({ filterByFormula: airQuery().get() })
     } catch (error) {
       console.error(error)
       this.error = true
@@ -91,6 +99,8 @@ export default {
     ...mapActions({
       getClients: 'entities/clients/get',
       getOrders: 'entities/orders/get',
+      getOrderItems: 'entities/order-items/get',
+      getProducts: 'entities/products/get',
       updateSelectedClientTypes: 'upcoming-orders/updateSelectedClientTypes'
     }),
     onClientTypesFilterChange (v) {

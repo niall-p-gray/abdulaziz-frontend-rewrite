@@ -1,6 +1,6 @@
 <template>
-  <div @click="expanded = !expanded" class="order lg:cursor-pointer">
-    <div class="main-content">
+  <div class="order">
+    <div @click="expanded = !expanded" class="main-content lg:cursor-pointer">
       <div class="cell time lg:order-1">
         <div class="title">Ready time</div>
         <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
@@ -68,12 +68,17 @@
           <span class="value">{{ order.notes ? order.notes : '---' }}</span>
         </div>
       </div>
+      <OrderProducts :order="order" />
     </div>
   </div>
 </template>
 
 <script>
+import OrderProducts from '@/components/upcoming-orders/OrderProducts'
 export default {
+  components: {
+    OrderProducts
+  },
   props: {
     order: {
       required: true,
