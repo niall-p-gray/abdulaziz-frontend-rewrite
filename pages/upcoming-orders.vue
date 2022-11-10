@@ -21,11 +21,15 @@
                 <div class="title">Ready time</div>
                 <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
               </div>
-              <div class="cell qty lg:order-2">
+              <div class="cell time lg:order-2">
+                <div class="title">Delivery time</div>
+                <div class="value">{{ order.deliveryTime ? order.deliveryTime : '---' }}</div>
+              </div>
+              <div class="cell qty lg:order-3">
                 <div class="title">#</div>
                 <div class="value">{{ order.qty }}</div>
               </div>
-              <div class="cell temperature lg:order-3">
+              <div class="cell temperature lg:order-4">
                 <div class="title">temp</div>
                 <div class="value">
                   <div v-if="order.temperature" class="flex items-center">
@@ -38,11 +42,11 @@
                   <div v-else>---</div>
                 </div>
               </div>
-              <div class="cell packaging lg:order-4">
+              <div class="cell packaging lg:order-5">
                 <div class="title">Packaging</div>
                 <div class="value">{{ order.packaging ? order.packaging : '---'}}</div>
               </div>
-              <div class="cell delivery lg:order-5">
+              <div class="cell delivery lg:order-6">
                 <div class="title">Delivery</div>
                 <div class="value">
                   <div v-if="order.deliveryType" class="flex items-center">
@@ -52,7 +56,7 @@
                   <div v-else>---</div>
                 </div>
               </div>
-              <div class="cell client lg:order-6">
+              <div class="cell client lg:order-7">
                 <div class="title">Client</div>
                 <div class="value">
                   <div class="flex justify-between items-center">

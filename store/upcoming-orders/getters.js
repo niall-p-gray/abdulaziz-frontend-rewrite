@@ -20,7 +20,6 @@ export default {
         continue
       }
 
-
       if (!order.fields['Summed Orders']) {
         continue
       }
@@ -30,14 +29,15 @@ export default {
       }
 
       let readyTime = order.fields['Ready Time']
+      let deliveryTime = order.fields['Delivery Time']
 
-      if (readyTime) {
-        readyTime = moment(readyTime, 'hh:mm').format('h:mm a')
-      }
+      if (readyTime) readyTime = moment(readyTime, 'hh:mm').format('h:mm a')
+      if (deliveryTime) deliveryTime = moment(deliveryTime, 'hh:mm').format('h:mm a')
 
       dates[date].push({
         id: order.id,
         readyTime,
+        deliveryTime,
         qty: order.fields['Summed Orders'],
         packaging: order.fields.Packaging,
         temperature: order.fields.Temperature,
