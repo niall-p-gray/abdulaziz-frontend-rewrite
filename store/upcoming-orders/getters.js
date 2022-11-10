@@ -49,8 +49,17 @@ export default {
       const orders = dates[key]
 
       dates[key] = orders.sort((a, b) => {
-        if (!a.readyTime || !b.readyTime) {
-          return false
+        // Sort orders so that orders with undefined ready time come first
+        if (!a.readyTime && !b.readyTime) {
+          return 0
+        }
+
+        if (!a.readyTime) {
+          return -1
+        }
+
+        if (!b.readyTime) {
+          return 1
         }
 
         const aReadyTime = moment(a.readyTime, 'h:mm a')
