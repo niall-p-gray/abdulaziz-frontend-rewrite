@@ -94,14 +94,6 @@ $bgColor: #FBFBF9;
             }
           }
 
-          &.temperature{
-            width: 13%;
-
-            .value {
-              font-weight: normal;
-            }
-          }
-
           &.delivery{
             width: 8%;
           }
@@ -164,16 +156,12 @@ $bgColor: #FBFBF9;
             &.delivery {
               width: 25% !important;
             }
-
-            &.temperature{
-              width: 40% !important;
-            }
             
             &.client{
               width: 60% !important;
             }
             
-            &.client, &.temperature{
+            &.client{
               margin-top: 20px;
             }
 

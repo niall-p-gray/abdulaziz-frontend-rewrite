@@ -15,32 +15,6 @@
         <div class="title">#</div>
         <div class="value">{{ order.qty }}</div>
       </div>
-      <div class="cell temperature lg:order-4">
-        <div class="title">Temperature</div>
-        <div class="value">
-          <div v-if="order.temperature" class="flex items-center">
-            <img
-              v-if="order.temperature.toLowerCase() === 'hot'"
-              src="~/assets/icons/warm.svg"
-            />
-            <img
-              v-if="order.temperature.toLowerCase() === 'room temperature'"
-              src="~/assets/icons/thermometer.svg"
-            />
-            <img
-              v-if="order.temperature.toLowerCase() === 'chilled'"
-              src="~/assets/icons/cold.svg"
-            />
-
-            <span class="ml-3">{{ temperature }}</span>
-          </div>
-          <div v-else>---</div>
-        </div>
-      </div>
-      <div class="cell packaging lg:order-5">
-        <div class="title">Packaging</div>
-        <div class="value">{{ order.packaging ? order.packaging : '---' }}</div>
-      </div>
       <div class="cell delivery lg:order-6">
         <div class="title">Delivery</div>
         <div class="value">
@@ -109,15 +83,6 @@ export default {
   data () {
     return {
       expanded: false
-    }
-  },
-  computed: {
-    temperature () {
-      if (this.order.temperature === 'Hot') return 'Warm'
-      if (this.order.temperature === 'chilled') return 'Cold'
-      if (this.order.temperature === 'Room Temperature') return 'Room Temp'
-
-      return this.order.temperature
     }
   }
 }
