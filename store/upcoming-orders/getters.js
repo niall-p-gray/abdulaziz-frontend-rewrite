@@ -39,6 +39,7 @@ export default {
         id: order.id,
         readyTime,
         qty: order.fields['Summed Orders'],
+        packaging: order.fields.Packaging,
         temperature: order.fields.Temperature,
         deliveryType: order.fields['Delivery Type'],
         clientName: client.fields.Name
