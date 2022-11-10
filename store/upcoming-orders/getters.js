@@ -20,12 +20,13 @@ export default {
         continue
       }
 
-      if (!dates[date]) {
-        dates[date] = []
-      }
 
       if (!order.fields['Summed Orders']) {
         continue
+      }
+
+      if (!dates[date]) {
+        dates[date] = []
       }
 
       let readyTime = order.fields['Ready Time']
