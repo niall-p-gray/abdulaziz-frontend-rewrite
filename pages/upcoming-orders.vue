@@ -60,7 +60,10 @@
                 <div class="title">Client</div>
                 <div class="value">
                   <div class="flex justify-between items-center">
-                    <span>{{ order.clientName }}</span>
+                    <div>
+                      <p>{{ order.clientName }}</p>
+                      <p v-if="order.clientDetails" class="text-sm font-normal">{{ order.clientDetails }}</p>
+                    </div>
                     <img src="~/assets/icons/pen.svg" class="cursor-pointer edit-btn" >
                   </div>
                 </div>
