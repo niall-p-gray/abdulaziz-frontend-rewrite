@@ -30,7 +30,7 @@
                 <div class="value">{{ order.qty }}</div>
               </div>
               <div class="cell temperature lg:order-4">
-                <div class="title">temp</div>
+                <div class="title">Temperature</div>
                 <div class="value">
                   <div v-if="order.temperature" class="flex items-center">
                     <img v-if="order.temperature.toLowerCase() === 'hot'" src="~/assets/icons/warm.svg" >
