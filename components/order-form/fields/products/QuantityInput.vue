@@ -86,6 +86,7 @@ export default {
     value: {
       handler: function (newValue) {
         this.qty = newValue
+        if (!this.qty) this.qty = 0
       }
     }
   }

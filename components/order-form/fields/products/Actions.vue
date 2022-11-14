@@ -9,7 +9,7 @@
         <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
         <span>1 all day sample box</span>
       </button>
-      <button @click="addOneDozenBreakfast" class="btn btn__secondary">
+      <button @click="addOneBreakfastDozen" class="btn btn__secondary">
         <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
         <span>1 breakfast dozen</span>
       </button>
@@ -20,6 +20,9 @@
       <button @click="addOneDozenAllDay" class="btn btn__secondary">
         <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
         <span>1 all day dozen</span>
+      </button>
+      <button @click="$emit('clear')" class="btn btn__secondary !border-red-500 !text-red-500 hover:!bg-white">
+        clear all
       </button>
     </div>
   </div>

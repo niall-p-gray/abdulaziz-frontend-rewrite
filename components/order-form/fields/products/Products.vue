@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Actions @add-default-order="addDefaultOrder" />
+    <Actions @add-default-order="addDefaultOrder" @clear="reset" />
     <div class="flex justify-between flex-wrap gap-x-1 mt-2">
       <div v-for="product in formattedProducts" :key="product.id" class="item">
         <div :class="{'bg-gray-200': !product.logo}" class="icon">
@@ -64,6 +64,11 @@ export default {
         this.quantities[prodId] += quantities[prodId]
       }
 
+      this.onProductQtyChange()
+      this.$forceUpdate()
+    },
+    reset () {
+      this.quantities = {}
       this.onProductQtyChange()
       this.$forceUpdate()
     }
