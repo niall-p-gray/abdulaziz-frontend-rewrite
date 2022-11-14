@@ -18,6 +18,10 @@
                 <input v-model="address.postcode" @change="onChange" type="text" placeholder="Postal code" class="w-1/2 ml-2">
             </div>
         </div>
+        <div class="form-group">
+          <label>Delivery Notes</label>
+          <textarea v-model="deliveryNotes" cols="30" @change="onChange" placeholder="Delivery Notes"></textarea>
+        </div>
     </div>
 </template>
 
@@ -32,6 +36,7 @@ export default {
     return {
       client: this.selectedClient,
       deliveryMethod: 'Pickup',
+      deliveryNotes: null,
       address: {
         shipAddress: this.client ? this.client.address : null,
         address2: null,
@@ -59,7 +64,8 @@ export default {
       this.$emit('input', {
         address: this.address,
         deliveryMethod: this.deliveryMethod,
-        json: this.json
+        json: this.json,
+        deliveryNotes: this.deliveryNotes
       })
     }
   },

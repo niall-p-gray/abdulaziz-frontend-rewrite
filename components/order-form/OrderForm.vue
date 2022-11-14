@@ -104,6 +104,8 @@ export default {
         payload['Delivery Address JSON'] = this.form.delivery.json
       }
 
+      if (this.form.delivery.deliveryNotes) payload['Delivery Notes'] = this.form.delivery.deliveryNotes
+
       if (this.form.deliveryDate.readyTime) payload['Ready Time'] = this.form.deliveryDate.readyTime
 
       if (this.form.deliveryDate.deliveryTime) payload['Delivery Time'] = this.form.deliveryDate.deliveryTime
