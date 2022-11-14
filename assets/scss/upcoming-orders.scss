@@ -28,14 +28,19 @@ $bgColor: #FBFBF9;
       margin-top: 5px;
 
       .order {
-        margin-top: 12px;
+        margin-top: 16px;
         
         .main-content {
-          display: flex;
-          flex-wrap: wrap;
+          background: $bgColor;
 
           .actions {
             color: #00B373;
+          }
+
+          .special-notes {
+            @apply text-sm text-gray-700;
+            padding: 0px 20px;
+            padding-bottom: 13px;
           }
         }
 
