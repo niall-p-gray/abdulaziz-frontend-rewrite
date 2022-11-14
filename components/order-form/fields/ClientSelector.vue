@@ -1,0 +1,90 @@
+<template>
+  <div>
+    <div class="form-group">
+      <label for="">Client Name</label>
+      <select v-model="selectedClient" @change="onClientChange">
+        <option :value="null">Select a client</option>
+        <option
+          v-for="client in sortedClients"
+          :key="client.id"
+          :value="client"
+        >
+          {{ client.fields.Name }}
+        </option>
+      </select>
+      <span class="note">
+        Can't find the client?
+        <router-link to="" class="">Add Client</router-link>
+      </span>
+    </div>
+    <div class="form-group">
+      <label>Client Details</label>
+      <input v-model="details" @change="onChange" type="text" placeholder="Client Details" />
+      <span class="note">
+       For example, if the main client is an intermediary (samples, ezCater,
+       etc) - Please use this field to enter the actual client.
+      </span>
+    </div>
+    <div class="flex items-center justify-between mt-2">
+      <div class="form-group">
+        <label>Contact name</label>
+        <input v-model="contactName" @change="onChange" type="text" placeholder="Name" />
+      </div>
+      <div class="form-group ml-2">
+        <label>Phone Number</label>
+        <input v-model="phoneNumber" @change="onChange" type="text" placeholder="Phone number" />
+      </div>
+    </div>
+    <p>
+      If the contact is different from the details provided for the client please include their details here.
+    </p>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+
+export default {
+  data () {
+    return {
+      selectedClient: null,
+      details: null,
+      contactName: null,
+      phoneNumber: null
+    }
+  },
+  computed: {
+    ...mapGetters({
+      clients: 'entities/clients/clients'
+    }),
+    sortedClients () {
+      return [...this.clients].sort((a, b) =>
+        a.fields.Name.localeCompare(b.fields.Name)
+      )
+    }
+  },
+  methods: {
+    onClientChange () {
+      if (this.selectedClient) {
+        if (this.selectedClient.fields['Primary Contact']) {
+          this.contactName = this.selectedClient.fields['Primary Contact']
+        }
+        if (this.selectedClient.fields.Phone) {
+          this.phoneNumber = this.selectedClient.fields.Phone
+        }
+      }
+
+      this.onChange()
+    },
+    onChange () {
+      this.$emit('input', {
+        id: this.selectedClient ? this.selectedClient.id : null,
+        details: this.details,
+        contactName: this.contactName,
+        phoneNumber: this.phoneNumber,
+        address: this.selectedClient.fields.Address
+      })
+    }
+  }
+}
+</script>

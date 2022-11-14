@@ -32,7 +32,7 @@
 import moment from 'moment-timezone'
 import { mapActions, mapGetters } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
-import { TEST_CLIENT_IDS } from '@/utils'
+// import { TEST_CLIENT_IDS } from '@/utils'
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 import UpcomingOrder from '@/components/upcoming-orders/UpcomingOrder'
 
@@ -70,7 +70,7 @@ export default {
     try {
       await this.getOrders({
         filterByFormula: airQuery()
-          .notIn('Client Rec ID', TEST_CLIENT_IDS)
+          // .notIn('Client Rec ID', TEST_CLIENT_IDS)
           .todayOrAfter('Date')
           .before('Date', this.$moment().add('days', 28).format('MM/DD/YYYY'))
           .get(),

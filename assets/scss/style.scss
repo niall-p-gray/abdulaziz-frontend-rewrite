@@ -4,7 +4,6 @@
 @import './inputs.scss';
 @import './pages/client-ordering-page.scss';
 @import './pages/login-page.scss';
-@import './create-order.scss';
 
 .main {
   @apply bg-primary min-h-screen;
@@ -55,4 +54,16 @@
       }
     }
   }
+}
+
+.section-title {
+  border-bottom: 1px solid #FCE30096;
+  box-shadow: 0px -12px 0px #FCE30096 inset;
+  display: inline;
+  @apply text-2xl font-bold;
+}
+
+.note {
+  @apply font-normal italic mt-2 text-sm;
+  color: rgb(100, 100, 100);
 }
