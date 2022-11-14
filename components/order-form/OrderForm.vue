@@ -106,6 +106,8 @@ export default {
 
       if (this.form.delivery.deliveryNotes) payload['Delivery Notes'] = this.form.delivery.deliveryNotes
 
+      if (this.form.delivery.deliveryDriver) payload['Delivery Driver'] = this.form.delivery.deliveryDriver
+
       if (this.form.deliveryDate.readyTime) payload['Ready Time'] = this.form.deliveryDate.readyTime
 
       if (this.form.deliveryDate.deliveryTime) payload['Delivery Time'] = this.form.deliveryDate.deliveryTime

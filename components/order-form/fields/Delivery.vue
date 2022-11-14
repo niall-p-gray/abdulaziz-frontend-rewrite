@@ -17,10 +17,14 @@
                 <input v-model="address.state" @change="onChange" type="text" placeholder="State/Province" class="w-1/2">
                 <input v-model="address.postcode" @change="onChange" type="text" placeholder="Postal code" class="w-1/2 ml-2">
             </div>
-        </div>
-        <div class="form-group">
-          <label>Delivery Notes</label>
-          <textarea v-model="deliveryNotes" cols="30" @change="onChange" placeholder="Delivery Notes"></textarea>
+            <div class="form-group">
+              <label>Delivery Notes</label>
+              <textarea v-model="deliveryNotes" cols="30" @change="onChange" placeholder="Delivery Notes"></textarea>
+            </div>
+            <div class="form-group">
+              <label>Delivery Driver</label>
+              <input v-model="deliveryDriver" @change="onChange" type="text" placeholder="Delivery Driver">
+            </div>
         </div>
     </div>
 </template>
@@ -37,6 +41,7 @@ export default {
       client: this.selectedClient,
       deliveryMethod: 'Pickup',
       deliveryNotes: null,
+      deliveryDriver: null,
       address: {
         shipAddress: this.client ? this.client.address : null,
         address2: null,
@@ -65,7 +70,8 @@ export default {
         address: this.address,
         deliveryMethod: this.deliveryMethod,
         json: this.json,
-        deliveryNotes: this.deliveryNotes
+        deliveryNotes: this.deliveryNotes,
+        deliveryDriver: this.deliveryDriver
       })
     }
   },
