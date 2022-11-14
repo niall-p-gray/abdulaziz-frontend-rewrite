@@ -43,6 +43,7 @@ export default {
         temperature: order.fields.Temperature,
         notes: order.fields.Notes,
         deliveryNotes: order.fields['Delivery Notes'],
+        deliveryDriver: order.fields['Delivery Driver'],
         deliveryType: order.fields['Delivery Type'],
         editUrl: order.fields['Edit Order'].url,
         clientDetails: order.fields['Client Details'],

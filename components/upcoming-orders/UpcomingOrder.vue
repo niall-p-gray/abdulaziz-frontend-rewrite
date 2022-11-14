@@ -18,11 +18,11 @@
       <div class="cell delivery lg:order-6">
         <div class="title">Delivery</div>
         <div class="value">
-          <div v-if="order.deliveryType" class="flex items-center">
-            <img
-              v-if="order.deliveryType.toLowerCase() === 'delivery'"
-              src="~/assets/icons/truck.svg"
-            />
+          <div v-if="order.deliveryType">
+            <div v-if="order.deliveryType.toLowerCase() === 'delivery'" >
+              <img src="~/assets/icons/truck.svg" />
+              <div v-if="order.deliveryDriver" class="text-xs">{{ order.deliveryDriver }}</div>
+            </div>
             <img
               v-if="order.deliveryType.toLowerCase() === 'pickup'"
               src="~/assets/icons/user-check.svg"

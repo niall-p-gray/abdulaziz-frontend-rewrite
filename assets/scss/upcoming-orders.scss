@@ -82,20 +82,10 @@ $bgColor: #FBFBF9;
           overflow:hidden;
           width: 11% ;
 
-          &.time{
-            width: 10%;
-          }
-
           &.qty{
-            width: 6% !important;
-
             .title, .value {
               text-align: center;
             }
-          }
-
-          &.delivery{
-            width: 8%;
           }
 
           &.client{
