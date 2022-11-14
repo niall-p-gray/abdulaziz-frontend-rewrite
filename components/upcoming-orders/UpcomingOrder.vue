@@ -51,6 +51,7 @@
         </div>
       </div>
     </div>
+    <div v-if="order.notes" class="text-sm text-gray-500 pl-5 pt-1">{{ order.notes }}</div>
     <div :class="{expanded: expanded}" class="expandable-content">
       <div class="details">
         <div class="detail">
