@@ -68,7 +68,7 @@
         </div>
         <div class="detail">
           <span class="title">Delivery note</span>
-          <span class="value">{{ order.notes ? order.notes : '---' }}</span>
+          <span class="value">{{ order.deliveryNotes ? order.deliveryNotes : '---' }}</span>
         </div>
       </div>
       <OrderProducts :order="order" />

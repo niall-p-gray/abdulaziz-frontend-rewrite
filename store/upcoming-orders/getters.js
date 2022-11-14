@@ -42,6 +42,7 @@ export default {
         packaging: order.fields.Packaging,
         temperature: order.fields.Temperature,
         notes: order.fields.Notes,
+        deliveryNotes: order.fields['Delivery Notes'],
         deliveryType: order.fields['Delivery Type'],
         editUrl: order.fields['Edit Order'].url,
         clientDetails: order.fields['Client Details'],
