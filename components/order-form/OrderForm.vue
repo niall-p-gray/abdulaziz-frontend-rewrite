@@ -175,9 +175,8 @@ export default {
       }
 
       if (this.form.delivery.deliveryMethod.toLowerCase() === 'delivery') {
-        const { shipAddress, locality, state, postcode } = this.form.delivery.address
-        const missingField = !shipAddress || !locality || !state || !postcode
-        if (missingField) {
+        const { shipAddress } = this.form.delivery.address
+        if (!shipAddress || shipAddress.trim() === '') {
           this.$notify({
             text: 'Please enter an address',
             type: 'error'
