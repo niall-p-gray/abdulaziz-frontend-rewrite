@@ -23,7 +23,7 @@
         </section>
         <section>
           <h4 class="section-title">What Flavors Are In This Order?</h4>
-          <Products v-model="form.quantities" class="mt-6" />
+          <Products :value="form.quantities" @change="onQuantitiesUpdate" class="mt-6" />
         </section>
         <section class="flex flex-col items-center">
           <h4><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
@@ -74,6 +74,7 @@ export default {
   },
   computed: {
     totalSelectedProducts () {
+      console.log(this.form.quantities)
       let total = 0
       for (const prodId in this.form.quantities) {
         total += this.form.quantities[prodId]
@@ -87,6 +88,10 @@ export default {
       createOrder: 'entities/orders/create',
       createOrderItem: 'entities/order-items/create'
     }),
+    onQuantitiesUpdate (quantities) {
+      const form = { ...this.form, quantities }
+      this.form = form
+    },
     submit () {
       if (!this.validate()) return
       this.createMainOrder()

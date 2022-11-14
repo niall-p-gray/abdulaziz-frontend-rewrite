@@ -1,11 +1,14 @@
 <template>
-  <div class="flex justify-between flex-wrap gap-x-1">
-    <div v-for="product in formattedProducts" :key="product.id" class="item">
-      <div :class="{'bg-gray-200': !product.logo}" class="icon">
-        <img v-if="product.logo" :src="product.logo" />
+  <div>
+    <Actions @add-default-order="addDefaultOrder" />
+    <div class="flex justify-between flex-wrap gap-x-1 mt-2">
+      <div v-for="product in formattedProducts" :key="product.id" class="item">
+        <div :class="{'bg-gray-200': !product.logo}" class="icon">
+          <img v-if="product.logo" :src="product.logo" />
+        </div>
+        <strong class="title">{{ product.name + '  ' + product.id }}</strong>
+        <QuantityInput v-model="quantities[product.id]" @change="onProductQtyChange" />
       </div>
-      <strong class="title">{{ product.name }}</strong>
-      <QuantityInput v-model="quantities[product.id]" @change="onProductQtyChange" />
     </div>
   </div>
 </template>
@@ -13,14 +16,21 @@
 <script>
 import { mapGetters } from 'vuex'
 import QuantityInput from '@/components/order-form/fields/products/QuantityInput'
+import Actions from '@/components/order-form/fields/products/Actions'
 
 export default {
   components: {
-    QuantityInput
+    QuantityInput,
+    Actions
+  },
+  props: {
+    value: {
+      type: Object
+    }
   },
   data () {
     return {
-      quantities: {}
+      quantities: this.value
     }
   },
   computed: {
@@ -45,7 +55,17 @@ export default {
   },
   methods: {
     onProductQtyChange () {
-      this.$emit('input', this.quantities)
+      this.$emit('change', this.quantities)
+    },
+    addDefaultOrder (quantities) {
+      for (const prodId in quantities) {
+        if (!this.quantities[prodId]) this.quantities[prodId] = 0
+
+        this.quantities[prodId] += quantities[prodId]
+      }
+
+      this.onProductQtyChange()
+      this.$forceUpdate()
     }
   }
 }
