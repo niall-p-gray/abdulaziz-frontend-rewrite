@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import QuantityInput from '@/components/order-form/fields/products/QuantityInput'
 import Actions from '@/components/order-form/fields/products/Actions'
 
@@ -23,19 +23,15 @@ export default {
     QuantityInput,
     Actions
   },
-  props: {
-    value: {
-      type: Object
-    }
-  },
   data () {
     return {
-      quantities: this.value
+      quantities: {}
     }
   },
   computed: {
     ...mapGetters({
-      products: 'entities/products/products'
+      products: 'entities/products/products',
+      fields: 'order-form/fields'
     }),
     formattedProducts () {
       return this.products.map((product) => {
@@ -54,8 +50,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateFields: 'order-form/updateFields'
+    }),
     onProductQtyChange () {
-      this.$emit('change', this.quantities)
+      this.updateFields({
+        quantities: { ...this.quantities }
+      })
     },
     addDefaultOrder (quantities) {
       for (const prodId in quantities) {

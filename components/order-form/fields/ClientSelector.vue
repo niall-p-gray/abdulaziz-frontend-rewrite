@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -55,7 +55,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      clients: 'entities/clients/clients'
+      clients: 'entities/clients/clients',
+      fields: 'order-form/fields'
     }),
     sortedClients () {
       return [...this.clients].sort((a, b) =>
@@ -64,6 +65,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateFields: 'order-form/updateFields'
+    }),
     onClientChange () {
       if (this.selectedClient) {
         if (this.selectedClient.fields['Primary Contact']) {
@@ -77,12 +81,14 @@ export default {
       this.onChange()
     },
     onChange () {
-      this.$emit('input', {
-        id: this.selectedClient ? this.selectedClient.id : null,
-        details: this.details,
-        contactName: this.contactName,
-        phoneNumber: this.phoneNumber,
-        address: this.selectedClient.fields.Address
+      this.updateFields({
+        client: {
+          id: this.selectedClient ? this.selectedClient.id : null,
+          details: this.details,
+          contactName: this.contactName,
+          phoneNumber: this.phoneNumber,
+          address: this.selectedClient ? this.selectedClient.fields.Address : null
+        }
       })
     }
   }

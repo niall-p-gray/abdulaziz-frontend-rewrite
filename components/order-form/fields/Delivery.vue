@@ -30,20 +30,16 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
-  props: {
-    selectedClient: {
-      required: true
-    }
-  },
   data () {
     return {
-      client: this.selectedClient,
       deliveryMethod: 'Pickup',
       deliveryNotes: null,
       deliveryDriver: null,
       address: {
-        shipAddress: this.client ? this.client.address : null,
+        shipAddress: null,
         address2: null,
         locality: null,
         state: null,
@@ -53,6 +49,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters({
+      fields: 'order-form/fields'
+    }),
     json () {
       return JSON.stringify([
         { elementId: 'address2', elementValue: '' },
@@ -65,23 +64,34 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateFields: 'order-form/updateFields'
+    }),
     onChange () {
-      this.$emit('input', {
-        address: this.address,
-        deliveryMethod: this.deliveryMethod,
-        json: this.json,
-        deliveryNotes: this.deliveryNotes,
-        deliveryDriver: this.deliveryDriver
+      this.updateFields({
+        delivery: {
+          address: { ...this.address },
+          deliveryMethod: this.deliveryMethod,
+          json: this.json,
+          deliveryNotes: this.deliveryNotes,
+          deliveryDriver: this.deliveryDriver
+        }
       })
     }
   },
+  mounted () {
+    this.onChange() // Push initial values to vuex
+
+    if (this.fields.client && this.fields.client.address.shipAddress) {
+      this.address.shipAddress = this.fields.client.address.shipAddress
+    }
+  },
   watch: {
-    selectedClient: {
+    fields: {
       handler: function (newValue) {
-        if (newValue && newValue.address) {
-          this.address.shipAddress = newValue.address
+        if (newValue.client && newValue.client.address) {
+          this.address.shipAddress = newValue.client.address.shipAddress
         }
-        this.onChange()
       }
     }
   }

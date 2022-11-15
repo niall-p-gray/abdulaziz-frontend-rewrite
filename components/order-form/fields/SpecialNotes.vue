@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -13,8 +15,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions({
+      updateFields: 'order-form/updateFields'
+    }),
     onChange () {
-      this.$emit('input', this.value)
+      this.updateFields({
+        specialNotes: this.value
+      })
     }
   }
 }

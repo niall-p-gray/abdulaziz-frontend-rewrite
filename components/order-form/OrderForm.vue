@@ -4,26 +4,26 @@
       <div v-if="!created">
         <section>
           <h4 class="section-title">Who Is This Order For?</h4>
-          <ClientSelector v-model="form.client" class="mt-6" />
+          <ClientSelector class="mt-6" />
         </section>
         <section>
           <h4 class="section-title">When Should It Be Ready?</h4>
           <div class="mt-6">
-            <DeliveryDateTimes v-model="form.deliveryDate" />
+            <DeliveryDateTimes />
           </div>
         </section>
         <section>
           <h4 class="section-title">How Will the Client Get It?</h4>
           <div class="mt-6">
-            <Delivery v-model="form.delivery" :selected-client="form.client" />
+            <Delivery />
           </div>
         </section>
         <section>
-          <SpecialNotes v-model="form.specialNotes" />
+          <SpecialNotes />
         </section>
         <section>
           <h4 class="section-title">What Flavors Are In This Order?</h4>
-          <Products :value="form.quantities" @change="onQuantitiesUpdate" class="mt-6" />
+          <Products class="mt-6" />
         </section>
         <section class="flex flex-col items-center">
           <h4><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import ClientSelector from '@/components/order-form/fields/ClientSelector'
 import DeliveryDateTimes from '@/components/order-form/fields/DeliveryDateTimes'
 import Delivery from '@/components/order-form/fields/Delivery'
@@ -61,23 +61,18 @@ export default {
   },
   data () {
     return {
-      form: {
-        client: null,
-        deliveryDate: null,
-        delivery: null,
-        quantities: {},
-        specialNotes: null
-      },
       submitting: false,
       created: false
     }
   },
   computed: {
+    ...mapGetters({
+      fields: 'order-form/fields'
+    }),
     totalSelectedProducts () {
-      console.log(this.form.quantities)
       let total = 0
-      for (const prodId in this.form.quantities) {
-        total += this.form.quantities[prodId]
+      for (const prodId in this.fields.quantities) {
+        total += this.fields.quantities[prodId]
       }
 
       return total
@@ -88,10 +83,6 @@ export default {
       createOrder: 'entities/orders/create',
       createOrderItem: 'entities/order-items/create'
     }),
-    onQuantitiesUpdate (quantities) {
-      const form = { ...this.form, quantities }
-      this.form = form
-    },
     submit () {
       if (!this.validate()) return
       this.createMainOrder()
@@ -99,31 +90,31 @@ export default {
     async createMainOrder () {
       const payload = {
         'Data Source': 'Admin Order Creation Page',
-        Client: [this.form.client.id],
-        Date: this.form.deliveryDate.date,
-        'Delivery Type': this.form.delivery.deliveryMethod
+        Client: [this.fields.client.id],
+        Date: this.fields.deliveryDate.date,
+        'Delivery Type': this.fields.delivery.deliveryMethod
       }
 
-      if (this.form.delivery.deliveryMethod.toLowerCase() === 'delivery') {
-        payload['Delivery Address'] = this.form.delivery.address.shipAddress
-        payload['Delivery Address JSON'] = this.form.delivery.json
+      if (this.fields.delivery.deliveryMethod.toLowerCase() === 'delivery') {
+        payload['Delivery Address'] = this.fields.delivery.address.shipAddress
+        payload['Delivery Address JSON'] = this.fields.delivery.json
       }
 
-      if (this.form.delivery.deliveryNotes) payload['Delivery Notes'] = this.form.delivery.deliveryNotes
+      if (this.fields.delivery.deliveryNotes) payload['Delivery Notes'] = this.fields.delivery.deliveryNotes
 
-      if (this.form.delivery.deliveryDriver) payload['Delivery Driver'] = this.form.delivery.deliveryDriver
+      if (this.fields.delivery.deliveryDriver) payload['Delivery Driver'] = this.fields.delivery.deliveryDriver
 
-      if (this.form.deliveryDate.readyTime) payload['Ready Time'] = this.form.deliveryDate.readyTime
+      if (this.fields.deliveryDate.readyTime) payload['Ready Time'] = this.fields.deliveryDate.readyTime
 
-      if (this.form.deliveryDate.deliveryTime) payload['Delivery Time'] = this.form.deliveryDate.deliveryTime
+      if (this.fields.deliveryDate.deliveryTime) payload['Delivery Time'] = this.fields.deliveryDate.deliveryTime
 
-      if (this.form.client.details) payload['Client Details'] = this.form.client.details
+      if (this.fields.client.details) payload['Client Details'] = this.fields.client.details
 
-      if (this.form.specialNotes) payload.Notes = this.form.specialNotes
+      if (this.fields.specialNotes) payload.Notes = this.fields.specialNotes
 
-      if (this.form.client.phoneNumber) payload['Order Phone'] = this.form.client.phoneNumber
+      if (this.fields.client.phoneNumber) payload['Order Phone'] = this.fields.client.phoneNumber
 
-      if (this.form.client.contactName) payload['Order Contact'] = this.form.client.contactName
+      if (this.fields.client.contactName) payload['Order Contact'] = this.fields.client.contactName
 
       this.submitting = true
 
@@ -147,8 +138,8 @@ export default {
       this.submitting = false
     },
     async createOrderLines (orderId) {
-      for (const prodId in this.form.quantities) {
-        const qty = this.form.quantities[prodId]
+      for (const prodId in this.fields.quantities) {
+        const qty = this.fields.quantities[prodId]
         const newOrderItem = {
           Product: [prodId],
           Order: [orderId],
@@ -158,7 +149,7 @@ export default {
       }
     },
     validate () {
-      if (!this.form.client) {
+      if (!this.fields.client || !this.fields.client.id) {
         this.$notify({
           text: 'Please select a client',
           type: 'error'
@@ -166,7 +157,7 @@ export default {
         return false
       }
 
-      if (!this.form.deliveryDate || !this.form.deliveryDate.date) {
+      if (!this.fields.deliveryDate || !this.fields.deliveryDate.date) {
         this.$notify({
           text: 'Please pick a date',
           type: 'error'
@@ -174,8 +165,8 @@ export default {
         return false
       }
 
-      if (this.form.delivery.deliveryMethod.toLowerCase() === 'delivery') {
-        const { shipAddress } = this.form.delivery.address
+      if (this.fields.delivery.deliveryMethod.toLowerCase() === 'delivery') {
+        const { shipAddress } = this.fields.delivery.address
         if (!shipAddress || shipAddress.trim() === '') {
           this.$notify({
             text: 'Please enter an address',

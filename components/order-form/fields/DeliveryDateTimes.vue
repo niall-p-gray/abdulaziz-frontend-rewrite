@@ -37,6 +37,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data () {
     return {
@@ -47,9 +49,26 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapGetters({
+      fields: 'order-form/fields'
+    })
+  },
   methods: {
+    ...mapActions({
+      updateFields: 'order-form/updateFields'
+    }),
     onChange () {
-      this.$emit('input', this.values)
+      this.updateFields({
+        deliveryDate: {
+          ...this.values
+        }
+      })
+    }
+  },
+  watch: {
+    fields: {
+      handler: function () {}
     }
   }
 }
