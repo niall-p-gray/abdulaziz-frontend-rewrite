@@ -66,6 +66,13 @@ export default {
       })
     }
   },
+  mounted () {
+    if (this.fields.deliveryDate) {
+      this.values.date = this.fields.deliveryDate.date
+      this.values.readyTime = this.fields.deliveryDate.readyTime
+      this.values.deliveryTime = this.fields.deliveryDate.deliveryTime
+    }
+  },
   watch: {
     fields: {
       handler: function () {}

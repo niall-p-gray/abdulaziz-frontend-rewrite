@@ -80,17 +80,24 @@ export default {
     }
   },
   mounted () {
-    this.onChange() // Push initial values to vuex
+    if (this.fields.client && this.fields.client.address) {
+      this.address.shipAddress = this.fields.client.address
+    }
 
-    if (this.fields.client && this.fields.client.address.shipAddress) {
-      this.address.shipAddress = this.fields.client.address.shipAddress
+    if (this.fields.delivery) {
+      this.address = { ...this.fields.delivery.address }
+      this.deliveryMethod = this.fields.delivery.deliveryMethod
+      this.deliveryNotes = this.fields.delivery.deliveryNotes
+      this.deliveryDriver = this.fields.delivery.deliveryDriver
+    } else {
+      this.onChange() // Push initial values to vuex
     }
   },
   watch: {
     fields: {
       handler: function (newValue) {
         if (newValue.client && newValue.client.address) {
-          this.address.shipAddress = newValue.client.address.shipAddress
+          this.address.shipAddress = newValue.client.address
         }
       }
     }

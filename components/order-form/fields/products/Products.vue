@@ -6,7 +6,7 @@
         <div :class="{'bg-gray-200': !product.logo}" class="icon">
           <img v-if="product.logo" :src="product.logo" />
         </div>
-        <strong class="title">{{ product.name + '  ' + product.id }}</strong>
+        <strong class="title">{{ product.name }}</strong>
         <QuantityInput v-model="quantities[product.id]" @change="onProductQtyChange" />
       </div>
     </div>
@@ -69,9 +69,17 @@ export default {
       this.$forceUpdate()
     },
     reset () {
-      this.quantities = {}
+      for (const prodId in this.quantities) {
+        this.quantities[prodId] = 0
+      }
+
       this.onProductQtyChange()
       this.$forceUpdate()
+    }
+  },
+  mounted () {
+    if (this.fields.quantities) {
+      this.quantities = { ...this.fields.quantities }
     }
   }
 }

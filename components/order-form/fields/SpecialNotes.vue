@@ -6,13 +6,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
     return {
       value: null
     }
+  },
+  computed: {
+    ...mapGetters({
+      fields: 'order-form/fields'
+    })
   },
   methods: {
     ...mapActions({
@@ -23,6 +28,9 @@ export default {
         specialNotes: this.value
       })
     }
+  },
+  mounted () {
+    if (this.fields.specialNotes) this.value = this.fields.specialNotes
   }
 }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="w-8/12 mx-auto">
-      <div v-if="!created">
+      <div v-if="!createdOrderId">
         <section>
           <h4 class="section-title">Who Is This Order For?</h4>
           <ClientSelector class="mt-6" />
@@ -32,12 +32,18 @@
           :class="{'btn__disabled': submitting}"
           :disabled="submitting"
           class="btn mt-6">
-            {{ submitting ? 'Submitting...' : 'Create Order' }}
+            <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update Order' }}</span>
+            <span v-else>{{ submitting ? 'Submitting...' : 'Create Order' }}</span>
           </button>
         </section>
       </div>
       <div v-else class="mt-8">
-        <p class="text-center">Order successfully created</p>
+        <p class="text-center">
+          <span>Order successfully created</span>
+          <nuxt-link :to="`/orders/${createdOrderId}?source=create-form`" class="mls-4 btn">
+          View/Edit
+          </nuxt-link>
+        </p>
       </div>
     </div>
   </div>
@@ -59,10 +65,15 @@ export default {
     SpecialNotes,
     Products
   },
+  props: {
+    orderId: {
+      default: null
+    }
+  },
   data () {
     return {
       submitting: false,
-      created: false
+      createdOrderId: null
     }
   },
   computed: {
@@ -80,72 +91,50 @@ export default {
   },
   methods: {
     ...mapActions({
-      createOrder: 'entities/orders/create',
-      createOrderItem: 'entities/order-items/create'
+      createOrder: 'order-form/create',
+      updateOrder: 'order-form/update'
     }),
-    submit () {
+    async submit () {
       if (!this.validate()) return
-      this.createMainOrder()
-    },
-    async createMainOrder () {
-      const payload = {
-        'Data Source': 'Admin Order Creation Page',
-        Client: [this.fields.client.id],
-        Date: this.fields.deliveryDate.date,
-        'Delivery Type': this.fields.delivery.deliveryMethod
-      }
-
-      if (this.fields.delivery.deliveryMethod.toLowerCase() === 'delivery') {
-        payload['Delivery Address'] = this.fields.delivery.address.shipAddress
-        payload['Delivery Address JSON'] = this.fields.delivery.json
-      }
-
-      if (this.fields.delivery.deliveryNotes) payload['Delivery Notes'] = this.fields.delivery.deliveryNotes
-
-      if (this.fields.delivery.deliveryDriver) payload['Delivery Driver'] = this.fields.delivery.deliveryDriver
-
-      if (this.fields.deliveryDate.readyTime) payload['Ready Time'] = this.fields.deliveryDate.readyTime
-
-      if (this.fields.deliveryDate.deliveryTime) payload['Delivery Time'] = this.fields.deliveryDate.deliveryTime
-
-      if (this.fields.client.details) payload['Client Details'] = this.fields.client.details
-
-      if (this.fields.specialNotes) payload.Notes = this.fields.specialNotes
-
-      if (this.fields.client.phoneNumber) payload['Order Phone'] = this.fields.client.phoneNumber
-
-      if (this.fields.client.contactName) payload['Order Contact'] = this.fields.client.contactName
 
       this.submitting = true
 
-      try {
-        const order = await this.createOrder(payload)
-        await this.createOrderLines(order.id)
-        this.created = true
+      if (this.orderId) {
+        await this.update()
+      } else {
+        await this.create()
+      }
 
+      this.submitting = false
+    },
+    async create () {
+      this.createdOrderId = await this.createOrder()
+
+      if (this.createdOrderId) {
         this.$notify({
           text: 'Order created',
           type: 'success'
         })
-      } catch (error) {
-        console.error(error)
+      } else {
         this.$notify({
           text: 'Could not create order, please try again later',
           type: 'error'
         })
       }
-
-      this.submitting = false
     },
-    async createOrderLines (orderId) {
-      for (const prodId in this.fields.quantities) {
-        const qty = this.fields.quantities[prodId]
-        const newOrderItem = {
-          Product: [prodId],
-          Order: [orderId],
-          Orders: qty
-        }
-        await this.createOrderItem(newOrderItem)
+    async update () {
+      const success = await this.updateOrder(this.orderId)
+
+      if (success) {
+        this.$notify({
+          text: 'Order updated',
+          type: 'success'
+        })
+      } else {
+        this.$notify({
+          text: 'Could not save changes',
+          type: 'error'
+        })
       }
     },
     validate () {
@@ -176,7 +165,7 @@ export default {
         }
       }
 
-      if (!this.totalSelectedProducts) {
+      if (!this.totalSelectedProducts && !this.orderId) {
         this.$notify({
           text: 'No flavors selected',
           type: 'error'

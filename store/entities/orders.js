@@ -10,6 +10,12 @@ export const mutations = {
   },
   PUSH (state, order) {
     state.orders.push(order)
+  },
+  UPDATE (state, newInstance) {
+    const oldInstance = state.orders.find(order => order.id === newInstance.id)
+    const oldInstanceIndex = state.orders.indexOf(oldInstance)
+
+    state.orders.splice(oldInstanceIndex, 1, newInstance)
   }
 }
 
@@ -28,6 +34,14 @@ export const actions = {
       return record
     } catch (error) {
       throw new Error(`Could not create order: ${error}`)
+    }
+  },
+  async update ({ commit }, payload) {
+    try {
+      const records = await base('Order').update(payload)
+      records.forEach(order => commit('UPDATE', order))
+    } catch (error) {
+      throw new Error(`Could not update order: ${error}`)
     }
   }
 }

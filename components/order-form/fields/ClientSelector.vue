@@ -91,6 +91,17 @@ export default {
         }
       })
     }
+  },
+  mounted () {
+    if (this.fields.client) {
+      const client = this.fields.client
+
+      this.selectedClient = this.clients.find(c => c.id === client.id)
+      this.details = client.details
+      this.contactName = client.contactName
+      this.phoneNumber = client.phoneNumber
+      this.address = { ...client.address }
+    }
   }
 }
 </script>
