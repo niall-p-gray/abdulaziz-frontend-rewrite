@@ -103,13 +103,15 @@ export default {
         deliveryMethod: this.order.fields['Delivery Type'],
         deliveryNotes: this.order.fields['Delivery Notes'],
         deliveryDriver: this.order.fields['Delivery Driver'],
-        json: this.order.fields['Delivery Address JSON']
+        json: this.order.fields['Delivery Address JSON'],
+        address: {
+          shipAddress: this.order.fields['Delivery Address']
+        }
       }
 
       if (field.json) {
         const json = JSON.parse(field.json)
 
-        field.address = {}
         json.forEach((element) => {
           if (element.elementId === 'address2') return
 
