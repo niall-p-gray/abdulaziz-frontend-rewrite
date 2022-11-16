@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="mb-20 lg:m-0">
     <Actions @add-default-order="addDefaultOrder" @clear="reset" />
     <div class="md:flex justify-between flex-wrap gap-x-1 mt-2">
       <div v-for="product in formattedProducts" :key="product.id" class="item">
