@@ -1,29 +1,34 @@
 <template>
-  <div>
-    <div class="flex gap-x-3 flex-wrap">
-      <button @click="addOneBreakfast" class="btn btn__secondary">
-        <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
-        <span>1 breakfast sample box</span>
+  <div class="flex justify-end items-center">
+    <button @click="$emit('clear')" class="text-red-500">
+      clear all
+    </button>
+    <div class="dropdown ml-4">
+      <button @click="openDropDown = true" class="toggle-dropdown-btn underline">
+        Quick entry
       </button>
-      <button @click="addOneAllDaySample" class="btn btn__secondary">
-        <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
-        <span>1 all day sample box</span>
-      </button>
-      <button @click="addOneBreakfastDozen" class="btn btn__secondary">
-        <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
-        <span>1 breakfast dozen</span>
-      </button>
-      <button @click="addOneDozenBreakfastVeg" class="btn btn__secondary">
-        <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
-        <span>1 breakfast dozen (veg)</span>
-      </button>
-      <button @click="addOneDozenAllDay" class="btn btn__secondary">
-        <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
-        <span>1 all day dozen</span>
-      </button>
-      <button @click="$emit('clear')" class="btn btn__secondary !border-red-500 !text-red-500 hover:!bg-white">
-        clear all
-      </button>
+      <div :class="{'open': openDropDown}"  class="options">
+        <button @click="addOneBreakfast" class="btn btn__secondary">
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <span>1 breakfast sample box</span>
+        </button>
+        <button @click="addOneAllDaySample" class="btn btn__secondary">
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <span>1 all day sample box</span>
+        </button>
+        <button @click="addOneBreakfastDozen" class="btn btn__secondary">
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <span>1 breakfast dozen</span>
+        </button>
+        <button @click="addOneDozenBreakfastVeg" class="btn btn__secondary">
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <span>1 breakfast dozen (veg)</span>
+        </button>
+        <button @click="addOneDozenAllDay" class="btn btn__secondary">
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <span>1 all day dozen</span>
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -32,7 +37,8 @@
 export default {
   data () {
     return {
-      orderEventName: 'add-default-order'
+      orderEventName: 'add-default-order',
+      openDropDown: false
     }
   },
   methods: {
@@ -77,16 +83,45 @@ export default {
         recvpRS22hhPag0IF: 3
       })
     }
+  },
+  mounted () {
+    window.addEventListener('click', (e) => {
+      if (e.target.matches('.toggle-dropdown-btn')) return
+      if (e.target.closest('.toggle-dropdown-btn')) return
+
+      this.openDropDown = false
+    })
   }
 }
 </script>
 
 <style scoped>
-button {
-  @apply text-xs rounded-lg p-2 flex items-center border-gray-400 hover:bg-gray-100 mt-2;
+.options button {
+  @apply text-xs p-2 flex items-center mt-2 border-0;
 }
 
 span {
     @apply ml-2;
 }
+
+.dropdown {
+  position: relative;
+}
+
+.options{
+  @apply flex flex-col absolute p-2 bg-white z-10 hidden;
+  top: 27px;
+  left: -117px;
+  min-width: 200px;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 2px 6px 2px;
+}
+
+.options.open{
+  @apply flex;
+}
+
+.toggle-dropdown-btn {
+  display: block;
+}
+
 </style>
