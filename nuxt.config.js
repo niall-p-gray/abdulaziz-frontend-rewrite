@@ -38,7 +38,8 @@ export default {
   plugins: [
     { src: '~/plugins/auth-guard.js', mode: 'client' },
     { src: '~/plugins/notifications-ssr', ssr: true },
-    { src: '~/plugins/notifications-client', ssr: false }
+    { src: '~/plugins/notifications-client', ssr: false },
+    '~plugins/vue-js-modal.js'
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -15583,6 +15583,11 @@
   "resolved" "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz"
   "version" "1.0.0"
 
+"resize-observer-polyfill@^1.5.1":
+  "integrity" "sha512-LwZrotdHOo12nQuZlHEmtuXdqGoOD0OhaxopaNFxWzInpEgaLWoVuAMbTzixuosCx2nEG58ngzW3vxdWoxIgdg=="
+  "resolved" "https://registry.npmjs.org/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz"
+  "version" "1.5.1"
+
 "resolve-alpn@^1.0.0":
   "integrity" "sha512-0a1F4l73/ZFZOakJnQ3FvkJ2+gSTQWz/r2KE5OdDY0TxPm5h4GkqkWWfM47T7HsbnOtcJVEF4epCVy6u7Q3K+g=="
   "resolved" "https://registry.npmjs.org/resolve-alpn/-/resolve-alpn-1.2.1.tgz"
@@ -18214,6 +18219,13 @@
   "resolved" "https://registry.npmjs.org/vue-hot-reload-api/-/vue-hot-reload-api-2.3.4.tgz"
   "version" "2.3.4"
 
+"vue-js-modal@^2.0.1":
+  "integrity" "sha512-5FUwsH2zoxRKX4a7wkFAqX0eITCcIMunJDEfIxzHs2bHw9o20+Iqm+uQvBcg1jkzyo1+tVgThR/7NGU8djbD8Q=="
+  "resolved" "https://registry.npmjs.org/vue-js-modal/-/vue-js-modal-2.0.1.tgz"
+  "version" "2.0.1"
+  dependencies:
+    "resize-observer-polyfill" "^1.5.1"
+
 "vue-loader@^15.9.7":
   "integrity" "sha512-VU6tuO8eKajrFeBzMssFUP9SvakEeeSi1BxdTH5o3+1yUyrldp8IERkSdXlMI2t4kxF2sqYUDsQY+WJBxzBmZg=="
   "resolved" "https://registry.npmjs.org/vue-loader/-/vue-loader-15.10.0.tgz"
@@ -18290,7 +18302,7 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.0.0", "vue@^2.3.0", "vue@^2.5.18", "vue@^2.6.12", "vue@^2.6.14", "vue@~2", "vue@2.x":
+"vue@^2.0.0", "vue@^2.3.0", "vue@^2.5.18", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.6.14", "vue@~2", "vue@2.x":
   "integrity" "sha512-7MTirXG7LYJi3r2jeYy7EiXIhEE85uP3kBwSxqwDsvIfy/l7+qR4U6ajw8ji1KoP+wYYg7ZY28TBTf3P3Fa4Nw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.7.3.tgz"
   "version" "2.7.3"

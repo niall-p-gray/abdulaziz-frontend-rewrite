@@ -4,9 +4,7 @@ export default {
   updateFields: ({ commit }, updatedFields) => {
     commit('UPDATE_FIELDS', updatedFields)
   },
-  create: async ({ dispatch, getters }) => {
-    const payload = getters.orderCreationPayload
-
+  create: async ({ dispatch, getters }, payload) => {
     try {
       const order = await dispatch('entities/orders/create', payload, { root: true })
 

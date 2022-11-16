@@ -27,14 +27,17 @@
         </section>
         <section class="actions-wrapper">
           <h4><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
-          <button
-          @click="submit"
-          :class="{'btn__disabled': submitting}"
-          :disabled="submitting"
-          class="btn md:mt-6">
-            <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update' }}</span>
-            <span v-else>{{ submitting ? 'Submitting...' : 'Create' }}</span>
-          </button>
+          <div class="flex items-center md:mt-6">
+            <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-2">Copy</button>
+            <button
+            @click="submit"
+            :class="{'btn__disabled': submitting}"
+            :disabled="submitting"
+            class="btn">
+              <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update' }}</span>
+              <span v-else>{{ submitting ? 'Submitting...' : 'Create' }}</span>
+            </button>
+          </div>
         </section>
       </div>
       <div v-else class="mt-8">
@@ -56,6 +59,7 @@ import DeliveryDateTimes from '@/components/order-form/fields/DeliveryDateTimes'
 import Delivery from '@/components/order-form/fields/Delivery'
 import SpecialNotes from '@/components/order-form/fields/SpecialNotes'
 import Products from '@/components/order-form/fields/products/Products'
+import CopyOrderModal from '@/components/order-form/modas/CopyOrderModal'
 
 export default {
   components: {
@@ -78,7 +82,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      fields: 'order-form/fields'
+      fields: 'order-form/fields',
+      orderCreationPayload: 'order-form/orderCreationPayload'
     }),
     totalSelectedProducts () {
       let total = 0
@@ -108,7 +113,7 @@ export default {
       this.submitting = false
     },
     async create () {
-      this.createdOrderId = await this.createOrder()
+      this.createdOrderId = await this.createOrder(this.orderCreationPayload)
 
       if (this.createdOrderId) {
         this.$notify({
@@ -174,6 +179,12 @@ export default {
       }
 
       return true
+    },
+    openCopyOrderModal () {
+      this.$modal.show(CopyOrderModal, {}, {
+        width: 400,
+        name: 'copy-order'
+      })
     }
   }
 }
