@@ -32,7 +32,10 @@ export default {
     this.error = false
 
     try {
-      await this.getOrders({ filterByFormula: airQuery().whereId(this.$route.params.id).get() })
+      await this.getOrders({
+        filterByFormula: airQuery().whereId(this.$route.params.id).get(),
+        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact']
+      })
 
       if (!this.order) {
         this.$nuxt.error({ statusCode: 404, message: 'Not found' })
@@ -43,7 +46,9 @@ export default {
         filterByFormula: airQuery().where('Order Rec ID', this.order.id).get()
       })
 
-      await this.getClients()
+      await this.getClients({
+        fields: ['Name', 'Primary Contact', 'Address']
+      })
 
       await this.getProducts({
         filterByFormula: airQuery()

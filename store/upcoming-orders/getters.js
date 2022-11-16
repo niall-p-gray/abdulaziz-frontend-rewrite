@@ -45,7 +45,6 @@ export default {
         deliveryNotes: order.fields['Delivery Notes'],
         deliveryDriver: order.fields['Delivery Driver'],
         deliveryType: order.fields['Delivery Type'],
-        editUrl: order.fields['Edit Order'].url,
         clientDetails: order.fields['Client Details'],
         address: order.fields['Delivery Address'] || client.fields.Address,
         phoneNumber: order.fields['Order Phone'] || client.fields.Phone,

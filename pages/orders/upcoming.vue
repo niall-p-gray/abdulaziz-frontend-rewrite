@@ -74,7 +74,8 @@ export default {
           .todayOrAfter('Date')
           .before('Date', this.$moment().add('days', 28).format('MM/DD/YYYY'))
           .get(),
-        sort: [{ field: 'Date', direction: 'asc' }]
+        sort: [{ field: 'Date', direction: 'asc' }],
+        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact']
       })
 
       if (this.orders.length) {
@@ -84,7 +85,8 @@ export default {
       }
 
       await this.getClients({
-        filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get()
+        filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get(),
+        fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type']
       })
 
       await this.getProducts({ filterByFormula: airQuery().get() })
