@@ -1,7 +1,7 @@
 <template>
   <div>
     <Actions @add-default-order="addDefaultOrder" @clear="reset" />
-    <div class="flex justify-between flex-wrap gap-x-1 mt-2">
+    <div class="md:flex justify-between flex-wrap gap-x-1 mt-2">
       <div v-for="product in formattedProducts" :key="product.id" class="item">
         <div :class="{'bg-gray-200': !product.logo}" class="icon">
           <img v-if="product.logo" :src="product.logo" />
@@ -88,7 +88,7 @@ export default {
 <style scoped>
 .item {
   @apply flex items-center justify-between py-3 border-y border-gray-200 relative text-sm;
-  width: 46%;
+  width: 100%;
 }
 
 .icon {
@@ -97,5 +97,11 @@ export default {
 
 .title {
   @apply ml-2 flex-1 pr-3;
+}
+
+@media (min-width: 768px) {
+  .item {
+    width: 46%;
+  }
 }
 </style>

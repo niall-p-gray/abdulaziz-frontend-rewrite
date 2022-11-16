@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-between">
+    <div class="date-inputs-wrapper items-center justify-between">
       <div class="form-group">
         <label>Date</label>
         <input
@@ -85,4 +85,11 @@ export default {
 input {
   width: auto;
 }
+
+@media (min-width: 615px) {
+  .date-inputs-wrapper {
+    display: flex;
+  }
+}
+
 </style>

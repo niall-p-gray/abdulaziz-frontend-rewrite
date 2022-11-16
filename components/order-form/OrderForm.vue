@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-8/12 mx-auto">
+    <div class="lg:w-8/12 mx-auto">
       <div v-if="!createdOrderId">
         <section>
           <h4 class="section-title">Who Is This Order For?</h4>
@@ -25,15 +25,15 @@
           <h4 class="section-title">What Flavors Are In This Order?</h4>
           <Products class="mt-6" />
         </section>
-        <section class="flex flex-col items-center">
+        <section class="actions-wrapper">
           <h4><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
           <button
           @click="submit"
           :class="{'btn__disabled': submitting}"
           :disabled="submitting"
-          class="btn mt-6">
-            <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update Order' }}</span>
-            <span v-else>{{ submitting ? 'Submitting...' : 'Create Order' }}</span>
+          class="btn md:mt-6">
+            <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update' }}</span>
+            <span v-else>{{ submitting ? 'Submitting...' : 'Create' }}</span>
           </button>
         </section>
       </div>
@@ -182,5 +182,28 @@ export default {
 <style scoped>
 section {
   @apply mt-10;
+}
+
+.actions-wrapper {
+  position: fixed;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  @apply px-8 py-3;
+  box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
+  z-index: 5;
+  background: #fff;
+}
+
+@media (min-width: 768px) {
+  .actions-wrapper {
+    flex-direction: column;
+    position: relative;
+    box-shadow: none;
+    padding: 0;
+  }
 }
 </style>

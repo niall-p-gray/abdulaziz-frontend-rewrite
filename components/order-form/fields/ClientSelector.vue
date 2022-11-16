@@ -25,12 +25,12 @@
        etc) - Please use this field to enter the actual client.
       </span>
     </div>
-    <div class="flex items-center justify-between mt-2">
+    <div class="lg:flex items-center justify-between mt-2">
       <div class="form-group">
         <label>Contact name</label>
         <input v-model="contactName" @change="onChange" type="text" placeholder="Name" />
       </div>
-      <div class="form-group ml-2">
+      <div class="form-group lg:ml-2">
         <label>Phone Number</label>
         <input v-model="phoneNumber" @change="onChange" type="text" placeholder="Phone number" />
       </div>
