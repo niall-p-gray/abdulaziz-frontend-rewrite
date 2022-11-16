@@ -26,7 +26,7 @@
           <Products class="mt-6" />
         </section>
         <section class="actions-wrapper">
-          <h4><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
+          <h4 class="total-items"><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
           <div class="flex items-center md:mt-6">
             <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-2">Copy</button>
             <button
@@ -203,10 +203,14 @@ section {
   left: 0;
   right: 0;
   bottom: 0;
-  @apply px-8 py-3;
+  @apply px-3 py-3;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 56px, rgba(17, 17, 26, 0.1) 0px 24px 80px;
   z-index: 5;
   background: #fff;
+}
+
+.actions-wrapper .total-items {
+  @apply text-sm;
 }
 
 @media (min-width: 768px) {
@@ -215,6 +219,10 @@ section {
     position: relative;
     box-shadow: none;
     padding: 0;
+  }
+
+  .total-items {
+    @apply text-base;
   }
 }
 </style>
