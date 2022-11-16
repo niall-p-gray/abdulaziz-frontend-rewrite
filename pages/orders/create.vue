@@ -32,13 +32,17 @@ export default {
     this.error = false
 
     try {
-      await this.getClients({ filterByFormula: airQuery().where('Active', 1).get() })
+      await this.getClients({
+        filterByFormula: airQuery().where('Active', 1).get(),
+        fields: ['Name', 'Primary Contact', 'Address']
+      })
       await this.getProducts({
         filterByFormula: airQuery()
           .where('Available', 1)
           .notEmpty('Name')
           .notEmpty('Available Days')
-          .get()
+          .get(),
+        fields: ['Name', 'Display Order', 'Logo']
       })
     } catch (error) {
       console.error(error)
