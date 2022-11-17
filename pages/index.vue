@@ -1,11 +1,11 @@
 <template>
   <div class="main">
-    <div class="container">
-      <h1 class="text-3xl title-text">
+    <div class="w-full lg:w-7/12 mx-auto p-2">
+      <h1 class="text-3xl title-text mt-16 text-center">
         Howdy Kolache Links
       </h1>
-      <div v-if="!loading && !error" class="grid grid-cols-5 gap-4 justify-center mt-8">
-        <div class="col-span-2">
+      <div v-if="!loading && !error" class="flex flex-col md:flex-row gap-4 justify-center mt-8">
+        <div class="w-full md:w-7/12">
           <LinksCard
           v-for="(group, index) in groupedLinks"
           :key="index"
@@ -19,7 +19,7 @@
           class="mt-6"
           />
         </div>
-        <div class="col-span-3">
+        <div class="flex-1">
           <ClientList />
         </div>
       </div>
