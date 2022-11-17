@@ -60,7 +60,8 @@ export default {
           .where('Available', 1)
           .notEmpty('Name')
           .notEmpty('Available Days')
-          .get()
+          .get(),
+        fields: ['Name', 'Display Order', 'Logo']
       })
 
       this.populateClientFormFields()
