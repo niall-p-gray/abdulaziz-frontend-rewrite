@@ -40,7 +40,7 @@
 .card {
   @apply bg-white rounded-xl px-3 py-3;
   &__title {
-    @apply text-xl text-left;
+    @apply text-xl font-bold;
   }
   &__content {
     @apply my-2;

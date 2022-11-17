@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="card__title">
-      <h3 class="title-text">
+      <h3>
         {{ title }}
       </h3>
     </div>
