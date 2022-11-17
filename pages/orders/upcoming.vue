@@ -89,7 +89,10 @@ export default {
         fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type']
       })
 
-      await this.getProducts({ filterByFormula: airQuery().get() })
+      await this.getProducts({
+        filterByFormula: airQuery().get(),
+        fields: ['Name', 'Display Order', 'Logo']
+      })
     } catch (error) {
       console.error(error)
       this.error = true
