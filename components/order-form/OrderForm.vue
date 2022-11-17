@@ -41,12 +41,18 @@
         </section>
       </div>
       <div v-else class="mt-8">
-        <p class="text-center">
+        <p class="flex justify-center items-center">
           <span>Order successfully created</span>
-          <nuxt-link :to="`/orders/${createdOrderId}?source=create-form`" class="mls-4 btn">
-          View/Edit
-          </nuxt-link>
+          <span class="ml-2 cursor-pointer">
+            <font-awesome-icon :icon="['fas', 'eye']" class="text-xs"/>
+            <span>View</span>
+          </span>
         </p>
+        <div class="text-center mt-8">
+          <nuxt-link :to="`/orders/upcoming`" class="btn">
+            View all upcoming orders
+          </nuxt-link>
+        </div>
       </div>
     </div>
   </div>
