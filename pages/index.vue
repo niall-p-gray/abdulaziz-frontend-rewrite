@@ -49,7 +49,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pageLinks: 'home/getPageLinks'
+      pageLinks: 'entities/page-links/links'
     }),
     rewrittenLinks () {
       const rewrittenLinks = {
@@ -170,10 +170,10 @@ export default {
     this.loading = false
   },
   methods: {
-    ...mapActions('home', [
-      'getPageLinks',
-      'getClients'
-    ])
+    ...mapActions({
+      getPageLinks: 'entities/page-links/get',
+      getClients: 'entities/clients/get'
+    })
   }
 }
 </script>

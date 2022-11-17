@@ -19,7 +19,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      clients: 'home/clients'
+      clients: 'entities/clients/clients'
     }),
     groupedClientTypes () {
       const groups = []
