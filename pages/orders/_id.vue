@@ -1,5 +1,8 @@
 <template>
   <div class="mb-8">
+    <portal to="back-button">
+      <BackButton to="/orders/upcoming" label="Back to upcoming orders" />
+    </portal>
     <portal to="page-title">Edit Order</portal>
     <div v-if="!loading && !error" class="mt-16">
         <OrderForm :order-id="$route.params.id"/>
@@ -15,10 +18,12 @@
 import { mapActions, mapGetters } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
 import OrderForm from '@/components/order-form/OrderForm'
+import BackButton from '@/components/BackButton'
 
 export default {
   components: {
-    OrderForm
+    OrderForm,
+    BackButton
   },
   layout: 'dashboard',
   data () {

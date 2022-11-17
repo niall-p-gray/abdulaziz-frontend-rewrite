@@ -1,6 +1,19 @@
 <template>
-    <nuxt-link to="/">
-        <font-awesome-icon :icon="['fas', 'chevron-left']" class="text-xs"/>
-        <span>Back to main</span>
-    </nuxt-link>
+  <nuxt-link :to="to">
+    <font-awesome-icon :icon="['fas', 'chevron-left']" class="text-xs" />
+    <span>{{ label }}</span>
+  </nuxt-link>
 </template>
+
+<script>
+export default {
+  props: {
+    to: {
+      default: '/'
+    },
+    label: {
+      default: 'Back to main'
+    }
+  }
+}
+</script>

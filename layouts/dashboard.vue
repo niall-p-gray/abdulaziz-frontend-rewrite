@@ -1,7 +1,8 @@
 <template>
   <div class="page">
     <div>
-      <BackButton v-if="shouldShowBackButton" />
+      <portal-target name="back-button"></portal-target>
+      <BackButton v-if="shouldDefaultShowBackButton" />
       <div class="page-title-container">
         <h1 class="page-title">
           <portal-target name="page-title"></portal-target>
@@ -14,6 +15,7 @@
 </template>
 
 <script>
+import { Wormhole } from 'portal-vue'
 import BackButton from '@/components/BackButton'
 
 export default {
@@ -21,12 +23,13 @@ export default {
     BackButton
   },
   computed: {
-    shouldShowBackButton () {
-      if (this.$route.name !== 'index') {
-        return true
+    shouldDefaultShowBackButton () {
+      // Don’t show the default back btn, unless the child component didn’t provide a button
+      if (Wormhole.hasContentFor('back-button') || this.$route.name === 'index') {
+        return false
       }
 
-      return false
+      return true
     }
   }
 }
