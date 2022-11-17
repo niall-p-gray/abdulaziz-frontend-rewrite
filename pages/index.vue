@@ -34,6 +34,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import LinksCard from '@/components/dashboard/LinksCard'
 import ClientList from '@/components/dashboard/clients/ClientList'
+import airQuery from '@/utils/airtable-query-builder'
 
 export default {
   name: 'IndexPage',
@@ -161,7 +162,12 @@ export default {
 
     try {
       await this.getPageLinks()
-      await this.getClients()
+      await this.getClients({
+        filterByFormula: airQuery()
+          .contains('Client Type', ['bar', 'storefront', 'coffee shop'])
+          .get(),
+        fields: ['Name', 'Client Type', 'Show on TOC?', 'Active']
+      })
     } catch (error) {
       console.error(error)
       this.error = true

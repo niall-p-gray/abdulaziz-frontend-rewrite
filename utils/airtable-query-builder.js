@@ -52,6 +52,15 @@ export default () => {
     todayOrAfter (column) {
       filters.push(`{${column}} >= TODAY()`)
       return this
+    },
+    contains (column, value) {
+      let values = value
+      if (typeof value === 'string') values = [value]
+
+      const str = values.map(v => `FIND("${v}", LOWER({${column}}))`).join(', ')
+
+      filters.push(`OR(${str})`)
+      return this
     }
   }
 }
