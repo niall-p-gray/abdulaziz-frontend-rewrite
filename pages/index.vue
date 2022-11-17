@@ -1,10 +1,8 @@
 <template>
-  <div class="main">
-    <div class="w-full lg:w-7/12 mx-auto p-2">
-      <h1 class="text-3xl title-text mt-16 text-center">
-        Howdy Kolache Links
-      </h1>
-      <div v-if="!loading && !error" class="flex flex-col md:flex-row gap-4 justify-center mt-8">
+  <div>
+    <portal to="page-title">Howdy Kolache Links</portal>
+    <div class="w-full lg:w-10/12 mx-auto p-2">
+      <div v-if="!loading && !error" class="flex flex-col md:flex-row gap-4 justify-center">
         <div class="w-full md:w-7/12">
           <LinksCard
           v-for="(group, index) in groupedLinks"
@@ -37,7 +35,7 @@ import ClientList from '@/components/dashboard/clients/ClientList'
 import airQuery from '@/utils/airtable-query-builder'
 
 export default {
-  name: 'IndexPage',
+  layout: 'dashboard',
   components: {
     ClientList,
     LinksCard
