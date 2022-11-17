@@ -28,7 +28,14 @@
         <section class="actions-wrapper">
           <h4 class="total-items"><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
           <div class="flex items-center md:mt-6">
-            <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-2">Copy</button>
+            <button v-if="orderId" @click="openDeletionModal" class="btn btn__secondary !text-gray-500 mr-4 md:mr-2">
+              <span class="hidden md:inline">Delete</span>
+              <font-awesome-icon :icon="['fas', 'trash']" class="text-base block md:hidden" />
+            </button>
+            <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-4 md:mr-2">
+              <span class="hidden md:inline">Copy</span>
+              <font-awesome-icon :icon="['fas', 'copy']" class="text-base block md:hidden text-gray-500" />
+            </button>
             <button
             @click="submit"
             :class="{'btn__disabled': submitting}"
@@ -66,6 +73,7 @@ import Delivery from '@/components/order-form/fields/Delivery'
 import SpecialNotes from '@/components/order-form/fields/SpecialNotes'
 import Products from '@/components/order-form/fields/products/Products'
 import CopyOrderModal from '@/components/order-form/modas/CopyOrderModal'
+import DeleteOrderModal from '@/components/order-form/modas/DeleteOrderModal'
 
 export default {
   components: {
@@ -191,6 +199,16 @@ export default {
         width: 400,
         name: 'copy-order'
       })
+    },
+    openDeletionModal () {
+      const props = {
+        orderId: this.orderId
+      }
+
+      this.$modal.show(DeleteOrderModal, props, {
+        width: 400,
+        name: 'delete-order'
+      })
     }
   }
 }
@@ -219,6 +237,11 @@ section {
   @apply text-sm;
 }
 
+.btn__secondary {
+  border: none;
+  padding: 0;
+}
+
 @media (min-width: 768px) {
   .actions-wrapper {
     flex-direction: column;
@@ -229,6 +252,10 @@ section {
 
   .total-items {
     @apply text-base;
+  }
+
+  .btn__secondary {
+    @apply border border-gray-300 px-3 py-2;
   }
 }
 </style>

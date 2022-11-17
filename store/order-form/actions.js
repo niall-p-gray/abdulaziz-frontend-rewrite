@@ -103,5 +103,28 @@ export default {
     }
 
     return false
+  },
+  delete: async ({ dispatch, getters, rootGetters }, id) => {
+    const orderItems = rootGetters['entities/order-items/orderItems']
+
+    try {
+      await dispatch('entities/orders/delete', [id], { root: true })
+
+      const orderItemsToDelete = []
+      for (let index = 0; index < orderItems.length; index++) {
+        const orderItem = orderItems[index]
+
+        if (orderItem.fields['Order Rec ID'] === id) {
+          orderItemsToDelete.push(orderItem.id)
+        }
+      }
+
+      await dispatch('entities/order-items/delete', orderItemsToDelete, { root: true })
+
+      return true
+    } catch (error) {
+      console.error(error)
+    }
+    return false
   }
 }
