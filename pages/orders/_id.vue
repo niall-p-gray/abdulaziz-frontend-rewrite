@@ -41,7 +41,7 @@ export default {
     try {
       await this.getOrders({
         filterByFormula: airQuery().whereId(this.$route.params.id).get(),
-        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact']
+        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact', 'Client']
       })
 
       if (!this.order) {

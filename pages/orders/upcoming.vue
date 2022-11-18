@@ -77,7 +77,7 @@ export default {
           .before('Date', this.$moment().add('days', 28).format('MM/DD/YYYY'))
           .get(),
         sort: [{ field: 'Date', direction: 'asc' }],
-        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact']
+        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact', 'Client']
       })
 
       if (this.orders.length) {

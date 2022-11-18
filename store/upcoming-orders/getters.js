@@ -13,11 +13,16 @@ export default {
     for (let index = 0; index < orders.length; index++) {
       const order = orders[index]
       const date = order.fields.Date
-      const client = clients.find(cl => cl.id === order.fields.Client[0])
-      const clientType = client.fields['Client Type'].replace(/[^a-zA-z\s]/g, '').trim()
+      let client
 
-      if (getters.selectedClientTypes.length && !getters.selectedClientTypes.includes(clientType)) {
-        continue
+      // Some orders may not have a client assigned 
+      if (order.fields.Client) {
+        client = clients.find(cl => cl.id === order.fields.Client[0])
+        const clientType = client.fields['Client Type'].replace(/[^a-zA-z\s]/g, '').trim()
+  
+        if (getters.selectedClientTypes.length && !getters.selectedClientTypes.includes(clientType)) {
+          continue
+        }
       }
 
       if (!order.fields['Summed Orders']) {
@@ -34,7 +39,7 @@ export default {
       if (readyTime) readyTime = moment(readyTime, 'hh:mm').format('h:mm a')
       if (deliveryTime) deliveryTime = moment(deliveryTime, 'hh:mm').format('h:mm a')
 
-      dates[date].push({
+      const obj = {
         id: order.id,
         readyTime,
         deliveryTime,
@@ -46,11 +51,20 @@ export default {
         deliveryDriver: order.fields['Delivery Driver'],
         deliveryType: order.fields['Delivery Type'],
         clientDetails: order.fields['Client Details'],
-        address: order.fields['Delivery Address'] || client.fields.Address,
-        phoneNumber: order.fields['Order Phone'] || client.fields.Phone,
-        clientName: client.fields.Name,
-        contactName: order.fields['Order Contact'] || client.fields['Primary Contact']
-      })
+        address: order.fields['Delivery Address'],
+        phoneNumber: order.fields['Order Phone'],
+        clientName: 'n/a',
+        contactName: order.fields['Order Contact']
+      }
+
+      if (client) {
+        obj.clientName = client.fields.Name
+        if (!obj.address) obj.address = client.fields.Address
+        if (!obj.phoneNumber) obj.phoneNumber = client.fields.Phone
+        if (!obj.contactName) obj.contactName = client.fields['Primary Contact']
+      }
+
+      dates[date].push(obj)
     }
 
     // Order day orders by the ready time
