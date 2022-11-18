@@ -36,7 +36,6 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    { src: '~/plugins/auth-guard.js', mode: 'client' },
     { src: '~/plugins/notifications-ssr', ssr: true },
     { src: '~/plugins/notifications-client', ssr: false },
     '~plugins/vue-js-modal.js'

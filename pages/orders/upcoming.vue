@@ -35,6 +35,7 @@ import airQuery from '@/utils/airtable-query-builder'
 // import { TEST_CLIENT_IDS } from '@/utils'
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 import UpcomingOrder from '@/components/upcoming-orders/UpcomingOrder'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
@@ -42,6 +43,7 @@ export default {
     UpcomingOrder
   },
   layout: 'dashboard',
+  mixins: [authGuardMixin],
   data () {
     return {
       clientTypes: [

@@ -46,8 +46,11 @@
 </template>
 
 <script>
+import authGuardMixin from '@/mixins/auth-guard'
+
 export default {
   layout: 'dashboard',
+  mixins: [authGuardMixin],
   data () {
     return {
       phoneNumber: null,

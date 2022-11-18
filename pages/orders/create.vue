@@ -15,12 +15,14 @@
 import { mapActions } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
 import OrderForm from '@/components/order-form/OrderForm'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
     OrderForm
   },
   layout: 'dashboard',
+  mixins: [authGuardMixin],
   data () {
     return {
       loading: true,

@@ -19,6 +19,7 @@ import { mapActions, mapGetters } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
 import OrderForm from '@/components/order-form/OrderForm'
 import BackButton from '@/components/BackButton'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
@@ -26,6 +27,7 @@ export default {
     BackButton
   },
   layout: 'dashboard',
+  mixins: [authGuardMixin],
   data () {
     return {
       loading: true,

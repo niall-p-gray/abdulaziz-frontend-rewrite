@@ -52,12 +52,14 @@ import DatesSelector from '@/components/production/planner/DatesSelector'
 import PushOrdersToSheetButton from '@/components/production/planner/PushOrdersToSheetButton'
 import base from '@/airtable'
 import { TEST_CLIENT_IDS } from '@/utils'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
     DatesSelector,
     PushOrdersToSheetButton
   },
+  mixins: [authGuardMixin],
   data () {
     return {
       loading: false,

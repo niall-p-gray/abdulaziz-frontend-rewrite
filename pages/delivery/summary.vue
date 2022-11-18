@@ -39,6 +39,7 @@ import { mapActions, mapGetters } from 'vuex'
 import ClientTypeOrders from '@/components/delivery/summary/ClientTypeOrders'
 import DeliverySummaryDateSelector from '@/components/delivery/summary/DeliverySummaryDateSelector '
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   layout: 'dashboard',
@@ -47,6 +48,7 @@ export default {
     ClientTypeFilter,
     DeliverySummaryDateSelector
   },
+  mixins: [authGuardMixin],
   data () {
     return {
       selectedClientTypes: [],

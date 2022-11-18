@@ -33,6 +33,7 @@ import { mapActions, mapGetters } from 'vuex'
 import LinksCard from '@/components/dashboard/LinksCard'
 import ClientList from '@/components/dashboard/clients/ClientList'
 import airQuery from '@/utils/airtable-query-builder'
+import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   layout: 'dashboard',
@@ -40,6 +41,7 @@ export default {
     ClientList,
     LinksCard
   },
+  mixins: [authGuardMixin],
   data () {
     return {
       loading: true,
