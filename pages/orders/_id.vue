@@ -54,7 +54,7 @@ export default {
       })
 
       await this.getClients({
-        fields: ['Name', 'Primary Contact', 'Address']
+        fields: ['Name', 'Primary Contact', 'Address', 'Rec ID']
       })
 
       await this.getProducts({

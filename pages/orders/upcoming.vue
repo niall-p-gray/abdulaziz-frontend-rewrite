@@ -88,7 +88,7 @@ export default {
 
       await this.getClients({
         filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get(),
-        fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type']
+        fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type', 'Rec ID']
       })
 
       await this.getProducts({

@@ -166,7 +166,7 @@ export default {
         filterByFormula: airQuery()
           .contains('Client Type', ['bar', 'storefront', 'coffee shop'])
           .get(),
-        fields: ['Name', 'Client Type', 'Show on TOC?', 'Active']
+        fields: ['Name', 'Client Type', 'Show on TOC?', 'Active', 'Rec ID']
       })
     } catch (error) {
       console.error(error)
