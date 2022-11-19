@@ -29,13 +29,20 @@ $bgColor: #FBFBF9;
 
       .order {
         margin-top: 16px;
+        position: relative;
         
+        .actions {
+          color: #00B373;
+          position: absolute;
+          top: 0;
+          right: 0;
+          display: flex;
+          align-items: center;
+          margin: 5px 15px;
+        }
+
         .main-content {
           background: $bgColor;
-
-          .actions {
-            color: #00B373;
-          }
 
           .special-notes {
             @apply text-sm text-gray-700;
@@ -163,6 +170,10 @@ $bgColor: #FBFBF9;
     .order {
       background: $bgColor;
       padding: 13px 20px;
+
+      .actions {
+        margin: 0px 7px !important;
+      }
     }
 
     .details {

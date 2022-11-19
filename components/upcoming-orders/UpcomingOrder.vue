@@ -42,12 +42,6 @@
                   {{ order.clientDetails }}
                 </p>
               </div>
-              <div class="actions hidden lg:flex justify-end">
-                <a :href="`/orders/${order.id}`" target="_blank">
-                  <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs"/>
-                </a>
-                <font-awesome-icon :icon="['fas', `chevron-${expanded ? 'up' : 'down'}`]" class="text-s ml-4" />
-              </div>
             </div>
           </div>
         </div>
@@ -74,6 +68,12 @@
         </div>
       </div>
       <OrderProducts :order="order" class="order-1 md:order-2" />
+    </div>
+    <div class="actions">
+      <a :href="`/orders/${order.id}`" target="_blank">
+        <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs"/>
+      </a>
+      <font-awesome-icon :icon="['fas', `chevron-${expanded ? 'up' : 'down'}`]" class="text-s ml-4" />
     </div>
   </div>
 </template>
