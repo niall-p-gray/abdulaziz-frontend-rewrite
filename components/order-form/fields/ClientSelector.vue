@@ -14,7 +14,7 @@
       </select>
       <span class="note">
         Can't find the client?
-        <router-link to="" class="">Add Client</router-link>
+        <a href="https://airtable.com/shr4fVIpHTkkoldPu">Add Client</a>
       </span>
     </div>
     <div class="form-group">
