@@ -1,6 +1,6 @@
 <template>
   <div class="mt-4">
-    <h4 class="text-sm mb-4">Products</h4>
+    <h4 class="text-sm mb-2 md:mb-4">Products</h4>
     <div v-for="product in products" :key="product.id" class="flex items-center">
         <span>{{ product.qty }}</span>
         <span class="ml-2">{{ product.name }}</span>

@@ -6,7 +6,7 @@ $bgColor: #FBFBF9;
     @apply mb-10 mt-28 mx-auto w-11/12;
 
     .day {
-      @apply flex justify-between lg:justify-start lg:gap-20 md:gap-16;
+      @apply flex flex-col md:flex-row md:justify-between md:justify-start lg:gap-20 md:gap-16;
 
       .date {
         @apply text-2xl md:text-3xl font-bold;
@@ -19,7 +19,7 @@ $bgColor: #FBFBF9;
       }
       
       .qty {
-        @apply text-2xl;
+        @apply text-sm mt-2 md:m-0 md:text-2xl;
         color: #C4C4C4;
       }
     }
@@ -41,6 +41,18 @@ $bgColor: #FBFBF9;
             @apply text-sm text-gray-700;
             padding: 0px 20px;
             padding-bottom: 13px;
+          }
+          
+          @media screen and (max-width: $maxWidth) {
+            .special-notes {
+              padding: 0px 0px;
+              padding-bottom: 13px;
+
+              strong {
+                color: #C4C4C4;
+                @apply text-xs block mb-1 mt-3;
+              }
+            }
           }
         }
 
@@ -72,11 +84,6 @@ $bgColor: #FBFBF9;
               }
             }
           }
-        }
-
-        @media screen and (max-width: $maxWidth) {
-          background: $bgColor;
-          padding: 13px 20px;
         }
 
         &:first-child .title {
@@ -128,42 +135,18 @@ $bgColor: #FBFBF9;
           }
 
           @media screen and (max-width: $maxWidth) {
-            width: 33% !important;
+            width: 50% !important;
+            margin-top: 10px;
 
-            &.time, &.qty{
-              .value {
-                font-size: 22px !important;
-              }
-            }
-
-            &.time{
-              width: 45% !important;
-            }
-
-            &.qty {
-              width: 30% !important;
-              
+            &.qty {              
               .value, .title {                
                 text-align: left !important;
               }
             }
 
-            &.delivery {
-              width: 25% !important;
-            }
-            
-            &.client{
-              width: 60% !important;
-            }
-            
-            &.client{
-              margin-top: 20px;
-            }
-
-            &.time, &.qty, &.delivery {
-              .value {
-                font-size: 22px !important;
-              }
+            &:last-child {
+              width: 100% !important;
+              flex: auto;
             }
 
             .title, .value {
@@ -174,5 +157,32 @@ $bgColor: #FBFBF9;
       }
 
     }    
+  }
+
+  @media screen and (max-width: $maxWidth) {
+    .order {
+      background: $bgColor;
+      padding: 13px 20px;
+    }
+
+    .details {
+      flex-direction: column;
+      margin-top: 15px;
+
+      .detail {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+      }
+    }
+
+    .expandable-content {
+      display: flex;
+      flex-direction: column;
+      
+      &.expanded {
+        padding: 13px 0px !important;
+      }
+    }
   }
 }

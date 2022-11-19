@@ -2,21 +2,21 @@
   <div class="order">
     <div @click="expanded = !expanded" class="main-content lg:cursor-pointer">
       <div class="flex flex-wrap">
-        <div class="cell time lg:order-1">
+        <div class="cell time">
           <div class="title">Ready time</div>
           <div class="value">{{ order.readyTime ? order.readyTime : '---' }}</div>
         </div>
-        <div class="cell time lg:order-2">
+        <div class="cell time">
           <div class="title">Delivery time</div>
           <div class="value">
             {{ order.deliveryTime ? order.deliveryTime : '---' }}
           </div>
         </div>
-        <div class="cell qty lg:order-3">
+        <div class="cell qty">
           <div class="title">#</div>
           <div class="value">{{ order.qty }}</div>
         </div>
-        <div class="cell delivery lg:order-6">
+        <div class="cell delivery">
           <div class="title">Delivery</div>
           <div class="value">
             <div v-if="order.deliveryType">
@@ -32,7 +32,7 @@
             <div v-else>---</div>
           </div>
         </div>
-        <div class="cell client lg:order-7">
+        <div class="cell client">
           <div class="title">Client</div>
           <div class="value">
             <div class="flex justify-between items-center">
@@ -55,7 +55,7 @@
       <div v-if="order.notes" class="special-notes"><strong>Special Notes: </strong>{{ order.notes }}</div>
     </div>
     <div :class="{expanded: expanded}" class="expandable-content">
-      <div class="details">
+      <div class="details order-2 md:order-1">
         <div class="detail">
           <span class="title">Address</span>
           <span class="value">{{ order.address ? order.address : '---' }}</span>
@@ -73,7 +73,7 @@
           <span class="value">{{ order.deliveryNotes ? order.deliveryNotes : '---' }}</span>
         </div>
       </div>
-      <OrderProducts :order="order" />
+      <OrderProducts :order="order" class="order-1 md:order-2" />
     </div>
   </div>
 </template>
