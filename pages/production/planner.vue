@@ -37,6 +37,9 @@
           </tbody>
         </table>
         <PushOrdersToSheetButton :payload="sheetPayload" class="mt-16"/>
+        <a href="https://docs.google.com/spreadsheets/d/1OPRX0cFtPdC7r3ZnnpoXBUlSDePdEvLmSXf_AhngwM8/edit#gid=1581088810" target="_blank" class="mt-6 block mx-auto">
+          Open Production Planner Sheet
+        </a>
       </div>
       <p v-else class="text-center">No orders found for the selected dates</p>
     </div>
