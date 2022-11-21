@@ -5,7 +5,7 @@
     :class="{'btn__disabled': pushing}"
     :disabled="pushing"
     class="btn">
-      <span v-if="!pushing">Send To Production Planner Shee</span>
+      <span v-if="!pushing">Send To Production Planner Sheet</span>
       <span v-else>Pushing...</span>
     </button>
     <p v-if="error" class="text-red-500 mt-1">Could not push selected data</p>
