@@ -198,7 +198,8 @@ export default {
     },
     openCopyOrderModal () {
       this.$modal.show(CopyOrderModal, {}, {
-        width: 400,
+        maxWidth: 400,
+        adaptive: true,
         name: 'copy-order'
       })
     },
@@ -208,7 +209,8 @@ export default {
       }
 
       this.$modal.show(DeleteOrderModal, props, {
-        width: 400,
+        maxWidth: 400,
+        adaptive: true,
         name: 'delete-order'
       })
     }
