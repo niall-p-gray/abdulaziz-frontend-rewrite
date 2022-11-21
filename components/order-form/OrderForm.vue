@@ -52,10 +52,10 @@
       <div v-else class="mt-8">
         <p class="flex justify-center items-center">
           <span>Order successfully created</span>
-          <span class="ml-2 cursor-pointer">
+          <nuxt-link :to="`/orders/${createdOrderId}`" class="ml-2 cursor-pointer">
             <font-awesome-icon :icon="['fas', 'eye']" class="text-xs"/>
             <span>View</span>
-          </span>
+          </nuxt-link>
         </p>
         <div class="text-center mt-8">
           <nuxt-link :to="`/orders/upcoming`" class="btn">
