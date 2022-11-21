@@ -27,20 +27,22 @@
         </section>
         <section class="actions-wrapper">
           <h4 class="total-items"><strong>{{ totalSelectedProducts }}</strong> KOLACHES SELECTED</h4>
-          <div class="flex items-center md:mt-6">
-            <button v-if="orderId" @click="openDeletionModal" class="btn btn__secondary !text-gray-500 mr-4 md:mr-2">
-              <span class="hidden md:inline">Delete</span>
-              <font-awesome-icon :icon="['fas', 'trash']" class="text-base block md:hidden" />
-            </button>
-            <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-4 md:mr-2">
-              <span class="hidden md:inline">Copy</span>
-              <font-awesome-icon :icon="['fas', 'copy']" class="text-base block md:hidden text-gray-500" />
-            </button>
+          <div class="flex md:flex-col items-center md:mt-6">
+            <div class="flex items-center order-1 md:order-2 md:mt-4">
+              <button v-if="orderId" @click="openDeletionModal" class="btn btn__secondary !text-red-500 mr-4 md:mr-2">
+                <span class="hidden md:inline">Delete</span>
+                <font-awesome-icon :icon="['fas', 'trash']" class="text-base block md:hidden" />
+              </button>
+              <button v-if="orderId" @click="openCopyOrderModal" class="btn btn__secondary mr-4 md:mr-2">
+                <span class="hidden md:inline">Copy</span>
+                <font-awesome-icon :icon="['fas', 'copy']" class="text-base block md:hidden text-gray-500" />
+              </button>
+            </div>
             <button
             @click="submit"
             :class="{'btn__disabled': submitting}"
             :disabled="submitting"
-            class="btn">
+            class="btn order-2 md:order-1">
               <span v-if="orderId">{{ submitting ? 'Updating...' : 'Update' }}</span>
               <span v-else>{{ submitting ? 'Submitting...' : 'Create' }}</span>
             </button>
