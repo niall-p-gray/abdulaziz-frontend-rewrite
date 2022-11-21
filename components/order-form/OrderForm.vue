@@ -70,7 +70,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import ClientSelector from '@/components/order-form/fields/ClientSelector'
-import DeliveryDateTimes from '@/components/order-form/fields/DeliveryDateTimes'
+import DeliveryDateTimes from '@/components/order-form/fields/delivery-time/DeliveryDateTimes'
 import Delivery from '@/components/order-form/fields/Delivery'
 import SpecialNotes from '@/components/order-form/fields/SpecialNotes'
 import Products from '@/components/order-form/fields/products/Products'
