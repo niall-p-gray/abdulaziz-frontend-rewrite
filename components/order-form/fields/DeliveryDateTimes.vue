@@ -12,16 +12,20 @@
       </div>
       <div class="form-group">
         <label>Ready Time</label>
-        <TimeInput
+        <input
           v-model="values.readyTime"
           @change="onChange"
+          type="time"
+          placeholder="Select Time"
         />
       </div>
       <div class="form-group">
         <label>Delivery Time</label>
-        <TimeInput
+        <input
           v-model="values.deliveryTime"
           @change="onChange"
+          type="time"
+          placeholder="Select Time"
         />
       </div>
     </div>
@@ -34,12 +38,8 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import TimeInput from './TimeInput'
 
 export default {
-  components: {
-    TimeInput
-  },
   data () {
     return {
       values: {
