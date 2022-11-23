@@ -92,6 +92,7 @@ export default {
     },
     links () {
       const links = []
+      const excluded = ['previous orders']
 
       for (let index = 0; index < this.pageLinks.length; index++) {
         const pageLink = this.pageLinks[index]
@@ -101,6 +102,8 @@ export default {
           url: pageLink.fields.URL,
           external: true
         }
+
+        if (excluded.includes(link.name.toLowerCase())) continue
 
         if (link.name.toLowerCase() === 'production planner (app)') {
           link.external = false
