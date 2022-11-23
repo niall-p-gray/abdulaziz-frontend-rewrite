@@ -18302,13 +18302,20 @@
   "resolved" "https://registry.npmjs.org/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz"
   "version" "1.9.1"
 
-"vue@^2.0.0", "vue@^2.3.0", "vue@^2.5.18", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.6.14", "vue@~2", "vue@2.x":
+"vue@^2.0.0", "vue@^2.3.0", "vue@^2.5.18", "vue@^2.6.10", "vue@^2.6.11", "vue@^2.6.12", "vue@^2.6.14", "vue@~2", "vue@2.x":
   "integrity" "sha512-7MTirXG7LYJi3r2jeYy7EiXIhEE85uP3kBwSxqwDsvIfy/l7+qR4U6ajw8ji1KoP+wYYg7ZY28TBTf3P3Fa4Nw=="
   "resolved" "https://registry.npmjs.org/vue/-/vue-2.7.3.tgz"
   "version" "2.7.3"
   dependencies:
     "@vue/compiler-sfc" "2.7.3"
     "csstype" "^3.1.0"
+
+"vue2-daterange-picker@^0.6.8":
+  "integrity" "sha512-8/YnxpInyYgjfpffxMP06UaPFYEiXATMq2WcO568fv5BNJQNffMQoBCswwxcma4exW+FrbqQUWQCdTRPtKDrNw=="
+  "resolved" "https://registry.npmjs.org/vue2-daterange-picker/-/vue2-daterange-picker-0.6.8.tgz"
+  "version" "0.6.8"
+  dependencies:
+    "vue" "^2.6.10"
 
 "vuex@^3.6.2":
   "integrity" "sha512-ETW44IqCgBpVomy520DT5jf8n0zoCac+sxWnn+hMe/CzaSejb/eVw2YToiXYX+Ex/AuHHia28vWTq4goAexFbw=="

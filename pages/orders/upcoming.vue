@@ -4,20 +4,26 @@
     <div v-if="!loading && !error" class="mt-16">
       <div>
         <ClientTypeFilter :options="clientTypes" @change="onClientTypesFilterChange" />
+        <DateRangeFilter v-model="dateRange" @change="load" class="mt-20"/>
       </div>
       <div>
-        <div v-for="(orders, date) in upcomingOrderDates" :key="date" class="days">
-          <div class="day">
-            <h1 class="date">
-              <mark>{{ formatDate(date) }}</mark>
-            </h1>
-            <h2 class="qty">
-              {{ orders.length }} orders ({{ calculateTotalItems(orders) }} kolaches)
-            </h2>
+        <div v-if="Object.keys(upcomingOrderDates).length">
+          <div v-for="(orders, date) in upcomingOrderDates" :key="date" class="days">
+            <div class="day">
+              <h1 class="date">
+                <mark>{{ formatDate(date) }}</mark>
+              </h1>
+              <h2 class="qty">
+                {{ orders.length }} orders ({{ calculateTotalItems(orders) }} kolaches)
+              </h2>
+            </div>
+            <div class="day-orders-container">
+              <UpcomingOrder v-for="order in orders" :key="order.id" :order="order" />
+            </div>
           </div>
-          <div class="day-orders-container">
-            <UpcomingOrder v-for="order in orders" :key="order.id" :order="order" />
-          </div>
+        </div>
+        <div v-else class="mt-16 flex justify-center">
+          <span>There are no orders for selected date range</span>
         </div>
       </div>
       </div>
@@ -35,12 +41,14 @@ import airQuery from '@/utils/airtable-query-builder'
 // import { TEST_CLIENT_IDS } from '@/utils'
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 import UpcomingOrder from '@/components/upcoming-orders/UpcomingOrder'
+import DateRangeFilter from '@/components/upcoming-orders/DateRangeFilter'
 import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
     ClientTypeFilter,
-    UpcomingOrder
+    UpcomingOrder,
+    DateRangeFilter
   },
   layout: 'dashboard',
   mixins: [authGuardMixin],
@@ -55,6 +63,10 @@ export default {
         'Catering',
         'Direct To Consumer'
       ],
+      dateRange: {
+        startDate: this.$moment().toDate(),
+        endDate: this.$moment().add('days', 28).toDate()
+      },
       loading: true,
       error: false
     }
@@ -65,42 +77,8 @@ export default {
       orders: 'entities/orders/orders'
     })
   },
-  async mounted () {
-    this.loading = true
-    this.error = false
-
-    try {
-      await this.getOrders({
-        filterByFormula: airQuery()
-          // .notIn('Client Rec ID', TEST_CLIENT_IDS)
-          .todayOrAfter('Date')
-          .before('Date', this.$moment().add('days', 28).format('MM/DD/YYYY'))
-          .get(),
-        sort: [{ field: 'Date', direction: 'asc' }],
-        fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact', 'Client']
-      })
-
-      if (this.orders.length) {
-        await this.getOrderItems({
-          filterByFormula: airQuery().whereIn('Order Rec ID', this.orders.map(o => o.id)).get()
-        })
-      }
-
-      await this.getClients({
-        filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get(),
-        fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type', 'Rec ID']
-      })
-
-      await this.getProducts({
-        filterByFormula: airQuery().get(),
-        fields: ['Name', 'Display Order', 'Logo']
-      })
-    } catch (error) {
-      console.error(error)
-      this.error = true
-    }
-
-    this.loading = false
+  mounted () {
+    this.load()
   },
   methods: {
     ...mapActions({
@@ -110,8 +88,48 @@ export default {
       getProducts: 'entities/products/get',
       updateSelectedClientTypes: 'upcoming-orders/updateSelectedClientTypes'
     }),
+    async load () {
+      this.loading = true
+      this.error = false
+
+      try {
+        await this.getOrders({
+          filterByFormula: airQuery()
+            // .notIn('Client Rec ID', TEST_CLIENT_IDS)
+            .after('Date', this.$moment(this.dateRange.startDate).subtract('days', 1).format('MM/DD/YYYY')) // inclusive
+            .before('Date', this.$moment(this.dateRange.endDate).add('days', 1).format('MM/DD/YYYY')) // inclusive
+            .get(),
+          sort: [{ field: 'Date', direction: 'asc' }],
+          fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact', 'Client']
+        })
+
+        if (this.orders.length) {
+          await this.getOrderItems({
+            filterByFormula: airQuery().whereIn('Order Rec ID', this.orders.map(o => o.id)).get()
+          })
+        }
+
+        await this.getClients({
+          filterByFormula: airQuery().whereInId(this.orders.map(order => order.fields.order)).get(),
+          fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type', 'Rec ID']
+        })
+
+        await this.getProducts({
+          filterByFormula: airQuery().get(),
+          fields: ['Name', 'Display Order', 'Logo']
+        })
+      } catch (error) {
+        console.error(error)
+        this.error = true
+      }
+
+      this.loading = false
+    },
     onClientTypesFilterChange (v) {
       this.updateSelectedClientTypes(v)
+    },
+    o (v) {
+      console.log(this.dateRange)
     },
     formatDate (date) {
       return moment(date).format('ddd, M/DD')
