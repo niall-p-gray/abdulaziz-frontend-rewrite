@@ -37,7 +37,7 @@
           <div class="value">
             <div class="flex justify-between items-center">
               <div>
-                <p>{{ order.clientName }}</p>
+                <a :href="`/clients/${order.clientId}`" target="_blank">{{ order.clientName }}</a>
                 <p v-if="order.clientDetails" class="text-sm font-normal">
                   {{ order.clientDetails }}
                 </p>

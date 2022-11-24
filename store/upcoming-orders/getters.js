@@ -59,6 +59,8 @@ export default {
 
       if (client) {
         obj.clientName = client.fields.Name
+        obj.clientId = client.id
+
         if (!obj.address) obj.address = client.fields.Address
         if (!obj.phoneNumber) obj.phoneNumber = client.fields.Phone
         if (!obj.contactName) obj.contactName = client.fields['Primary Contact']
