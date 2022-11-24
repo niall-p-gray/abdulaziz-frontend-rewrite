@@ -6,7 +6,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import WeeklyOrderTable from '@/components/client-ordering-page/desktop/WeeklyOrderTable'
+import WeeklyOrderTable from '@/components/client-weekly-orders/desktop/WeeklyOrderTable'
 
 export default {
   components: {

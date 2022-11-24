@@ -17,10 +17,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import WeekDaySelector from '@/components/client-ordering-page/mobile/WeekDaySelector'
-import WeekTotals from '@/components/client-ordering-page/mobile/WeekTotals'
-import InlineProducDetails from '@/components/client-ordering-page/mobile/InlineProducDetails'
-import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
+import WeekDaySelector from '@/components/client-weekly-orders/mobile/WeekDaySelector'
+import WeekTotals from '@/components/client-weekly-orders/mobile/WeekTotals'
+import InlineProducDetails from '@/components/client-weekly-orders/mobile/InlineProducDetails'
+import WeekOrdersLastEditDate from '@/components/client-weekly-orders/WeekOrdersLastEditDate'
 
 export default {
   components: {

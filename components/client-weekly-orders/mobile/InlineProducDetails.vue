@@ -17,7 +17,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
+import DailyOrderQuantityInput from '@/components/client-weekly-orders/DailyOrderQuantityInput'
 
 export default {
   components: {

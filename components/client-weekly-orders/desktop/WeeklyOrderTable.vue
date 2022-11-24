@@ -49,8 +49,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import { weekDayNames } from '@/utils'
-import DailyOrderQuantityInput from '@/components/client-ordering-page/DailyOrderQuantityInput'
-import WeekOrdersLastEditDate from '@/components/client-ordering-page/WeekOrdersLastEditDate'
+import DailyOrderQuantityInput from '@/components/client-weekly-orders/DailyOrderQuantityInput'
+import WeekOrdersLastEditDate from '@/components/client-weekly-orders/WeekOrdersLastEditDate'
 
 export default {
   components: {

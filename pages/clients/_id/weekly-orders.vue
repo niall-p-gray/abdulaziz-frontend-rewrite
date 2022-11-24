@@ -28,10 +28,10 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import OrderFormDesktop from '@/components/client-ordering-page/desktop/OrderFormDesktop'
-import OrderFormMobile from '@/components/client-ordering-page/mobile/OrderFormMobile'
-import WeekSelector from '@/components/client-ordering-page/WeekSelector'
-import ClientInfo from '@/components/client-ordering-page/ClientInfo'
+import OrderFormDesktop from '@/components/client-weekly-orders/desktop/OrderFormDesktop'
+import OrderFormMobile from '@/components/client-weekly-orders/mobile/OrderFormMobile'
+import WeekSelector from '@/components/client-weekly-orders/WeekSelector'
+import ClientInfo from '@/components/client-weekly-orders/ClientInfo'
 import airQuery from '@/utils/airtable-query-builder'
 
 export default {
