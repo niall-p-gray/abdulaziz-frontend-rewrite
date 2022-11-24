@@ -1,7 +1,7 @@
 <template>
   <div class="order-page">
     <portal v-if="currentClient" to="page-title">
-      <ClientInfo :client="currentClient" />
+      <ClientName :client="currentClient" />
     </portal>
     <div>
       <div v-if="!loading && !error" >
@@ -31,7 +31,7 @@ import { mapActions, mapGetters } from 'vuex'
 import OrderFormDesktop from '@/components/client-weekly-orders/desktop/OrderFormDesktop'
 import OrderFormMobile from '@/components/client-weekly-orders/mobile/OrderFormMobile'
 import WeekSelector from '@/components/client-weekly-orders/WeekSelector'
-import ClientInfo from '@/components/client-weekly-orders/ClientInfo'
+import ClientName from '@/components/clients/ClientName'
 import airQuery from '@/utils/airtable-query-builder'
 
 export default {
@@ -40,7 +40,7 @@ export default {
     OrderFormDesktop,
     OrderFormMobile,
     WeekSelector,
-    ClientInfo
+    ClientName
   },
   data () {
     return {
