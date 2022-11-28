@@ -43,6 +43,7 @@ import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 import UpcomingOrder from '@/components/upcoming-orders/UpcomingOrder'
 import DateRangeFilter from '@/components/upcoming-orders/DateRangeFilter'
 import authGuardMixin from '@/mixins/auth-guard'
+import { AIRTABLE_ENTITITY_FIELDS } from '@/utils'
 
 export default {
   components: {
@@ -100,7 +101,7 @@ export default {
             .before('Date', this.$moment(this.dateRange.endDate).add('days', 1).format('MM/DD/YYYY')) // inclusive
             .get(),
           sort: [{ field: 'Date', direction: 'asc' }],
-          fields: ['Client', 'Date', 'Ready Time', 'Delivery Time', 'Summed Orders', 'Packaging', 'Temperature', 'Notes', 'Delivery Notes', 'Delivery Driver', 'Delivery Type', 'Client Details', 'Delivery Address', 'Order Phone', 'Order Contact', 'Client']
+          fields: AIRTABLE_ENTITITY_FIELDS.ORDER
         })
 
         if (this.orders.length) {
@@ -116,7 +117,7 @@ export default {
 
         await this.getProducts({
           filterByFormula: airQuery().get(),
-          fields: ['Name', 'Display Order', 'Logo']
+          fields: AIRTABLE_ENTITITY_FIELDS.PRODUCTS
         })
       } catch (error) {
         console.error(error)
