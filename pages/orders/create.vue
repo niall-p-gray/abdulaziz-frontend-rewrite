@@ -16,6 +16,7 @@ import { mapActions } from 'vuex'
 import airQuery from '@/utils/airtable-query-builder'
 import OrderForm from '@/components/order-form/OrderForm'
 import authGuardMixin from '@/mixins/auth-guard'
+import { AIRTABLE_ENTITITY_FIELDS } from '@/utils'
 
 export default {
   components: {
@@ -44,7 +45,7 @@ export default {
           .notEmpty('Name')
           .notEmpty('Available Days')
           .get(),
-        fields: ['Name', 'Display Order', 'Logo']
+        fields: AIRTABLE_ENTITITY_FIELDS.PRODUCTS
       })
     } catch (error) {
       console.error(error)

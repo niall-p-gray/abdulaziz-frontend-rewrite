@@ -1,13 +1,16 @@
 <template>
   <div class="mb-20 lg:m-0">
     <Actions @add-default-order="addDefaultOrder" @clear="reset" />
-    <div class="md:flex justify-between flex-wrap gap-x-1 mt-2">
-      <div v-for="product in formattedProducts" :key="product.id" class="item">
-        <div :class="{'bg-gray-200': !product.logo}" class="icon">
-          <img v-if="product.logo" :src="product.logo" />
+    <div v-for="(group, groupName) in groupedItems" :key="groupName" class="mt-5">
+      <p class="uppercase text-sm text-gray-600">{{ groupName }}</p>
+      <div class="md:flex justify-between flex-wrap gap-x-1 mt-2">
+        <div v-for="product in group.items" :key="product.id" class="item">
+          <div :class="{'bg-gray-200': !product.logo}" class="icon">
+            <img v-if="product.logo" :src="product.logo" />
+          </div>
+          <strong class="title">{{ product.name }}</strong>
+          <QuantityInput v-model="quantities[product.id]" @change="onProductQtyChange" />
         </div>
-        <strong class="title">{{ product.name }}</strong>
-        <QuantityInput v-model="quantities[product.id]" @change="onProductQtyChange" />
       </div>
     </div>
   </div>
@@ -33,20 +36,29 @@ export default {
       products: 'entities/products/products',
       fields: 'order-form/fields'
     }),
-    formattedProducts () {
-      return this.products.map((product) => {
+    groupedItems () {
+      const groupedItems = {}
+
+      this.products.forEach((product) => {
         const item = {
           id: product.id,
           name: product.fields.Name,
           logo: null
         }
+        const itemType = product.fields['Product Type'].trim()
 
         if (product.fields.Logo && product.fields.Logo.length) {
           item.logo = product.fields.Logo[0].thumbnails.small.url
         }
 
-        return item
+        if (!groupedItems[itemType]) {
+          groupedItems[itemType] = { items: [] }
+        }
+
+        groupedItems[itemType].items.push(item)
       })
+
+      return groupedItems
     }
   },
   methods: {
