@@ -14,7 +14,7 @@
                 <mark>{{ formatDate(date) }}</mark>
               </h1>
               <h2 class="qty">
-                {{ orders.length }} orders ({{ calculateTotalItems(orders) }} kolaches)
+                {{ orders.length }} orders ({{ calculateDayTotalKolacheItems(orders) }} kolaches)
               </h2>
             </div>
             <div class="day-orders-container">
@@ -135,8 +135,8 @@ export default {
     formatDate (date) {
       return moment(date).format('ddd, M/DD')
     },
-    calculateTotalItems (orders) {
-      return orders.reduce((total, o) => total + o.qty, 0)
+    calculateDayTotalKolacheItems (orders) {
+      return orders.reduce((total, o) => total + o.totalKolacheItems, 0)
     }
   }
 }

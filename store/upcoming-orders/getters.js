@@ -6,6 +6,8 @@ export default {
   },
   upcomingOrderDates (state, getters, rootState, rootGetters) {
     const orders = rootGetters['entities/orders/orders']
+    const orderItems = rootGetters['entities/order-items/orderItems']
+    const products = rootGetters['entities/products/products']
     const clients = rootGetters['entities/clients/clients']
 
     const dates = {}
@@ -38,12 +40,26 @@ export default {
 
       if (readyTime) readyTime = moment(readyTime, 'hh:mm').format('h:mm a')
       if (deliveryTime) deliveryTime = moment(deliveryTime, 'hh:mm').format('h:mm a')
+      
+      // Compute the number of kolaches included in this order
+      const totalKolacheItems = orderItems.reduce((total, orderItem) => {
+        const product = products.find(item => item.id === orderItem.fields.Product[0])
+        const kolacheTypes = ['kolache', 'kolache - seasonal or special']
+        const itemType = product.fields['Product Type'].toLowerCase().trim()
+
+        if (orderItem.fields.Order[0] === order.id && kolacheTypes.includes(itemType)) {
+          return total + orderItem.fields.Orders
+        }
+
+        return total
+      }, 0)
 
       const obj = {
         id: order.id,
         readyTime,
         deliveryTime,
         qty: order.fields['Summed Orders'],
+        totalKolacheItems,
         packaging: order.fields.Packaging,
         temperature: order.fields.Temperature,
         notes: order.fields.Notes,
