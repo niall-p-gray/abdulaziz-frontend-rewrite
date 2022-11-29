@@ -1,9 +1,9 @@
 <template>
   <div class="mb-20 lg:m-0">
     <Actions @add-default-order="addDefaultOrder" @clear="reset" />
-    <div v-for="(group, groupName) in groupedItems" :key="groupName" class="mt-5">
-      <p class="uppercase text-sm text-gray-600">{{ groupName }}</p>
-      <div class="md:flex justify-between flex-wrap gap-x-1 mt-2">
+    <div v-for="(group, groupName) in groupedItems" :key="groupName" class="mt-10">
+      <p class="uppercase text-base text-green-500 font-bold">{{ groupName }}</p>
+      <div class="md:flex justify-between flex-wrap gap-x-1 mt-3">
         <div v-for="product in group.items" :key="product.id" class="item">
           <div :class="{'bg-gray-200': !product.logo}" class="icon">
             <img v-if="product.logo" :src="product.logo" />
