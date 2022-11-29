@@ -76,6 +76,7 @@ export default {
       if (client) {
         obj.clientName = client.fields.Name
         obj.clientId = client.id
+        obj.clientEmail = client.fields.Email
 
         if (!obj.address) obj.address = client.fields.Address
         if (!obj.phoneNumber) obj.phoneNumber = client.fields.Phone

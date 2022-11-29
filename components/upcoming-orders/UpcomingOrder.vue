@@ -63,6 +63,10 @@
           <span class="value">{{ order.phoneNumber ? order.phoneNumber : '---' }}</span>
         </div>
         <div class="detail">
+          <span class="title">Contact email</span>
+          <span class="value">{{ order.clientEmail ? order.clientEmail : '---' }}</span>
+        </div>
+        <div class="detail">
           <span class="title">Delivery note</span>
           <span class="value">{{ order.deliveryNotes ? order.deliveryNotes : '---' }}</span>
         </div>
