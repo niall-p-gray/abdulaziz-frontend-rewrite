@@ -14,6 +14,10 @@ export default () => {
     where (column, value) {
       filters.push(`{${column}}="${value}"`)
       return this
+    },    
+    whereDate (column, value) {
+      filters.push(`DATESTR({${column}})="${value}"`)
+      return this
     },
     before (column, value) {
       filters.push(`IS_BEFORE({${column}}, "${value}")`)

@@ -21,7 +21,7 @@
         <p v-if="!groupedClientTypeOrders.length" class="text-center">No orders</p>
       </div>
       <div class="print-all-orders">
-        <button class="btn">
+        <button @click="printOrders" class="btn">
           <img class="w-4 h-4" src="~/assets/icons/print.svg" >
           <span class="ml-3">Print all orders</span>
         </button>
@@ -40,6 +40,9 @@ import ClientTypeOrders from '@/components/delivery/summary/ClientTypeOrders'
 import DeliverySummaryDateSelector from '@/components/delivery/summary/DeliverySummaryDateSelector '
 import ClientTypeFilter from '@/components/filters/ClientTypeFilter'
 import authGuardMixin from '@/mixins/auth-guard'
+import { AIRTABLE_ENTITITY_FIELDS, TEST_CLIENT_IDS } from '@/utils'
+import airQuery from '@/utils/airtable-query-builder'
+import { generateOrderPdf } from '@/utils/pdfs'
 
 export default {
   layout: 'dashboard',
@@ -62,9 +65,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-      products: 'delivery-summary/products',
       ordersPerClient: 'delivery-summary/ordersPerClient',
-      clients: 'delivery-summary/clients'
+      clients: 'entities/clients/clients',
+      orders: 'entities/orders/orders',
+      products: 'entities/products/products'
     }),
     clientOrders () {
       const orders = this.ordersPerClient
@@ -145,9 +149,10 @@ export default {
   },
   methods: {
     ...mapActions({
-      getOrderItems: 'delivery-summary/getOrderItems',
-      getProducts: 'delivery-summary/getProducts',
-      getClients: 'delivery-summary/getClients'
+      getClients: 'entities/clients/get',
+      getProducts: 'entities/products/get',
+      getOrders: 'entities/orders/get',
+      getOrderItems: 'entities/order-items/get'
     }),
     onDateSelected (date) {
       this.load(date)
@@ -157,15 +162,46 @@ export default {
       this.error = false
 
       try {
-        await this.getOrderItems({ orderDate })
-        await this.getProducts()
-        await this.getClients()
+        if (!this.clients.length) {
+          await this.getClients({
+            fields: ['Name', 'Primary Contact', 'Address', 'Phone', 'Client Type', 'Rec ID', 'Email']
+          })
+        }
+
+        if (!this.products.length) {
+          await this.getProducts({
+            filterByFormula: airQuery().get(),
+            fields: AIRTABLE_ENTITITY_FIELDS.PRODUCTS
+          })
+        }
+
+        await this.getOrders({
+          filterByFormula: airQuery()
+          .notIn('Client Rec ID', TEST_CLIENT_IDS)
+          .whereDate('Date', orderDate)
+          .get(),
+          fields: AIRTABLE_ENTITITY_FIELDS.ORDER
+        })
+
+        if (this.orders.length) {
+          await this.getOrderItems({
+            filterByFormula: airQuery().whereIn('Order Rec ID', this.orders.map(o => o.id)).get()
+          })
+        }
       } catch (error) {
         console.error(error)
         this.error = true
       }
 
       this.loading = false
+    },
+    printOrders () {
+      let orders = []
+      this.groupedClientTypeOrders.forEach((clientOrder) => {
+        orders = [...orders, ...clientOrder.data]
+      })
+      console.log(orders)
+      generateOrderPdf(orders)
     }
   }
 }
