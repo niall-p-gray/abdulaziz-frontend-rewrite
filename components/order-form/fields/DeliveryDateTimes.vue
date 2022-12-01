@@ -29,10 +29,6 @@
         />
       </div>
     </div>
-    <p class="note">
-      This should be the date and time that the order will be ready to LEAVE the
-      shop, whether it is being picked up by a client or we are delivering it.
-    </p>
   </div>
 </template>
 
