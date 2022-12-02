@@ -4,7 +4,7 @@
       clear all
     </button>
     <div class="dropdown ml-4 md:ml-0">
-      <button @click="openDropDown = true" class="toggle-dropdown-btn underline">
+      <button @click="toggleDropdown" class="toggle-dropdown-btn underline">
         Quick entry
       </button>
       <div :class="{'open': openDropDown}"  class="options">
@@ -28,6 +28,9 @@
           <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 all day dozen</span>
         </button>
+        <button @click="toggleDropdown" class="btn btn__secondary md:!hidden !text-red-500 !mt-0">
+          <span>Close</span>
+        </button>
       </div>
     </div>
   </div>
@@ -42,6 +45,9 @@ export default {
     }
   },
   methods: {
+    toggleDropdown () {
+      this.openDropDown = !this.openDropDown
+    },
     addOneBreakfast () {
       this.$emit(this.orderEventName, {
         recOY2bEa5r9Uc5eS: 1,
@@ -83,14 +89,6 @@ export default {
         recvpRS22hhPag0IF: 3
       })
     }
-  },
-  mounted () {
-    window.addEventListener('click', (e) => {
-      if (e.target.matches('.toggle-dropdown-btn')) return
-      if (e.target.closest('.toggle-dropdown-btn')) return
-
-      this.openDropDown = false
-    })
   }
 }
 </script>
@@ -121,10 +119,6 @@ export default {
 }
 
 @media (min-width: 768px) {
-  .dropdown {
-    
-  }
-
   .options{
     @apply flex flex-row flex-wrap static p-0 m-0 shadow-none order-1;
   }
