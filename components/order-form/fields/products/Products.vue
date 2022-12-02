@@ -1,7 +1,7 @@
 <template>
   <div class="mb-20 lg:m-0">
     <Actions @add-default-order="addDefaultOrder" @clear="reset" />
-    <div v-for="(group, groupName) in groupedItems" :key="groupName" class="mt-10">
+    <div v-for="(group, groupName) in groupedItems" :key="groupName" class="mt-10 md:mt-4">
       <p class="uppercase text-base text-green-500 font-bold">{{ groupName }}</p>
       <div class="md:flex justify-between flex-wrap gap-x-1 mt-3">
         <div v-for="product in group.items" :key="product.id" class="item">

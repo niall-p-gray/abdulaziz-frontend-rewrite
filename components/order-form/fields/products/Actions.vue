@@ -1,31 +1,31 @@
 <template>
-  <div class="flex justify-end items-center">
-    <button @click="$emit('clear')" class="text-red-500">
+  <div class="flex justify-end md:justify-start items-center md:items-start m-0 mt-6">
+    <button @click="$emit('clear')" class="clear-btn text-red-500">
       clear all
     </button>
-    <div class="dropdown ml-4">
+    <div class="dropdown ml-4 md:ml-0">
       <button @click="openDropDown = true" class="toggle-dropdown-btn underline">
         Quick entry
       </button>
       <div :class="{'open': openDropDown}"  class="options">
         <button @click="addOneBreakfast" class="btn btn__secondary">
-          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 breakfast sample box</span>
         </button>
         <button @click="addOneAllDaySample" class="btn btn__secondary">
-          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 all day sample box</span>
         </button>
         <button @click="addOneBreakfastDozen" class="btn btn__secondary">
-          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 breakfast dozen</span>
         </button>
         <button @click="addOneDozenBreakfastVeg" class="btn btn__secondary">
-          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 breakfast dozen (veg)</span>
         </button>
         <button @click="addOneDozenAllDay" class="btn btn__secondary">
-          <font-awesome-icon :icon="['fas', 'plus']" class="text-sm"/>
+          <font-awesome-icon :icon="['fas', 'plus']" class="text-xs"/>
           <span>1 all day dozen</span>
         </button>
       </div>
@@ -100,10 +100,6 @@ export default {
   @apply text-xs p-2 flex items-center mt-2 border-0;
 }
 
-span {
-    @apply ml-2;
-}
-
 .dropdown {
   position: relative;
 }
@@ -122,6 +118,29 @@ span {
 
 .toggle-dropdown-btn {
   display: block;
+}
+
+@media (min-width: 768px) {
+  .dropdown {
+    
+  }
+
+  .options{
+    @apply flex flex-row flex-wrap static p-0 m-0 shadow-none order-1;
+  }
+
+  .options button {
+    @apply border border-gray-400 text-sm mr-2 mt-0 mb-2 p-1;
+  }
+
+  .toggle-dropdown-btn {
+    display: none;
+  }
+
+  .clear-btn {
+    min-width: 63px;
+    order: 2;
+  }
 }
 
 </style>
