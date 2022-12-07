@@ -33,6 +33,12 @@
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
+  props: {
+    inEditMode: {
+      default: false,
+      type: Boolean
+    }
+  },
   data () {
     return {
       deliveryMethod: 'Pickup',
@@ -95,8 +101,11 @@ export default {
   },
   watch: {
     fields: {
-      handler: function (newValue) {
-        if (newValue.client && newValue.client.address) {
+      handler: function (newValue, oldValue) {
+        const clientDidChange = typeof newValue.client !== typeof oldValue.client || newValue.client?.id !== oldValue.client?.id
+        const shouldAutoPopulateAddress = !this.inEditMode && clientDidChange && newValue.client.address
+
+        if (shouldAutoPopulateAddress) {
           this.address.shipAddress = newValue.client.address
         }
       }

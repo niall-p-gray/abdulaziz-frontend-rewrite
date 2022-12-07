@@ -15,7 +15,7 @@
         <section>
           <h4 class="section-title">How Will the Client Get It?</h4>
           <div class="mt-6">
-            <Delivery />
+            <Delivery :in-edit-mode="Boolean(orderId)"/>
           </div>
         </section>
         <section>
