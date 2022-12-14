@@ -32,6 +32,7 @@ export default {
           deliveryMethod: order.fields['Delivery Type'],
           contactName: order.fields['Order Contact'] || client.fields['Primary Contact'],
           phoneNumber: order.fields['Order Phone'] || client.fields.Phone,
+          deliveryDriver: order.fields['Delivery Driver'],
           readyTime,
           deliveryTime,
           totalOrders: 0

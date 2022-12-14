@@ -26,12 +26,22 @@ export const generateOrderPdf = (orders) => {
     addLine()
 
     addText('Delivery:', 'bold')
+    // Remember current y position, because we will put the address and the delivery person on the same line
+    const deliveryLineY = currentLineY
     if (order.deliveryMethod) {
       if (order.deliveryMethod.toLowerCase() === 'pickup') {
         addText('Pickup')
       } else {
         addText(order.client.address)
         currentLineY += 16
+
+        if (order.deliveryDriver) {
+          addText('Delivery By:', 'bold', deliveryLineY, width / 2)
+          addText(order.deliveryDriver, 'normal',
+            deliveryLineY + 4, // add some space
+            width / 2 // Put it on the right half of the page
+          )
+        }
       }
     } else {
       addText(order.client.address)
@@ -116,13 +126,17 @@ const generateTable = (body) => {
   })
 }
 
-const addText = (text, fontStyle = 'normal') => {
-  currentLineY += 3 + currentLineBottomMargin
-  currentLineBottomMargin = 1
+const addText = (text, fontStyle = 'normal', y, x = 20) => {
+  if (!y) {
+    y = currentLineY + 3 + currentLineBottomMargin
+    currentLineBottomMargin = 1
+    currentLineY = y
+  }
+
   doc.setFontSize(9)
   doc.setFont('helvetica', fontStyle)
 
-  doc.text(text, 20, currentLineY)
+  doc.text(text, x, y)
 }
 
 const addHeading = (text) => {
