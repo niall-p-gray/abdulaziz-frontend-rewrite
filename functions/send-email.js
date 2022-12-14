@@ -30,7 +30,7 @@ const send = async (subject, body) => {
 
   let info = await transporter.sendMail({
     from: process.env.MAIL_FROM,
-    to: 'thomasbovio@gmail.com',
+    to: process.env.MAIL_NOTIFICATION,
     subject,
     html: body
   })

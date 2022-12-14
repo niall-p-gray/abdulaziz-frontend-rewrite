@@ -14,7 +14,8 @@ export default {
     MAIL_PORT: process.env.MAIL_PORT,
     MAIL_USERNAME: process.env.MAIL_USERNAME,
     MAIL_PASSWORD: process.env.MAIL_PASSWORD,
-    MAIL_FROM: process.env.MAIL_FROM
+    MAIL_FROM: process.env.MAIL_FROM,
+    MAIL_NOTIFICATION: process.env.MAIL_NOTIFICATION
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
