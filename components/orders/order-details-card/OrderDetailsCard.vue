@@ -92,8 +92,9 @@
         <font-awesome-icon :icon="['fas', 'pencil']" class="text-xs" />
       </a>
       <font-awesome-icon
+        @click="expanded = !expanded"
         :icon="['fas', `chevron-${expanded ? 'up' : 'down'}`]"
-        class="text-s ml-4"
+        class="text-s ml-4 cursor-pointer"
       />
     </div>
   </div>
