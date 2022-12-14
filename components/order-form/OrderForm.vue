@@ -99,8 +99,32 @@ export default {
   computed: {
     ...mapGetters({
       fields: 'order-form/fields',
-      orderCreationPayload: 'order-form/orderCreationPayload'
+      orderCreationPayload: 'order-form/orderCreationPayload',
+      clients: 'entities/clients/clients'
     }),
+    client () {
+      return this.clients.find(client => client.id === this.fields.client.id)
+    },
+    emailSubjectTemplate () {
+      const date = this.$moment(this.fields.deliveryDate.date, 'YYYY-MM-DD').format('ddd MM/DD')
+      const time = this.$moment(this.fields.deliveryDate.deliveryTime, 'hh:mm a').format('h:mm a')
+
+      return `[{PLACEHOLDER}] ${date} @ ${time}, ${this.totalSelectedProducts} kolaches, ${this.client.fields.Name}`
+    },
+    emailBodyTemplate () {
+      const date = this.$moment(this.fields.deliveryDate.date, 'YYYY-MM-DD').format('ddd MM/DD')
+      const time = this.$moment(this.fields.deliveryDate.deliveryTime, 'hh:mm a').format('h:mm a')
+
+      return `
+        {PLACEHOLDER} for ${this.client.fields.Name}:
+        <br>
+        - ${date} @ ${time}<br>
+        - Total kolaches: ${this.totalSelectedProducts}
+        <br>
+        <br>
+        <a href="https://${window.location.host}/orders/${this.createdOrderId || this.orderId}">Click for full order details.</a>
+      `
+    },
     totalSelectedProducts () {
       let total = 0
       for (const prodId in this.fields.quantities) {
@@ -136,6 +160,10 @@ export default {
           text: 'Order created',
           type: 'success'
         })
+
+        const subject = this.emailSubjectTemplate.replace('{PLACEHOLDER}', 'NEW Order')
+        const body = this.emailBodyTemplate.replace('{PLACEHOLDER}', 'New order created')
+        this.sendEmailNotification(subject, body)
       } else {
         this.$notify({
           text: 'Could not create order, please try again later',
@@ -151,6 +179,10 @@ export default {
           text: 'Order updated',
           type: 'success'
         })
+
+        const subject = this.emailSubjectTemplate.replace('{PLACEHOLDER}', 'Order MODIFIED')
+        const body = this.emailBodyTemplate.replace('{PLACEHOLDER}', 'Order UPDATED')
+        this.sendEmailNotification(subject, body)
       } else {
         this.$notify({
           text: 'Could not save changes',
@@ -213,6 +245,17 @@ export default {
         adaptive: true,
         name: 'delete-order'
       })
+    },
+    async sendEmailNotification (subject, body){
+      try {
+        const options = {
+          'Content-Type': 'application/json'
+        }
+
+        await this.$axios.post('/.netlify/functions/send-email', { subject, body }, options)
+      } catch (error) {
+        console.error(error)
+      }
     }
   }
 }

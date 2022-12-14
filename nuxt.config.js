@@ -9,7 +9,12 @@ export default {
   env: {
     AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
     AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY,
-    TYPEFORM_API_KEY: process.env.TYPEFORM_API_KEY
+    TYPEFORM_API_KEY: process.env.TYPEFORM_API_KEY,
+    MAIL_HOST: process.env.MAIL_HOST,
+    MAIL_PORT: process.env.MAIL_PORT,
+    MAIL_USERNAME: process.env.MAIL_USERNAME,
+    MAIL_PASSWORD: process.env.MAIL_PASSWORD,
+    MAIL_FROM: process.env.MAIL_FROM
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
