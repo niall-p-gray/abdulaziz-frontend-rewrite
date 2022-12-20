@@ -60,5 +60,13 @@ export default {
     payload['Order Contact'] = fields.client.contactName
 
     return payload
+  },
+  totalSelectedProducts (state) {
+    let total = 0
+    for (const prodId in state.fields.quantities) {
+      total += state.fields.quantities[prodId]
+    }
+
+    return total
   }
 }

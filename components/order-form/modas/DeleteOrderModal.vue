@@ -31,18 +31,11 @@ export default {
   computed: {
     ...mapGetters({
       fields: 'order-form/fields',
+      totalSelectedProducts: 'order-form/totalSelectedProducts',
       clients: 'entities/clients/clients'
     }),
     client () {
       return this.clients.find(client => client.id === this.fields.client.id)
-    },
-    totalSelectedProducts () {
-      let total = 0
-      for (const prodId in this.fields.quantities) {
-        total += this.fields.quantities[prodId]
-      }
-
-      return total
     }
   },
   methods: {

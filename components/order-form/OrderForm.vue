@@ -101,6 +101,7 @@ export default {
     ...mapGetters({
       fields: 'order-form/fields',
       orderCreationPayload: 'order-form/orderCreationPayload',
+      totalSelectedProducts: 'order-form/totalSelectedProducts',
       clients: 'entities/clients/clients'
     }),
     client () {
@@ -125,14 +126,6 @@ export default {
         <br>
         <a href="https://${window.location.host}/orders/${this.createdOrderId || this.orderId}">Click for full order details.</a>
       `
-    },
-    totalSelectedProducts () {
-      let total = 0
-      for (const prodId in this.fields.quantities) {
-        total += this.fields.quantities[prodId]
-      }
-
-      return total
     }
   },
   methods: {
