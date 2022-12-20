@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import { sendEmail } from '@/utils'
 
 export default {
   name: 'DeleteOrderModal',
@@ -27,16 +28,38 @@ export default {
       deleting: false
     }
   },
+  computed: {
+    ...mapGetters({
+      fields: 'order-form/fields',
+      clients: 'entities/clients/clients'
+    }),
+    client () {
+      return this.clients.find(client => client.id === this.fields.client.id)
+    },
+    totalSelectedProducts () {
+      let total = 0
+      for (const prodId in this.fields.quantities) {
+        total += this.fields.quantities[prodId]
+      }
+
+      return total
+    }
+  },
   methods: {
     ...mapActions({
       deleteOrder: 'order-form/delete'
     }),
     async confirm () {
+      // Prepare notification email
+      const { subject, body } = this.buildEmailPayload()
+
       this.deleting = true
 
       const deleted = await this.deleteOrder(this.orderId)
 
       this.deleting = false
+
+      sendEmail(subject, body)
 
       if (deleted) {
         this.$notify({
@@ -53,7 +76,25 @@ export default {
       }
 
       this.$modal.hide('delete-order')
-    }
+    },
+    buildEmailPayload () {
+      const date = this.$moment(this.fields.deliveryDate.date, 'YYYY-MM-DD').format('ddd MM/DD')
+      const time = this.$moment(this.fields.deliveryDate.deliveryTime, 'hh:mm a').format('h:mm a')
+
+      const subject = `[Order Deleted] ${date} @ ${time}, ${this.totalSelectedProducts} kolaches, ${this.client.fields.Name}`
+
+      const body =  `
+        An order for ${this.client.fields.Name} has been deleted:
+        <br>
+        - ${date} @ ${time}<br>
+        - Total kolaches: ${this.totalSelectedProducts}
+      `
+
+      return {
+        subject,
+        body
+      }
+    },
   }
 }
 </script>
