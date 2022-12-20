@@ -24,6 +24,7 @@
 
 <script>
 import axios from 'axios'
+import { isLoggedIn } from '@/utils/auth'
 
 export default {
   data () {
@@ -32,6 +33,10 @@ export default {
       verifying: false,
       error: false
     }
+  },
+  created () {
+    // If already login, redirect to the intended url
+    if (process.client && isLoggedIn()) this.redirectToIntendedUrl()
   },
   methods: {
     async submit () {
