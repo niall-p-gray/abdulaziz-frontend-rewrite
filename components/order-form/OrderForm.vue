@@ -116,6 +116,7 @@ export default {
     emailBodyTemplate () {
       const date = this.$moment(this.fields.deliveryDate.date, 'YYYY-MM-DD').format('ddd MM/DD')
       const time = this.$moment(this.fields.deliveryDate.deliveryTime, 'hh:mm a').format('h:mm a')
+      const link = `${window.location.origin}/login?next=/orders/${this.createdOrderId || this.orderId}`
 
       return `
         {PLACEHOLDER} for ${this.client.fields.Name}:
@@ -124,7 +125,7 @@ export default {
         - Total kolaches: ${this.totalSelectedProducts}
         <br>
         <br>
-        <a href="https://${window.location.host}/orders/${this.createdOrderId || this.orderId}">Click for full order details.</a>
+        <a href="${link}">Click for full order details.</a>
       `
     }
   },

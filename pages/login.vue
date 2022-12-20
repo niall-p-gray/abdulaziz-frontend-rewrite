@@ -75,7 +75,16 @@ export default {
       localStorage.setItem('loggedIn', true)
       localStorage.setItem('lastLogIn', logInDate)
 
-      this.$router.push('/')
+      // After logging in successfully, redirect user to their intended destination
+      this.redirectToIntendedUrl()
+    },
+    redirectToIntendedUrl () {
+      const intendedUrl = this.$route.query.next
+      if (intendedUrl) {
+        this.$router.replace(intendedUrl)
+      } else {
+        this.$router.push('/')
+      }
     }
   }
 }
