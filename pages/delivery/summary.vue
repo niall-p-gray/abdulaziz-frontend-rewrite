@@ -170,7 +170,7 @@ export default {
 
         if (!this.products.length) {
           await this.getProducts({
-            filterByFormula: airQuery().get(),
+            filterByFormula: airQuery().where('Available', 1).get(),
             fields: AIRTABLE_ENTITITY_FIELDS.PRODUCTS
           })
         }

@@ -10,7 +10,8 @@ export const AIRTABLE_ENTITITY_FIELDS = {
     'Description',
     'Display Order',
     'Logo',
-    'Product Type'
+    'Product Type',
+    'Available'
   ],
   ORDER: [
     'Client',
