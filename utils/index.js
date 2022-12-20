@@ -1,4 +1,5 @@
 import moment from 'moment'
+import axios from 'axios'
 
 export const TEST_CLIENT_IDS = [
   'recQ3nAfYJ41yUrj5'
@@ -59,4 +60,16 @@ export const breakUpArrayIntoChunks = (array, size) => {
   }
 
   return chunks
+}
+
+export const sendEmail = async (subject, body)=> {
+  try {
+    const options = {
+      'Content-Type': 'application/json'
+    }
+
+    await axios.post('/.netlify/functions/send-email', { subject, body }, options)
+  } catch (error) {
+    console.error(error)
+  }
 }

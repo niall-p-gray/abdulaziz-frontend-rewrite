@@ -76,6 +76,7 @@ import SpecialNotes from '@/components/order-form/fields/SpecialNotes'
 import Products from '@/components/order-form/fields/products/Products'
 import CopyOrderModal from '@/components/order-form/modas/CopyOrderModal'
 import DeleteOrderModal from '@/components/order-form/modas/DeleteOrderModal'
+import { sendEmail } from '@/utils'
 
 export default {
   components: {
@@ -163,7 +164,7 @@ export default {
 
         const subject = this.emailSubjectTemplate.replace('{PLACEHOLDER}', 'NEW Order')
         const body = this.emailBodyTemplate.replace('{PLACEHOLDER}', 'New order created')
-        this.sendEmailNotification(subject, body)
+        sendEmail(subject, body)
       } else {
         this.$notify({
           text: 'Could not create order, please try again later',
@@ -182,7 +183,7 @@ export default {
 
         const subject = this.emailSubjectTemplate.replace('{PLACEHOLDER}', 'Order MODIFIED')
         const body = this.emailBodyTemplate.replace('{PLACEHOLDER}', 'Order UPDATED')
-        this.sendEmailNotification(subject, body)
+        sendEmail(subject, body)
       } else {
         this.$notify({
           text: 'Could not save changes',
@@ -246,17 +247,6 @@ export default {
         name: 'delete-order'
       })
     },
-    async sendEmailNotification (subject, body){
-      try {
-        const options = {
-          'Content-Type': 'application/json'
-        }
-
-        await this.$axios.post('/.netlify/functions/send-email', { subject, body }, options)
-      } catch (error) {
-        console.error(error)
-      }
-    }
   }
 }
 </script>
