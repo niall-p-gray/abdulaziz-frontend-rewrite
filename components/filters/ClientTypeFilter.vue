@@ -64,7 +64,7 @@ export default {
     },
     notify () {
       this.$emit('input', this.selectedOptions)
-      this.$emit('change', [...this.selectedOptions])
+      this.$emit('change')
     }
   }
 }

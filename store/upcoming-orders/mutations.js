@@ -1,5 +1,8 @@
 export default {
-  SET_SELECTED_CLIENT_TYPES (state, selectedClientTypes) {
-    state.selectedClientTypes = selectedClientTypes
+  setUpcomingOrders (state, upcomingOrders) {
+    state.upcomingOrders = upcomingOrders
+  },
+  setFilteredOrders (state, filteredOrders) {
+    state.filteredOrders = filteredOrders
   }
 }

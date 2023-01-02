@@ -2,7 +2,7 @@
   <section class="client-type">
     <div class="header">
       <h2>{{ formattedClientType }}</h2>
-      <button @click="generatePdf" class="btn">
+      <button class="btn">
         <img class="w-4 h-4" src="~/assets/icons/print.svg" >
         <span class="ml-3">Print {{ formattedClientType }} Section</span>
       </button>
@@ -42,7 +42,6 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { generateOrderPdf } from '@/utils/pdfs'
 
 export default {
   props: {
@@ -55,16 +54,11 @@ export default {
       required: true
     }
   },
-  methods: {
-    generatePdf () {
-      generateOrderPdf(this.orders)
-    }
-  },
   computed: {
     ...mapGetters({
-      products: 'entities/products/products',
-      orderItems: 'entities/order-items/orderItems',
-      clients: 'entities/clients/clients'
+      products: 'delivery-summary/products',
+      orderItems: 'delivery-summary/orderItems',
+      clients: 'delivery-summary/clients'
     }),
     // Used to populate table head
     productNames () {

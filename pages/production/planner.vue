@@ -37,9 +37,6 @@
           </tbody>
         </table>
         <PushOrdersToSheetButton :payload="sheetPayload" class="mt-16"/>
-        <a href="https://docs.google.com/spreadsheets/d/1OPRX0cFtPdC7r3ZnnpoXBUlSDePdEvLmSXf_AhngwM8/edit#gid=1581088810" target="_blank" class="mt-6 block mx-auto">
-          Open Production Planner Sheet
-        </a>
       </div>
       <p v-else class="text-center">No orders found for the selected dates</p>
     </div>
@@ -55,14 +52,12 @@ import DatesSelector from '@/components/production/planner/DatesSelector'
 import PushOrdersToSheetButton from '@/components/production/planner/PushOrdersToSheetButton'
 import base from '@/airtable'
 import { TEST_CLIENT_IDS } from '@/utils'
-import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
   components: {
     DatesSelector,
     PushOrdersToSheetButton
   },
-  mixins: [authGuardMixin],
   data () {
     return {
       loading: false,

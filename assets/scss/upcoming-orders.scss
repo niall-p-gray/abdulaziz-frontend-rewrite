@@ -1,198 +1,47 @@
-$maxWidth: 1000px;
-$bgColor: #FBFBF9;
-
 .upcoming-orders {
-  .days {
-    @apply mb-10 mt-10 mx-auto w-11/12;
-
-    .day {
-      @apply flex flex-col md:flex-row md:justify-between md:justify-start lg:gap-20 md:gap-16;
-
-      .date {
-        @apply text-2xl md:text-3xl font-bold;
-        mark {
-          display: inline-block;
-          padding-bottom: 17px;
-          line-height: 0.1em;
-          background: #FCE30096;
-        }
-      }
-      
-      .qty {
-        @apply text-sm mt-2 md:m-0 md:text-2xl;
-        color: #C4C4C4;
-      }
-    }
-
-    .day-orders-container{
-      margin-top: 5px;
-
-      .order {
-        margin-top: 16px;
-        position: relative;
-        
-        .actions {
-          color: #00B373;
-          position: absolute;
-          top: 0;
-          right: 0;
-          display: flex;
-          align-items: center;
-          margin: 5px 15px;
-        }
-
-        .main-content {
-          background: $bgColor;
-
-          .special-notes {
-            @apply text-sm text-gray-700;
-            padding: 0px 20px;
-            padding-bottom: 13px;
-          }
-          
-          @media screen and (max-width: $maxWidth) {
-            .special-notes {
-              padding: 0px 0px;
-              padding-bottom: 13px;
-
-              strong {
-                color: #C4C4C4;
-                @apply text-xs block mb-1 mt-3;
-              }
-            }
-          }
-        }
-
-        .expandable-content {
-          max-height: 0;
-          opacity: 0;
-          padding: 0;
-          overflow: hidden;
-          transition: all .25s ease-in-out;
-
-          &.expanded {
-            max-height: 2000px !important;
-            padding: 13px 20px;
-            opacity: 1;
-          }
-
-          .details {
-            display: flex;
-            
-            .detail {
-              margin-right: 40px;
-              max-width: 35%;
-              display: flex;
-              flex-direction: column;
-
-              .title{
-                color: #C4C4C4;
-                @apply font-bold text-sm;
-              }
-            }
-          }
-        }
-
-        &:first-child .title {
-          display: block !important;
-        }
-
-        .cell {
-          overflow:hidden;
-          width: 11% ;
-
-          &.qty{
-            .title, .value {
-              text-align: center;
-            }
-          }
-
-          &.client{
-            flex: 1;
-          }
-
-          .title {
-            color: #C4C4C4;
-            @apply text-xs block lg:hidden;
-          }
-
-          .value {
-            background: $bgColor;
-            color: #212322;
-            border-radius: 8px;
-            height: 100%;
-            font-weight: bold;
-            @apply text-sm;
-          }
-
-          .title, .value {
-            padding: 13px 0;
-          }
-
-          &:first-child {
-            .title, .value{
-              padding-left: 20px;
-            }
-          }
-
-          &:last-child {
-            .value {
-              padding-right: 20px;
-            }
-          }
-
-          @media screen and (max-width: $maxWidth) {
-            width: 50% !important;
-            margin-top: 10px;
-
-            &.qty {              
-              .value, .title {                
-                text-align: left !important;
-              }
-            }
-
-            &:last-child {
-              width: 100% !important;
-              flex: auto;
-            }
-
-            .title, .value {
-              padding: 0 !important;
-            }
-          }
-        }
-      }
-
-    }    
+  &__title {
+    @apply text-5xl text-center;
   }
-
-  @media screen and (max-width: $maxWidth) {
-    .order {
-      background: $bgColor;
-      padding: 13px 20px;
-
-      .actions {
-        margin: 0px 7px !important;
+  &__client-type {
+    @apply mt-5;
+  }
+  &__content {
+    @apply bg-white p-4 md:p-20 rounded mt-10;
+    &__day {
+      @apply mb-10;
+      &__title {
+        @apply flex gap-20 md:gap-16;
+        &__date {
+          @apply text-2xl md:text-3xl;
+          mark {
+            @apply inline-block pb-3;
+            line-height: 0.1em;
+          }
+        }
+        &__orders {
+          @apply text-2xl text-gray-300;
+        }
       }
-    }
-
-    .details {
-      flex-direction: column;
-      margin-top: 15px;
-
-      .detail {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-      }
-    }
-
-    .expandable-content {
-      display: flex;
-      flex-direction: column;
-      
-      &.expanded {
-        padding: 13px 0px !important;
+      &__table {
+        @apply w-full mt-5;
+        &__head {
+          @apply grid grid-cols-6 text-center text-gray-300 text-xs md:text-sm;
+        }
+        &__body {
+          @apply text-xl;
+          &__row {
+            @apply grid grid-cols-3 gap-4 md:grid-cols-6 bg-stone-50 border border-spacing-2 border-gray-200 rounded-lg text-center py-5 px-2 my-3 text-lg;
+            &__inline {
+              @apply flex gap-3 justify-start;
+              img {
+                @apply w-8 h-8;
+              }
+            }
+            &__delivery {
+              @apply flex justify-center;
+            }
+          }
+        }
       }
     }
   }

@@ -9,13 +9,7 @@ export default {
   env: {
     AIRTABLE_BASE_ID: process.env.AIRTABLE_BASE_ID,
     AIRTABLE_API_KEY: process.env.AIRTABLE_API_KEY,
-    TYPEFORM_API_KEY: process.env.TYPEFORM_API_KEY,
-    MAIL_HOST: process.env.MAIL_HOST,
-    MAIL_PORT: process.env.MAIL_PORT,
-    MAIL_USERNAME: process.env.MAIL_USERNAME,
-    MAIL_PASSWORD: process.env.MAIL_PASSWORD,
-    MAIL_FROM: process.env.MAIL_FROM,
-    MAIL_NOTIFICATION: process.env.MAIL_NOTIFICATION
+    TYPEFORM_API_KEY: process.env.TYPEFORM_API_KEY
   },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
@@ -42,9 +36,9 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    { src: '~/plugins/auth-guard.js', mode: 'client' },
     { src: '~/plugins/notifications-ssr', ssr: true },
-    { src: '~/plugins/notifications-client', ssr: false },
-    '~plugins/vue-js-modal.js'
+    { src: '~/plugins/notifications-client', ssr: false }
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -1,40 +1,34 @@
 export default {
-  ordersPerClient (state, getters, rootState, rootGetters) {
-    const orders = rootGetters['entities/orders/orders']
-    const orderItems = rootGetters['entities/order-items/orderItems']
-    const products = rootGetters['entities/products/products']
-    const clients = rootGetters['entities/clients/clients']
+  orderItems (state) {
+    return state.orderItems
+  },
+  products (state) {
+    return state.products
+  },
+  clients (state) {
+    return state.clients
+  },
+  ordersPerClient (state) {
+    const orders = {}
 
-    const ordersPerClient = {}
+    const { products, orderItems, clients } = state
 
     for (let index = 0; index < orderItems.length; index++) {
       const orderItem = orderItems[index]
 
-      const order = orders.find(o => o.id === orderItem.fields.Order[0])
       const product = products.find(item => item.id === orderItem.fields.Product[0])
       const client = clients.find(cl => cl.id === orderItem.fields['Client Rec ID'][0])
 
-      const readyTime = order.fields['Ready Time']
-      const deliveryTime = order.fields['Delivery Time']
-
       // If this client has not yet been added
-      if (!ordersPerClient[client.id]) {
+      if (!orders[client.id]) {
         const newClientOrder = {
-          id: order.id,
           products: {},
           client: {
             id: client.id,
             name: client.fields.Name,
-            address: order.fields['Delivery Address'] || client.fields.Address,
+            address: client.fields.Address,
             type: client.fields['Client Type']
           },
-          date: order.fields.Date,
-          deliveryMethod: order.fields['Delivery Type'],
-          contactName: order.fields['Order Contact'] || client.fields['Primary Contact'],
-          phoneNumber: order.fields['Order Phone'] || client.fields.Phone,
-          deliveryDriver: order.fields['Delivery Driver'],
-          readyTime,
-          deliveryTime,
           totalOrders: 0
         }
 
@@ -49,14 +43,14 @@ export default {
           }
         })
 
-        ordersPerClient[client.id] = newClientOrder
+        orders[client.id] = newClientOrder
       }
       // Increment current product orders
-      ordersPerClient[client.id].products[product.id].qty += orderItem.fields.Orders
+      orders[client.id].products[product.id].qty += orderItem.fields.Orders
       // Adjust this client’s total orders
-      ordersPerClient[client.id].totalOrders += orderItem.fields.Orders
+      orders[client.id].totalOrders += orderItem.fields.Orders
     }
 
-    return ordersPerClient
+    return orders
   }
 }

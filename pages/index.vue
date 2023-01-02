@@ -1,9 +1,11 @@
 <template>
-  <div>
-    <portal to="page-title">Howdy Kolache Links</portal>
-    <div class="w-full lg:w-10/12 mx-auto p-2">
-      <div v-if="!loading && !error" class="flex flex-col md:flex-row gap-4 justify-center">
-        <div class="w-full md:w-7/12">
+  <div class="main">
+    <div class="container">
+      <h1 class="text-3xl title-text">
+        Howdy Kolache Links
+      </h1>
+      <div v-if="!loading && !error" class="grid grid-cols-5 gap-4 justify-center mt-8">
+        <div class="col-span-2">
           <LinksCard
           v-for="(group, index) in groupedLinks"
           :key="index"
@@ -17,7 +19,7 @@
           class="mt-6"
           />
         </div>
-        <div class="flex-1">
+        <div class="col-span-3">
           <ClientList />
         </div>
       </div>
@@ -32,16 +34,13 @@
 import { mapActions, mapGetters } from 'vuex'
 import LinksCard from '@/components/dashboard/LinksCard'
 import ClientList from '@/components/dashboard/clients/ClientList'
-import airQuery from '@/utils/airtable-query-builder'
-import authGuardMixin from '@/mixins/auth-guard'
 
 export default {
-  layout: 'dashboard',
+  name: 'IndexPage',
   components: {
     ClientList,
     LinksCard
   },
-  mixins: [authGuardMixin],
   data () {
     return {
       loading: true,
@@ -50,7 +49,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      pageLinks: 'entities/page-links/links'
+      pageLinks: 'home/getPageLinks'
     }),
     rewrittenLinks () {
       const rewrittenLinks = {
@@ -76,14 +75,14 @@ export default {
 
       rewrittenLinks.links.push({
         name: 'Upcoming Orders',
-        url: '/orders/upcoming',
+        url: '/upcoming-orders',
         section: 'Rewritten Links',
         external: false
       })
 
       rewrittenLinks.links.push({
         name: 'Create Order',
-        url: '/orders/create',
+        url: '/create-order',
         section: 'Rewritten Links',
         external: false
       })
@@ -92,7 +91,6 @@ export default {
     },
     links () {
       const links = []
-      const excluded = ['previous orders']
 
       for (let index = 0; index < this.pageLinks.length; index++) {
         const pageLink = this.pageLinks[index]
@@ -102,8 +100,6 @@ export default {
           url: pageLink.fields.URL,
           external: true
         }
-
-        if (excluded.includes(link.name.toLowerCase())) continue
 
         if (link.name.toLowerCase() === 'production planner (app)') {
           link.external = false
@@ -117,12 +113,12 @@ export default {
 
         if (link.name.toLowerCase() === 'upcoming orders') {
           link.external = false
-          link.url = '/orders/upcoming'
+          link.url = '/upcoming-orders'
         }
 
         if (link.name.toLowerCase().includes('create order')) {
           link.external = false
-          link.url = '/orders/create'
+          link.url = '/create-order'
         }
 
         links.push(link)
@@ -165,12 +161,7 @@ export default {
 
     try {
       await this.getPageLinks()
-      await this.getClients({
-        filterByFormula: airQuery()
-          .contains('Client Type', ['bar', 'storefront', 'coffee shop'])
-          .get(),
-        fields: ['Name', 'Client Type', 'Show on TOC?', 'Active', 'Rec ID']
-      })
+      await this.getClients()
     } catch (error) {
       console.error(error)
       this.error = true
@@ -179,10 +170,10 @@ export default {
     this.loading = false
   },
   methods: {
-    ...mapActions({
-      getPageLinks: 'entities/page-links/get',
-      getClients: 'entities/clients/get'
-    })
+    ...mapActions('home', [
+      'getPageLinks',
+      'getClients'
+    ])
   }
 }
 </script>

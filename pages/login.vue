@@ -24,7 +24,6 @@
 
 <script>
 import axios from 'axios'
-import { isLoggedIn } from '@/utils/auth'
 
 export default {
   data () {
@@ -33,10 +32,6 @@ export default {
       verifying: false,
       error: false
     }
-  },
-  created () {
-    // If already login, redirect to the intended url
-    if (process.client && isLoggedIn()) this.redirectToIntendedUrl()
   },
   methods: {
     async submit () {
@@ -80,16 +75,7 @@ export default {
       localStorage.setItem('loggedIn', true)
       localStorage.setItem('lastLogIn', logInDate)
 
-      // After logging in successfully, redirect user to their intended destination
-      this.redirectToIntendedUrl()
-    },
-    redirectToIntendedUrl () {
-      const intendedUrl = this.$route.query.next
-      if (intendedUrl) {
-        this.$router.replace(intendedUrl)
-      } else {
-        this.$router.push('/')
-      }
+      this.$router.push('/')
     }
   }
 }

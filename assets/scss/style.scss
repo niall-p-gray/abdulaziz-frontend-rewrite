@@ -4,8 +4,12 @@
 @import './inputs.scss';
 @import './pages/client-ordering-page.scss';
 @import './pages/login-page.scss';
+@import './create-order.scss';
+@import './scorecard.scss';
 
-
+.main {
+  @apply bg-primary min-h-screen;
+}
 .title-text {
   font-family: 'Josefin Sans', sans-serif;
 }
@@ -38,43 +42,18 @@
 .card {
   @apply bg-white rounded-xl px-3 py-3;
   &__title {
-    @apply text-xl font-bold;
+    @apply text-xl text-left;
   }
   &__content {
     @apply my-2;
     &__link {
-      @apply flex justify-between items-center border-t-2 border-primary py-1 cursor-pointer;
-      
-      &:first-child {
-        border-top: none;
-      }
-
-      &:last-child {
-        border-bottom: none;
-      }
-
+      @apply flex justify-between border-t-2 border-primary py-1 cursor-pointer;
       &__text {
         @apply text-lg;
       }
       &__icon {
-        @apply text-secondary w-3 h-3;
+        @apply text-secondary pt-2 pr-2;
       }
     }
   }
-}
-
-.section-title {
-  border-bottom: 1px solid #FCE30096;
-  box-shadow: 0px -12px 0px #FCE30096 inset;
-  display: inline;
-  @apply text-2xl font-bold;
-}
-
-.note {
-  @apply font-normal italic mt-2 text-sm;
-  color: rgb(100, 100, 100);
-}
-
-.vm--modal {
-  height: auto !important;
 }
